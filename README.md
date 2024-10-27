@@ -1,1 +1,2 @@
-# velvetvogue
+# Velvet Vogue Online Shopping Store
+
