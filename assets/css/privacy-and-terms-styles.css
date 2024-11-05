@@ -1,0 +1,42 @@
+body {
+    background-color: #f8f9fa;
+}
+.content-section {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.header {
+    text-align: center;
+    padding: 20px;
+    font-weight: bold;
+}
+
+/* Style for Back to Top Button */
+.back-to-top-container {
+    display: flex;
+    justify-content: flex-end; /* Aligns button to the right */
+    margin-top: 20px;
+}
+
+#backToTopBtn {
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: gray;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative; /* Relative positioning allows it to be positioned near the footer */
+}
+
+#backToTopBtn::after {
+    /* content: "↑"; Unicode arrow symbol */
+    font-size: 18px;
+}
+
+#backToTopBtn:hover {
+    background-color: black;
+}
