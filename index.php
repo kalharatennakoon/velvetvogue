@@ -104,8 +104,8 @@
         </nav>
     </div>
 
-    <!-- Section -->
-    <div class="min-h-screen overflow-x-hidden">
+    <!-- Section: Carousel -->
+    <div class="min-h-screen overflow-x-hidden d-flex justify-content-center align-items-center">
         <div id="carouselExampleIndicators" class="carousel carousel-dark slide mt-5" data-bs-ride="carousel">
             <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -117,15 +117,15 @@
             <div class="carousel-inner">
                 <!-- Image one-->
                 <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="./assets/images/image01.png" class="d-block w-50" alt="...">
+                    <img src="./assets/images/image01.png" class="d-block w-100" alt="...">
                 </div>
                 <!-- image two -->
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="./assets/images/image02.png" class="d-block w-50" alt="...">
+                    <img src="./assets/images/image02.png" class="d-block w-100" alt="...">
                 </div>
                 <!-- Image Three -->
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="./assets/images/image03.png" class="d-block w-50" alt="...">
+                    <img src="./assets/images/image03.png" class="d-block w-100" alt="...">
                 </div>
             </div>
 
@@ -141,7 +141,6 @@
                     <span class="visually-hidden">Next</span>
                 </button>
             </section>
-
         </div>
     </div>
 
@@ -165,7 +164,7 @@
                             <h6 class="text-uppercase fw-bold mb-4">About Us</h6>
                             <p><a href="./pages/privacy-policy.php" class="text-reset">Privacy Policy</a></p>
                             <p><a href="./pages/terms-and-conditions.php" class="text-reset">Terms and Conditions</a></p>
-                            <p><a href="#!" class="text-reset">Subscribe to Newsletter</a></p>
+                            <p><a href="./pages/subscribe.php" class="text-reset">Subscribe to Newsletter</a></p>
                         </small>
                     </div>
                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -197,8 +196,8 @@
         </section>
     
         <!-- Copyright: start -->
-        <div class="text-center text-white p-4 bg-dark">
-        <small>© 2024 VELVET VOGUE All rights reserved. Powered by KT</small>
+        <div class="text-center text-dark p-4 bg-body-tertiary">
+            <small>© 2024 VELVET VOGUE All rights reserved. Powered by KT</small>
         </div>
         <!-- Copyright: end -->
 
