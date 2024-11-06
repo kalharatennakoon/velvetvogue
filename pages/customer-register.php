@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Signup - VELVET VOGUE</title>
 
-    <!-- config.php file  -->
-        <?php include_once('../config/config.php'); ?>
-    
-    <!-- head-link.php file -->
-        <?php include_once('../includes/head-links.php'); ?>
+    <?php 
+        include_once('../config/config.php'); 
+        $page_title = 'Register';
+        include_once('../includes/head-links.php'); 
+    ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>

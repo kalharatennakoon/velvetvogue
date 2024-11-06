@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms and Conditions - VELVET VOGUE</title>
 
-    <!-- config.php file  -->
-        <?php include_once('../config/config.php'); ?>
-
-    <!-- head-link.php file -->
-        <?php include_once('../includes/head-links.php'); ?>
+    <?php 
+        include_once('../config/config.php'); 
+        $page_title = 'Terms and Conditions';
+        include_once('../includes/head-links.php'); 
+    ?>
 
 </head>
 <body>

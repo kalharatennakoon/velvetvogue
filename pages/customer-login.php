@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Login - VELVET VOGUE</title>
 
-    <!-- config.php file  -->
-    <?php include_once('../config/config.php'); ?>
 
-    <!-- head-link.php file -->
-        <?php include_once('../includes/head-links.php'); ?>
+    <?php 
+        include_once('../config/config.php'); 
+        $page_title = 'Login';
+        include_once('../includes/head-links.php'); 
+    ?>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />

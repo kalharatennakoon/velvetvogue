@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home - VELVET VOGUE</title>
 
-    <!-- config.php file  -->
-        <?php include_once('./config/config.php'); ?>
-
-    <!-- head-link.php file -->
-        <?php include_once('./includes/head-links.php'); ?>
+    <?php 
+        include_once('./config/config.php'); // Include the config file
+        $page_title = 'Home'; // Set the page-specific title
+        include_once('./includes/head-links.php'); // Include the head-links file
+    ?>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="./assets/css/home-styles.css">

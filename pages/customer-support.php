@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Support - VELVET VOGUE</title>
 
-    <!-- config.php file  -->
-        <?php include_once('../config/config.php'); ?>
-
-    <!-- head-link.php file -->
-        <?php include_once('../includes/head-links.php'); ?>
+    <?php 
+        include_once('../config/config.php'); 
+        $page_title = 'Customer Support';
+        include_once('../includes/head-links.php'); 
+    ?>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/home-styles.css">
