@@ -18,7 +18,7 @@
 
     <!-- Banner -->
     <div class="text-white p-2 text-center bg-black top-banner-sale">
-        <small><a href="./pages/customer-register.php" class="text-decoration-none text-white">Sign up</a> and GET 10% off on your first order</small>
+        <small><a href="<?php echo BASE_URL; ?>/pages/customer-register.php" class="text-decoration-none text-white">Sign up</a> and GET 10% off on your first order</small>
     </div>
 
     <!-- Header -->
@@ -37,15 +37,15 @@
             <div class="carousel-inner">
                 <!-- Image one-->
                 <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="./assets/images/image01.png" class="d-block w-100" alt="...">
+                    <img src="<?php echo BASE_URL; ?>/assets/images/image01.png" class="d-block w-100" alt="...">
                 </div>
                 <!-- image two -->
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="./assets/images/image02.png" class="d-block w-100" alt="...">
+                    <img src="<?php echo BASE_URL; ?>/assets/images/image02.png" class="d-block w-100" alt="...">
                 </div>
                 <!-- Image Three -->
                 <div class="carousel-item" data-bs-interval="3000">
-                    <img src="./assets/images/image03.png" class="d-block w-100" alt="...">
+                    <img src="<?php echo BASE_URL; ?>/assets/images/image03.png" class="d-block w-100" alt="...">
                 </div>
             </div>
 
