@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - VELVET VOGUE</title>
 
-    <!-- logo -->
+    <!-- Favicon -->
     <link rel="icon" href="./assets/images/logo.png" type="image/x-icon" />
 
     <!-- Bootstrap CSS -->
@@ -32,7 +32,7 @@
             <div class="container-fluid">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="navbar-brand" href="index.php">VELVET VOGUE</a>
+                        <a class="navbar-brand" href="index.php"><span class="text-uppercase">velvet vogue</span></a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
@@ -70,24 +70,24 @@
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                <div class="collapse navbar-collapse justify-content-center text-uppercase" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">NEW ARRIVALS</a></small>
+                            <small><a class="nav-link" href="#">new arrivals</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">BEST SELLERS</a></small>
+                            <small><a class="nav-link" href="#">best sellers</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="./categories/women/women.php">WOMEN</a></small>
+                            <small><a class="nav-link" href="./categories/women/women.php">women</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="./categories/men/men.php">MEN</a></small>
+                            <small><a class="nav-link" href="./categories/men/men.php">men</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">KIDS</a></small>
+                            <small><a class="nav-link" href="#">kids</a></small>
                         </li>
-                        <li class="nav-item">
+                        <!-- <li class="nav-item">
                             <small><a class="nav-link" href="#">HOME & DECOR</a></small>
                         </li>
                         <li class="nav-item">
@@ -98,12 +98,12 @@
                         </li>
                         <li class="nav-item">
                             <small><a class="nav-link" href="#">MOTHER & BABYCARE</a></small>
+                        </li> -->
+                        <li class="nav-item">
+                            <small><a class="nav-link" href="#">gift cards</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">GIFT CARDS</a></small>
-                        </li>
-                        <li class="nav-item">
-                            <small><a class="nav-link text-danger" href="#">SALE</a></small>
+                            <small><a class="nav-link text-danger" href="#">promotions</a></small>
                         </li>
                     </ul>
                 </div>
@@ -160,13 +160,13 @@
                 <div class="row mt-3">
                     <!-- Company Info -->
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold">VELVET VOGUE</h6>
+                        <h6 class="text-uppercase fw-bold">velvet vogue</h6>
                         <p>Timeless fashion, modern luxury. Discover your style, crafted just for you.</p>
                     </div>
 
                     <!-- About Us Links -->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold">About Us</h6>
+                        <h6 class="text-uppercase fw-bold">about Us</h6>
                         <p><a href="./pages/privacy-policy.php" class="text-white">Privacy Policy</a></p>
                         <p><a href="./pages/terms-and-conditions.php" class="text-white">Terms and Conditions</a></p>
                         <p><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#subscribeModal">Subscribe to Newsletter</a></p>
@@ -174,14 +174,15 @@
 
                     <!-- Useful Links -->
                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <h6 class="text-uppercase fw-bold">Useful Links</h6>
-                        <p><a href="./pages/faq.php" class="text-white">FAQ</a></p>
-                        <p><a href="./pages/contact.php" class="text-white">Contact Us</a></p>
+                        <h6 class="text-uppercase fw-bold">useful links</h6>
+                        <p><a href="./pages/faq.php" class="text-white text-uppercase ">faq</a></p>
+                        <p><a href="./pages/customer-support.php" class="text-white">Customer Support</a></p>
+                        <p><a href="./pages/product-inquiry.php" class="text-white">Product Inquiry</a></p>
                     </div>
 
                    <!-- Contact Info -->
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                        <h6 class="text-uppercase fw-bold">Contact</h6>
+                        <h6 class="text-uppercase fw-bold">contact</h6>
                         <p><i class="fa-solid fa-location-dot me-2"></i> Colombo, Western 10012, SL</p>
                         <p>
                             <a href="mailto:info@velvetvogue.com" class="text-white">
@@ -207,7 +208,7 @@
 
         <!-- Copyright -->
     <div class="text-center text-white mt-3 p-3 bg-dark">
-        <small>© 2024 VELVET VOGUE All rights reserved. Powered by KT</small>
+        <small>© 2024 <span class="text-uppercase">velvet vogue</span> All rights reserved. Powered by KT</small>
     </div>
 
     <!-- Subscribe Modal -->
