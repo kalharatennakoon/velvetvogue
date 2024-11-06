@@ -67,11 +67,11 @@
                                         </div>
                                     </form>
                                     <div class="d-flex justify-content-center mx-4 mb-1">
-                                        <small><a href="customer-register.php">Don't have an account ? Sign up</a></small>
+                                        <p class="text-muted">Don't have an account? <a href="customer-register.php" class="text-decoration-none">Sign up</a></p>
                                     </div>
 
                                     <!-- Back to Home -->
-                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
+                                    <div class="d-flex justify-content-center mx-4">
                                         <a href="../index.php" class="btn btn-sm btn-secondary me-3">
                                             <i class="fa-solid fa-house"></i> Back to Home
                                         </a>

@@ -90,13 +90,8 @@
                                     </form>
 
                                     <!-- Login -->
-                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                        <small>
-                                            <label class="text-muted me-2">
-                                            Already have an account?
-                                            </label>
-                                            <a href="customer-login.php">Login</a>
-                                        </small>
+                                    <div class="d-flex justify-content-center mx-4">
+                                        <p class="text-muted">Already have an account? <a href="customer-login.php" class="text-decoration-none">Login</a></p>
                                     </div>
 
                                     <!-- Back to Home -->
