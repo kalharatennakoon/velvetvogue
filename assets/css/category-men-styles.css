@@ -1,0 +1,107 @@
+.breadcrumb-container {
+font-size: 1rem;
+margin: 20px 0; /* Add margin above and below the breadcrumb */
+padding-left: 15px; /* Add padding to the left to give it some space from the edge */
+padding-right: 15px; /* Optional: Add some padding on the right for consistency */
+}
+
+.breadcrumb-container a {
+text-decoration: none;
+color: gray; /* Use a dark color for the breadcrumb links */
+}
+.breadcrumb-container .active {
+color: gray; /* Use a muted color for the active breadcrumb */
+}
+.breadcrumb-container .separator {
+margin-left: 8px;
+margin-right: 8px;
+}
+
+
+.product-image-container {
+    position: relative;
+    overflow: hidden;
+}
+.product-image-container img {
+    width: 100%;
+    transition: transform 0.3s ease-in-out;
+}
+.product-image-container:hover img {
+    transform: scale(1.3);
+}
+.product-details {
+    padding: 20px;
+}
+.product-title {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.product-price {
+    font-size: 1.5rem;
+}
+.product-info {
+    margin-top: 20px;
+}
+.size-options select, .quantity-control input {
+    width: 100px;
+}
+.size-options .form-label {
+    margin-bottom: 0; /* Removes bottom margin from the label */
+}
+
+.size-buttons-container {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+.size-button {
+    border: 2px solid #343a40; /* Dark outline */
+    background-color: transparent;
+    color: #343a40; /* Dark text */
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+.size-button.selected {
+    background-color: #343a40 !important; /* Dark background when selected */
+    color: white !important; /* White text when selected */
+    border-color: #343a40 !important; /* Dark border when selected */
+}
+
+/* Quantity */
+.quantity-buttons .btn {
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.quantity-display {
+    width: 50px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 18px;
+}
+
+
+
+
+.product-info .btn {
+    margin-top: 20px;
+}
+.related-products img {
+    width: 100%;
+    border-radius: 10px;
+}
+.related-products .col-md-3 {
+    padding: 10px;
+}
+.footer {
+    color: white;
+    padding: 40px 0;
+    text-align: center;
+}

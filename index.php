@@ -82,7 +82,7 @@
                             <small><a class="nav-link" href="#">WOMEN</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">MEN</a></small>
+                            <small><a class="nav-link" href="./categories/men/men.php">MEN</a></small>
                         </li>
                         <li class="nav-item">
                             <small><a class="nav-link" href="#">KIDS</a></small>
@@ -111,6 +111,7 @@
         </nav>
         
     </div>
+    <!-- End Header -->
 
     <!-- Section: Carousel -->
     <div class="min-h-screen overflow-x-hidden d-flex justify-content-center align-items-center">
