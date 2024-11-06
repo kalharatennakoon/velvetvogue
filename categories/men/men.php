@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Men's Category - Velvet Vogue</title>
 
-    <!-- config.php file  -->
-        <?php include_once('../../config/config.php'); ?>
-
-    <!-- head-link.php file -->
-        <?php include_once('../../includes/head-links.php'); ?>
-
+    <?php 
+        include_once('../../config/config.php'); 
+        $page_title = 'Men\'s Category';
+        include_once('../../includes/head-links.php');
+    ?>
     
     <!-- Custom CSS -->
     <style>
