@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Support - VELVET VOGUE</title>
 
+    <!-- config.php file  -->
+        <?php include_once('../config/config.php'); ?>
+
     <!-- head-link.php file -->
         <?php include_once('../includes/head-links.php'); ?>
 
@@ -13,9 +16,6 @@
 
 </head>
 <body>
-
-    <!-- config.php file  -->
-        <?php include_once('../config/config.php'); ?>
 
     <!-- Header -->
         <?php include '../includes/header.php'; ?>
