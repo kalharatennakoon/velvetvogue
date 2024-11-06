@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tom David Men's Crew Neck T-Shirt</title>
 
+    <!-- logo -->
+    <link rel="icon" href="../../../../../assets/images/logo.png" type="image/x-icon" />
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -56,7 +59,7 @@
         </nav>
 
         <!-- Navigation Bar -->
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-secondary">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -122,12 +125,12 @@
         <div class="row">
             <!-- Left Side: Product Image -->
             <div class="col-md-6 product-image-container">
-                <img src="../../../../../assets/images/tom-david-tshirt.jpeg" alt="Tom David Crew Neck T-shirt">
+                <img src="../../../../../assets/images/business-man.png" alt="Tom David Crew Neck T-shirt">
             </div>
 
             <!-- Right Side: Product Information -->
             <div class="col-md-6">
-                <div class="product-info">
+                <div class="product-info mb-4">
                     <h2 class="product-title">Tom David Crew Neck T-shirt</h2>
                     <p class="product-price">LKR 1,990.00</p>
                     <form action="cart.php" method="POST" class="mb-4">
@@ -154,6 +157,15 @@
                                 </button>
                             </div>
                         </div>
+                        
+                        <!-- Product Details -->
+                        <div class="product-details-more mt-4">
+                            <p class="product-info"><strong>Availability:</strong> <span class="text-success">In stock</span></p>
+                            <p class="product-info"><strong>Brand:</strong> TOM DAVID</p>
+                            <p class="product-info"><strong>Code:</strong> 1201030025666-Navy-XS</p>
+                            <p class="product-info"><strong>Binloc:</strong> DC03D05</p>
+                        </div>
+
 
                         <!-- Add to cart -->
                         <button type="submit" class="btn btn-dark">Add to Cart</button>
@@ -181,20 +193,20 @@
     </div>
 
     <!-- Related Products Section -->
-    <div class="container">
-        <h3>We think you might be interested in these as well</h3>
+    <div class="container mt-3">
+        <h5>We think you might be interested in these as well</h5>
         <div class="row related-products">
             <div class="col-md-3">
-                <img src="images/related-tshirt1.jpg" alt="Related T-shirt 1">
+                <img src="../../../../../assets/images/friends1.png" alt="Related T-shirt 1">
             </div>
             <div class="col-md-3">
-                <img src="images/related-tshirt2.jpg" alt="Related T-shirt 2">
+                <img src="../../../../../assets/images/friends2.png" alt="Related T-shirt 2">
             </div>
             <div class="col-md-3">
-                <img src="images/related-tshirt3.jpg" alt="Related T-shirt 3">
+                <img src="../../../../../assets/images/friends3.png" alt="Related T-shirt 3">
             </div>
             <div class="col-md-3">
-                <img src="images/related-tshirt4.jpg" alt="Related T-shirt 4">
+                <img src="../../../../../assets/images/friends4.png" alt="Related T-shirt 4">
             </div>
         </div>
     </div>

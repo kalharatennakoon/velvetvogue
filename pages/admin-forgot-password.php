@@ -24,6 +24,20 @@
 </head>
 <body>
 
+    <!-- Header -->
+    <div class="sticky-top top-0 left-0 w-full z-40 shadow-md">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="navbar-brand" href="../index.php">VELVET VOGUE</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
     <!-- Forgot Password Section -->
     <section class="forgot-password-section">
         <div class="container">
