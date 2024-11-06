@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Men's Category - Velvet Vogue</title>
+    <title>Women's Category - Velvet Vogue</title>
 
     <!-- add icon link -->
     <link rel="icon" href="./assets/images/logo.png" type="image/x-icon" />
@@ -89,10 +89,10 @@
                             <small><a class="nav-link" href="#">BEST SELLERS</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="../women/women.php">WOMEN</a></small>
+                            <small><a class="nav-link" href="#">WOMEN</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">MEN</a></small>
+                            <small><a class="nav-link" href="../men/men.php">MEN</a></small>
                         </li>
                         <li class="nav-item">
                             <small><a class="nav-link" href="#">KIDS</a></small>
@@ -125,14 +125,14 @@
     <!-- Main Content -->
     <section class="category-section">
         <div class="container">
-            <h2 class="text-center mb-5">Men's Categories</h2>
+            <h2 class="text-center mb-5">Women's Categories</h2>
             <div class="row justify-content-center">
                 <!-- Men Casual Wear Card -->
                 <div class="col-md-4 mb-4">
                     <a href="casual-wear/casual-wear.php" class="text-decoration-none">
                         <div class="category-card p-4 text-center">
                             <div class="category-title">Casual Wear</div>
-                            <p>Explore our selection of casual wear for men.</p>
+                            <p>Explore our selection of casual wear for women.</p>
                         </div>
                     </a>
                 </div>
@@ -141,7 +141,7 @@
                     <a href="formal-wear/formal-wear.php" class="text-decoration-none">
                         <div class="category-card p-4 text-center">
                             <div class="category-title">Formal Wear</div>
-                            <p>Discover our range of formal wear for men.</p>
+                            <p>Discover our range of formal wear for women.</p>
                         </div>
                     </a>
                 </div>

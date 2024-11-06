@@ -1,10 +1,10 @@
+/* Custom Breadcrumb */
 .breadcrumb-container {
 font-size: 1rem;
-margin: 20px 0; /* Add margin above and below the breadcrumb */
-padding-left: 15px; /* Add padding to the left to give it some space from the edge */
-padding-right: 15px; /* Optional: Add some padding on the right for consistency */
+margin: 20px 0; 
+padding-left: 15px;
+padding-right: 15px; 
 }
-
 .breadcrumb-container a {
 text-decoration: none;
 color: gray; /* Use a dark color for the breadcrumb links */
@@ -17,7 +17,7 @@ margin-left: 8px;
 margin-right: 8px;
 }
 
-
+/* product */
 .product-image-container {
     position: relative;
     overflow: hidden;
@@ -42,33 +42,33 @@ margin-right: 8px;
 .product-info {
     margin-top: 20px;
 }
+
+/* size */
 .size-options select, .quantity-control input {
     width: 100px;
 }
 .size-options .form-label {
-    margin-bottom: 0; /* Removes bottom margin from the label */
+    margin-bottom: 0;
 }
-
 .size-buttons-container {
     display: flex;
-    gap: 10px; /* Space between buttons */
+    gap: 10px; 
 }
-
 .size-button {
-    border: 2px solid #343a40; /* Dark outline */
+    border: 2px solid #343a40; 
     background-color: transparent;
-    color: #343a40; /* Dark text */
+    color: #343a40; 
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
-
 .size-button.selected {
     background-color: #343a40 !important; /* Dark background when selected */
     color: white !important; /* White text when selected */
     border-color: #343a40 !important; /* Dark border when selected */
 }
+
 
 /* Quantity */
 .quantity-buttons .btn {

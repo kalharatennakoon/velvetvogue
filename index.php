@@ -79,7 +79,7 @@
                             <small><a class="nav-link" href="#">BEST SELLERS</a></small>
                         </li>
                         <li class="nav-item">
-                            <small><a class="nav-link" href="#">WOMEN</a></small>
+                            <small><a class="nav-link" href="./categories/women/women.php">WOMEN</a></small>
                         </li>
                         <li class="nav-item">
                             <small><a class="nav-link" href="./categories/men/men.php">MEN</a></small>

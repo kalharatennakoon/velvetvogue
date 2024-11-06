@@ -23,7 +23,7 @@
             <div class="container-fluid">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="navbar-brand" href="index.php">VELVET VOGUE</a>
+                        <a class="navbar-brand" href="../../../../../index.php">VELVET VOGUE</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
@@ -215,8 +215,10 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS and Custom JS -->
+    <!-- Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
     <script>
         // JavaScript to handle button selection
         document.querySelectorAll('.size-button').forEach(button => {
@@ -241,7 +243,6 @@
                 quantityDisplay.textContent = quantity;
             }
         });
-
         // Increase quantity
         document.getElementById('increaseBtn').addEventListener('click', function() {
             if (quantity < 10) {
