@@ -29,28 +29,29 @@ ul li::before {
     content: "\2022"; /* Bullet character */
     position: absolute;
     left: 0;
-    color: #3498db; /* Custom color for the bullets */
+    color: black; /* Custom color for the bullets */
     font-size: 1.2rem;
 }
 
 /* Back to Top Button Styling */
-
-
 #backToTopBtn {
-    padding: 12px 18px;
-    font-size: 20px;
-    background-color: #3498db;
-    color: #fff;
+    padding: 8px 14px;
+    font-size: 14px;
+    background-color: gray;
+    color: white;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 #backToTopBtn:hover {
-    background-color: #2980b9;
+    background-color: black;
     transform: scale(1.1);
+}
+#backToTopBtn::after {
+    font-size: 14px;  /* Smaller icon size */
 }
 
 /* Content Section Styling */
