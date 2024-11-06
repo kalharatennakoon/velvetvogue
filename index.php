@@ -23,7 +23,7 @@
 
     <!-- Banner -->
     <div class="text-white p-2 text-center bg-black top-banner-sale">
-        <small><a href="./pages/customer-register.php">Sign up</a> and GET 10% off on your first order</small>
+        <small><a href="./pages/customer-register.php" class="text-decoration-none text-white">Sign up</a> and GET 10% off on your first order</small>
     </div>
 
     <!-- Header -->
