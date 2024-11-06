@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Signup - VELVET VOGUE</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    
+    <!-- head-link.php file -->
+        <?php include_once('../includes/head-links.php'); ?>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
@@ -20,6 +18,12 @@
 
 </head>
 <body>
+
+    <!-- config.php file  -->
+    <?php include_once('../config/config.php'); ?>
+
+    <!-- Header -->
+    <?php include '../includes/header.php'; ?>
 
     <section class="h-100 p-4" style="background-color: #eee;">
         <div class="container h-100">
@@ -78,7 +82,7 @@
                                         <div class="mb-3">
                                             <label for="terms">
                                                 <input type="checkbox" id="agreeTerms" name="terms" /> 
-                                                <small>I agree to the <a href="#!" target="_blank">Terms and Conditions</a> and <a href="#!" target="_blank">Privacy Policy</a></small><br>
+                                                <small>I agree to the <a href="<?php echo BASE_URL; ?>/pages/terms-and-conditions.php" target="_blank">Terms and Conditions</a> and <a href="<?php echo BASE_URL; ?>/pages/privacy-policy.php" target="_blank">Privacy Policy</a></small><br>
                                                 <small><span class="error" id="termsError"></span><br></small>
                                             </label>
                                         </div>
@@ -91,19 +95,19 @@
 
                                     <!-- Login -->
                                     <div class="d-flex justify-content-center mx-4">
-                                        <p class="text-muted">Already have an account? <a href="customer-login.php" class="text-decoration-none">Login</a></p>
+                                        <p class="text-muted">Already have an account? <a href="<?php echo BASE_URL; ?>/pages/customer-login.php" class="text-decoration-none">Login</a></p>
                                     </div>
 
                                     <!-- Back to Home -->
                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                        <a href="../index.php" class="btn btn-sm btn-secondary me-3">
+                                        <a href="<?php echo BASE_URL; ?>/index.php" class="btn btn-sm btn-secondary me-3">
                                             <i class="fa-solid fa-house"></i> Back to Home
                                         </a>
                                     </div>
                                 </div>
 
                                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                    <img src="../assets/images/sign_up.png" class="img-fluid" alt="Sample image">
+                                    <img src="<?php echo BASE_URL; ?>/assets/images/sign_up.png" class="img-fluid" alt="Sample image">
                                 </div>
                             </div>
                         </div>
@@ -112,6 +116,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <?php include '../includes/footer.php'; ?>
     
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

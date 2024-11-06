@@ -5,20 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Login - VELVET VOGUE</title>
 
-    <!-- add icon link -->
-    <link rel="icon" href="../assets/images/logo.png" type="image/x-icon" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- head-link.php file -->
+        <?php include_once('../includes/head-links.php'); ?>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />
 
 </head>
 <body>
+
+    <!-- config.php file  -->
+        <?php include_once('../config/config.php'); ?>
+
+    <!-- Header -->
+        <?php include '../includes/header.php'; ?>
 
     <section class="vh-100" style="background-color: #eee;">
         <div class="container h-100">
@@ -43,7 +43,7 @@
                                         Login successful! Redirecting...
                                     </div>
 
-                                    <form class="mx-1 mx-md-4" action="../../index.html" method="POST" id="login-form">
+                                    <form class="mx-1 mx-md-4" action="<?php echo BASE_URL; ?>/index.html" method="POST" id="login-form">
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fa-solid fa-user fa-lg me-3"></i>
                                             <input type="text" id="email" class="form-control" placeholder="Email" />
@@ -71,19 +71,19 @@
                                         </div>
                                     </form>
                                     <div class="d-flex justify-content-center mx-4 mb-1">
-                                        <p class="text-muted">Don't have an account? <a href="customer-register.php" class="text-decoration-none">Sign up</a></p>
+                                        <p class="text-muted">Don't have an account? <a href="<?php echo BASE_URL; ?>/pages/customer-register.php" class="text-decoration-none">Sign up</a></p>
                                     </div>
 
                                     <!-- Back to Home -->
                                     <div class="d-flex justify-content-center mx-4">
-                                        <a href="../index.php" class="btn btn-sm btn-secondary me-3">
+                                        <a href="<?php echo BASE_URL; ?>/index.php" class="btn btn-sm btn-secondary me-3">
                                             <i class="fa-solid fa-house"></i> Back to Home
                                         </a>
                                     </div>
 
                                 </div>
                                 <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                                    <img src="../assets/images/login.png" class="img-fluid" alt="Sample image">
+                                    <img src="<?php echo BASE_URL; ?>/assets/images/login.png" class="img-fluid" alt="Sample image">
                                 </div>
                             </div>
                         </div>
@@ -93,6 +93,9 @@
         </div>
     </section>
     
+
+    <!-- Footer -->
+        <?php include '../includes/footer.php'; ?>
 
     <!-- Bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

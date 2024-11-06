@@ -5,22 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Terms and Conditions - VELVET VOGUE</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/privacy-and-terms-styles.css">
+    <!-- head-link.php file -->
+        <?php include_once('../includes/head-links.php'); ?>
 
 </head>
 <body>
 
+    <!-- config.php file  -->
+        <?php include_once('../config/config.php'); ?>
+
     <!-- Header -->
-    <div class="container-fluid bg-dark text-white py-3">
-        <h2 class="text-center">VELVET VOGUE Terms and Conditions</h2>
-    </div>
+        <?php include '../includes/header.php'; ?>
 
     <!-- Content Section -->
     <div class="container mt-5">
@@ -66,27 +61,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="text-center text-white p-4 bg-dark mt-3">
-        <div class="container d-flex flex-column align-items-center">
-            <div class="row mt-3 justify-content-center text-center">
-                <!-- Brand and Description -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">VELVET VOGUE</h6>
-                    <p>Timeless fashion, modern luxury. Discover your style, crafted just for you.</p>
-                </div>
-                <!-- Quick Links -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
-                    <p><a href="../index.php" class="text-reset text-white">Home</a></p>
-                    <p><a href="contact.php" class="text-reset text-white">Contact Us</a></p>
-                </div>
-            </div>
-        </div>
-        <!-- Copyright -->
-        <div class="text-center p-4">
-            <small>© 2024 VELVET VOGUE All rights reserved.</small>
-        </div>
-    </footer>
+        <?php include '../includes/footer.php'; ?>
 
     <!-- JavaScript for Back to Top Button -->
     <script>

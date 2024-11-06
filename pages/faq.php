@@ -5,11 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - VELVET VOGUE</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- head-link.php file -->
+        <?php include_once('../includes/head-links.php'); ?>
     
     <!-- Custom CSS -->
     <style>
@@ -30,14 +27,11 @@
 </head>
 <body>
 
+    <!-- config.php file  -->
+        <?php include_once('../config/config.php'); ?>
+
     <!-- Header -->
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="../index.php">VELVET VOGUE</a>
-            </div>
-        </nav>
-    </header>
+        <?php include '../includes/header.php'; ?>
 
     <!-- FAQ Section -->
     <section class="faq-section">
@@ -122,27 +116,7 @@
 
 
     <!-- Footer -->
-    <footer class="text-center text-white p-4 bg-dark">
-        <div class="container d-flex flex-column align-items-center">
-            <div class="row mt-3 justify-content-center text-center">
-                <!-- Brand and Description -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">VELVET VOGUE</h6>
-                    <p>Timeless fashion, modern luxury. Discover your style, crafted just for you.</p>
-                </div>
-                <!-- Quick Links -->
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
-                    <p><a href="../index.php" class="text-reset text-white">Home</a></p>
-                    <p><a href="contact.php" class="text-reset text-white">Contact Us</a></p>
-                </div>
-            </div>
-        </div>
-        <!-- Copyright -->
-        <div class="text-center p-4">
-            <small>© 2024 VELVET VOGUE All rights reserved.</small>
-        </div>
-    </footer>
+        <?php include '../includes/footer.php'; ?>
 
 
 
