@@ -8,6 +8,14 @@ body {
     padding: 0;
 }
 
+h3, h4 {
+    color: #2c3e50;
+    margin-top: 30px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
 /* Paragraph and List Styling */
 ul {
     font-size: 1.1rem;
@@ -34,6 +42,12 @@ ul li::before {
 }
 
 /* Back to Top Button Styling */
+.back-to-top-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+}
 #backToTopBtn {
     padding: 8px 14px;
     font-size: 14px;

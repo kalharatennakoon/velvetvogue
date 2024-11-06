@@ -46,20 +46,24 @@
                                     <form class="mx-1 mx-md-4" action="../../index.html" method="POST" id="login-form">
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fa-solid fa-user fa-lg me-3"></i>
-                                            <div class="form-outline flex-fill mb-0">
+                                            <input type="text" id="email" class="form-control" placeholder="Email" />
+                                            <small><span class="error" id="emailError"></span><br></small>
+                                            <!-- <div class="form-outline flex-fill mb-0">
                                                 <input type="text" id="email" class="form-control" placeholder="Email" />
                                                 <small><span class="error" id="emailError"></span><br></small>
-                                            </div>
+                                            </div> -->
                                         </div>
                                         <div class="d-flex flex-row align-items-center mb-0">
                                             <i class="fa-solid fa-lock fa-lg me-3"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <input type="password" id="password" class="form-control" placeholder="Password" />
-                                                <small><span class="error" id="passwordError"></span><br></small>
-                                            </div>
+                                            <input type="password" id="password" class="form-control" placeholder="Password" />
+                                            <small><span class="error" id="passwordError"></span><br></small>
                                         </div>
                                         <div class="d-flex flex-row justify-content-end mb-4">
-                                            <small><a href="#">Forgot assword?</a></small>
+                                            <small>
+                                                <a href="#" class="text-muted text-decoration-none">
+                                                    <i class="fa fa-question-circle me-2"></i>Forgot assword?
+                                                </a>
+                                            </small>
                                         </div>
                                         
                                         <div class="d-grid gap-2 mb-4">

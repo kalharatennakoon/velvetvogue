@@ -14,22 +14,6 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/privacy-and-terms-styles.css">
 
-    <style>
-        .back-to-top-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-        /* Header and Title Styling */
-        h3, h4 {
-            color: #2c3e50;
-            margin-top: 30px;
-            font-weight: 600;
-            font-size: 1.4rem;
-            letter-spacing: 0.5px;
-        }
-    </style>
 </head>
 <body>
 
