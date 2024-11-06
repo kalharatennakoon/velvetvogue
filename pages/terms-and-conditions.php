@@ -11,18 +11,30 @@
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
-    <!-- CSS -->
+    <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/privacy-and-terms-styles.css">
 
+    <style>
+        .back-to-top-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        /* Header and Title Styling */
+        h3, h4 {
+            color: #2c3e50;
+            margin-top: 30px;
+            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+    </style>
 </head>
 <body>
 
     <!-- Header -->
     <div class="container-fluid bg-dark text-white py-3">
-        <!-- Back to Home -->
-        <a href="../index.php" class="btn btn-sm btn-secondary me-3 justify-content-start mb-3">
-            <i class="fa-solid fa-house"></i> Back to Home
-        </a>
         <h2 class="text-center">VELVET VOGUE Terms and Conditions</h2>
     </div>
 
@@ -30,34 +42,35 @@
     <div class="container mt-5">
         <div class="content-section">
             <h3>Terms and Conditions</h3>
-            <p>Welcome to VELVET VOGUE! Please read our terms and conditions carefully before using our website or purchasing our products.</p>
+            <p>Welcome to VELVET VOGUE! Please read our terms and conditions carefully before using our website or purchasing our products. These terms outline your rights and responsibilities while interacting with our website and services.</p>
 
             <h4>1. Introduction</h4>
-            <p>These terms govern your use of our website and services. By using our site, you agree to comply with our terms and conditions.</p>
+            <p>These terms govern your use of our website and services. By using our site, you agree to comply with these terms and conditions. If you disagree with any part, please refrain from using our services.</p>
 
             <h4>2. Account Registration</h4>
-            <p>To shop with us, you may need to create an account. Ensure all information provided is accurate and updated.</p>
+            <p>To shop with us, you must create an account. Please ensure all provided information is accurate, complete, and updated as necessary. You are responsible for maintaining the confidentiality of your account information.</p>
 
             <h4>3. Order and Payment</h4>
             <ul>
                 <li>All orders are subject to acceptance and availability.</li>
-                <li>Payment must be completed at the time of order. We accept credit/debit cards and other authorized payment methods.</li>
+                <li>Payment must be completed at the time of order. We accept major credit/debit cards and other authorized payment methods.</li>
+                <li>Once an order is confirmed, it cannot be modified. Please double-check your cart before proceeding.</li>
             </ul>
 
             <h4>4. Shipping and Delivery</h4>
-            <p>We offer shipping within Colombo and other selected areas. Delivery timeframes depend on the shipping option chosen during checkout.</p>
+            <p>We offer shipping within Colombo and selected areas. Delivery timeframes depend on the shipping method chosen at checkout. We strive to ensure timely deliveries, but cannot guarantee specific delivery dates.</p>
 
             <h4>5. Returns and Refunds</h4>
-            <p>If you're not satisfied with your purchase, please review our return policy on the website. Items must be returned in original condition within 14 days.</p>
+            <p>If you're not satisfied with your purchase, we offer a return policy. Please review the detailed return procedure on our website. Items must be returned in their original condition within 14 days for a refund or exchange.</p>
 
             <h4>6. Limitation of Liability</h4>
-            <p>VELVET VOGUE is not liable for any indirect, special, or consequential damages arising from your use of our website or products.</p>
+            <p>VELVET VOGUE is not responsible for any indirect, special, or consequential damages resulting from your use of our website or products. Our liability is limited to the purchase amount of the product in question.</p>
 
             <h4>7. Changes to Terms</h4>
-            <p>We may update these terms as needed. Continued use of our website means acceptance of these changes.</p>
+            <p>We reserve the right to modify these terms at any time. Continued use of the website constitutes acceptance of any changes. Please check this page regularly for updates.</p>
 
             <h4>Contact Us</h4>
-            <p>For any questions or clarifications, please contact us at <strong>VELVET VOGUE, Colombo, Sri Lanka</strong>.</p>
+            <p>If you have any questions regarding our terms and conditions, please contact us at <strong>VELVET VOGUE, Colombo, Sri Lanka</strong>, or email us directly through our contact page.</p>
         </div>
     </div>
 
@@ -69,8 +82,26 @@
     </div>
 
     <!-- Footer -->
-    <footer class="container-fluid bg-dark text-white mt-5 py-3 text-center">
-        <p>VELVET VOGUE &copy; 2024 | Colombo, Sri Lanka</p>
+    <footer class="text-center text-white p-4 bg-dark mt-3">
+        <div class="container d-flex flex-column align-items-center">
+            <div class="row mt-3 justify-content-center text-center">
+                <!-- Brand and Description -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">VELVET VOGUE</h6>
+                    <p>Timeless fashion, modern luxury. Discover your style, crafted just for you.</p>
+                </div>
+                <!-- Quick Links -->
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <h6 class="text-uppercase fw-bold mb-4">Quick Links</h6>
+                    <p><a href="../index.php" class="text-reset text-white">Home</a></p>
+                    <p><a href="contact.php" class="text-reset text-white">Contact Us</a></p>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright -->
+        <div class="text-center p-4">
+            <small>© 2024 VELVET VOGUE All rights reserved.</small>
+        </div>
     </footer>
 
     <!-- JavaScript for Back to Top Button -->

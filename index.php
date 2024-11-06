@@ -23,7 +23,7 @@
 
     <!-- Banner -->
     <div class="text-white p-2 text-center bg-black top-banner-sale">
-        <small>Sign up and GET 10% off on your first order</small>
+        <small><a href="./pages/customer-register.php">Sign up</a> and GET 10% off on your first order</small>
     </div>
 
     <!-- Header -->
@@ -32,7 +32,7 @@
             <div class="container-fluid">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <span class="navbar-brand mb-0 h1">VELVET VOGUE</span>
+                        <a class="navbar-brand" href="index.php">VELVET VOGUE</a>
                     </li>
                 </ul>
                 <form class="d-flex" role="search">
@@ -42,17 +42,20 @@
                             <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                         </button>
                     </div>
-                    <button class="btn" type="button">
+                    <!-- Wishlist Icon with Tooltip -->
+                    <button class="btn" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Wishlist">
                         <a class="nav-link" href="#">
                             <i class="fa-solid fa-heart fa-lg text-white"></i>
                         </a>
                     </button>
-                    <button class="btn" type="button">
+                    <!-- Cart Icon with Tooltip -->
+                    <button class="btn" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Cart">
                         <a class="nav-link" href="#">
                             <i class="fa-solid fa-bag-shopping fa-lg text-white"></i>
                         </a>
                     </button>
-                    <button class="btn" type="button">
+                    <!-- Account Icon with Tooltip -->
+                    <button class="btn" type="button" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Account">
                         <a class="nav-link" href="./pages/customer-login.php">
                             <i class="fa-solid fa-user fa-lg text-white"></i>
                         </a>
@@ -61,6 +64,7 @@
             </div>
         </nav>
 
+        <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,6 +109,7 @@
                 </div>
             </div>
         </nav>
+        
     </div>
 
     <!-- Section: Carousel -->
@@ -148,68 +153,112 @@
     </div>
 
     <!-- Footer -->
-    <footer class="text-center text-lg-start bg-body-tertiary text-muted p-4">
-        <section class="">
+    <footer class="text-white bg-dark text-center text-lg-start p-4">
+        <section>
             <div class="container text-center text-md-start mt-5">
                 <div class="row mt-3">
+                    <!-- Company Info -->
                     <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <figure>
-                            <blockquote class="blockquote">
-                                <p class="text-uppercase">Velvet Vogue</p>
-                            </blockquote>
-                            <figcaption class="blockquote-footer">
-                                <cite>Timeless fashion, modern luxury. <br />Discover your style, crafted just for you.</cite>
-                            </figcaption>
-                        </figure>
+                        <h6 class="text-uppercase fw-bold">VELVET VOGUE</h6>
+                        <p>Timeless fashion, modern luxury. Discover your style, crafted just for you.</p>
                     </div>
+
+                    <!-- About Us Links -->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <small>
-                            <h6 class="text-uppercase fw-bold mb-4">About Us</h6>
-                            <p><a href="./pages/privacy-policy.php" class="text-reset">Privacy Policy</a></p>
-                            <p><a href="./pages/terms-and-conditions.php" class="text-reset">Terms and Conditions</a></p>
-                            <p><a href="./pages/subscribe.php" class="text-reset">Subscribe to Newsletter</a></p>
-                        </small>
+                        <h6 class="text-uppercase fw-bold">About Us</h6>
+                        <p><a href="./pages/privacy-policy.php" class="text-white">Privacy Policy</a></p>
+                        <p><a href="./pages/terms-and-conditions.php" class="text-white">Terms and Conditions</a></p>
+                        <p><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#subscribeModal">Subscribe to Newsletter</a></p>
                     </div>
+
+                    <!-- Useful Links -->
                     <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <small>
-                            <h6 class="text-uppercase fw-bold mb-4">Useful links</h6>
-                            <p><a href="#!" class="text-reset">FAQ</a></p>
-                            <p><a href="#!" class="text-reset">Blog</a></p>
-                            <p><a href="#!" class="text-reset">Help</a></p>
-                        </small>
+                        <h6 class="text-uppercase fw-bold">Useful Links</h6>
+                        <p><a href="./pages/faq.php" class="text-white">FAQ</a></p>
+                        <p><a href="./pages/contact.php" class="text-white">Contact Us</a></p>
                     </div>
+
+                    <!-- Contact Info -->
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                        <small>
-                            <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
-                            <!-- Social media: start -->
-                            <p>
-                                <a href="#" class="text-reset me-4"><i class="fa-brands fa-facebook fa-lg"></i></a>
-                                <a href="#" class="text-reset me-4"><i class="fa-brands fa-twitter fa-lg"></i></a>
-                                <a href="#" class="text-reset me-4"><i class="fa-brands fa-instagram fa-lg"></i></a>
-                                <a href="#" class="text-reset me-4"><i class="fa-brands fa-tiktok fa-lg"></i></a>
-                            </p>
-                            <!-- Social media: end -->
-                            <p><i class="fa-solid fa-location-dot fa-lg me-3"></i>Colombo, Western 10012, SL</p>
-                            <p><i class="fa-solid fa-envelope fa-lg me-3"></i>info@velvetvogue.com</p>
-                            <p><i class="fa-solid fa-phone fa-lg me-3"></i>+94 (011) 123 4567</p>
-                        </small>
+                        <h6 class="text-uppercase fw-bold">Contact</h6>
+                        <p><i class="fa-solid fa-location-dot me-2"></i> Colombo, Western 10012, SL</p>
+                        <p><i class="fa-solid fa-envelope me-2"></i> info@velvetvogue.com</p>
+                        <p><i class="fa-solid fa-phone me-2"></i> +94 (011) 123 4567</p>
+                        <!-- Social Media Icons -->
+                        <div class="mt-2">
+                            <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white me-3"><i class="fab fa-tiktok"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-    
-        <!-- Copyright: start -->
-        <div class="text-center text-dark p-4 bg-body-tertiary">
-            <small>© 2024 VELVET VOGUE All rights reserved. Powered by KT</small>
+
+        <!-- Copyright -->
+    <div class="text-center text-white mt-3 p-3 bg-dark">
+        <small>© 2024 VELVET VOGUE All rights reserved. Powered by KT</small>
+    </div>
+
+    <!-- Subscribe Modal -->
+    <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title" id="subscribeModalLabel">Subscribe to our Newsletter</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Stay updated with the latest trends and offers.</p>
+                    <form id="subscribeForm">
+                        <div class="mb-3">
+                            <label for="subscribeEmail" class="form-label">Email address</label>
+                            <input type="email" class="form-control" id="subscribeEmail" placeholder="Enter your email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Subscribe</button>
+                    </form>
+                    <div id="subscribeSuccessMessage" class="alert alert-success mt-3 d-none">
+                        Thank you for subscribing!
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- Copyright: end -->
+    </div>
 
-    </footer>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- JavaScript for Subscription Form -->
+    <script>
+        document.getElementById("subscribeForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const email = document.getElementById("subscribeEmail").value;
+            
+            if (email) {
+                document.getElementById("subscribeSuccessMessage").classList.remove("d-none");
+                document.getElementById("subscribeForm").reset();
+                
+                setTimeout(() => {
+                    document.getElementById("subscribeSuccessMessage").classList.add("d-none");
+                    const subscribeModal = bootstrap.Modal.getInstance(document.getElementById("subscribeModal"));
+                    subscribeModal.hide();
+                }, 3000);
+            }
+        });
+    </script>
 
 
-
-    <!-- Bootstrap js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Initialize Tooltips with JavaScript -->
+    <script>
+        // Initialize all tooltips on the page
+        document.addEventListener('DOMContentLoaded', function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
 
 
 </body>
