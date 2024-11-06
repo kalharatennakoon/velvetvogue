@@ -178,12 +178,20 @@
                         <p><a href="./pages/contact.php" class="text-white">Contact Us</a></p>
                     </div>
 
-                    <!-- Contact Info -->
+                   <!-- Contact Info -->
                     <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                         <h6 class="text-uppercase fw-bold">Contact</h6>
                         <p><i class="fa-solid fa-location-dot me-2"></i> Colombo, Western 10012, SL</p>
-                        <p><i class="fa-solid fa-envelope me-2"></i> info@velvetvogue.com</p>
-                        <p><i class="fa-solid fa-phone me-2"></i> +94 (011) 123 4567</p>
+                        <p>
+                            <a href="mailto:info@velvetvogue.com" class="text-white">
+                                <i class="fa-solid fa-envelope me-2"></i> info@velvetvogue.com
+                            </a>
+                        </p>
+                        <p>
+                            <a href="tel:+94111234567" class="text-white">
+                                <i class="fa-solid fa-phone me-2"></i> +94 (011) 123 4567
+                            </a>
+                        </p>
                         <!-- Social Media Icons -->
                         <div class="mt-2">
                             <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
