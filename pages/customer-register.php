@@ -65,14 +65,18 @@
 
                             // Execute the query and check for success
                             if ($stmt->execute()) {
-                                // After success, add a message and delay redirect
-                                echo "<div id='successMessage' class='alert alert-success text-center' role='alert'>Account successfully created! Redirecting to Login</div>";
+                                // Success message - directly insert into the HTML
+                                echo "<div id='successMessage' class='alert alert-success text-center' role='alert'>
+                                    Account successfully created! Redirecting to Login...
+                                </div>";
+
+                                // JavaScript for redirect after 2 seconds
                                 echo "<script>
-                                        setTimeout(function() {
-                                            const BASE_URL = '" . BASE_URL . "';
-                                            window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
-                                        }, 5000);  // Delay redirect by 3 seconds to show success message
-                                    </script>";
+                                    setTimeout(function() {
+                                        const BASE_URL = '" . BASE_URL . "';
+                                        window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
+                                    }, 2000);  // Delay redirect by 2 seconds to show success message
+                                </script>";
 
                             } else {
                                 // Log error in the console if query fails
@@ -125,8 +129,9 @@
 
                                     <p class="text-start h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Create Your Account</p>
 
-                                    <!-- Success and Error Messages -->
-                                    <div id="successMessage" class="alert alert-success d-none text-center" role="alert"></div>
+                                    <!-- Error Message - Initially hidden with 'd-none' -->
+                                    <!-- Success Message - No d-none class here initially -->
+                                    <div id="successMessage" class="alert alert-success text-center" role="alert" style="display: none;"></div>
                                     <div id="errorMessage" class="alert alert-danger d-none text-center" role="alert"></div>
 
                                     <form id="registration-form" method="POST">
@@ -221,15 +226,14 @@
                 // Manually submit the form if valid - TEST
                 document.getElementById("registration-form").submit();  // Submit the form
 
+                // TEST
+                console.log("5 sec from JS");
+
                 // Redirect after a short delay (2 seconds)
                 setTimeout(function() {
                     const BASE_URL = "<?php echo BASE_URL; ?>";  // Pass BASE_URL from PHP to JS
                     window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
-                }, 5000); // 3000ms = 3 seconds
-
-                
-                // TEST
-                console.log("5 sec from JS");
+                }, 2000); // 3000ms = 3 seconds
 
             }
         }
