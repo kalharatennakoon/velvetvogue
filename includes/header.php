@@ -55,7 +55,7 @@
 </div>
 
 <!-- Bootstrap JavaScript (with Popper.js included in Bootstrap Bundle) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenUntSCczcKkTxg5gA9R3v4sDFJ8y5zF8EK6aX7Tx1ESXh7oyNcsz8JW4t1OayS" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Tooltip Initialization Script -->
 <script>
