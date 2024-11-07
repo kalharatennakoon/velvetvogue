@@ -10,9 +10,9 @@
         include_once('../includes/head-links.php'); 
     ?>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />
@@ -118,9 +118,6 @@
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Validation JS -->
     <script>
