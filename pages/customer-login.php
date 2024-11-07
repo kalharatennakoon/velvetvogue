@@ -4,21 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-    <?php 
-        include_once('../config/config.php'); 
+    <?php
+        include_once('../config/config.php');
         $page_title = 'Login';
-        include_once('../includes/head-links.php'); 
+        include_once('../includes/head-links.php');
+
+        // Start the session
+        session_start();
+
+        // Initialize variables for error messages
+        $emailError = $passwordError = $loginError = '';
+
+        // Handle login form submission
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+
+            // Validate email and password
+            if (empty($email)) {
+                $emailError = 'Email is required';
+            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $emailError = 'Invalid email format';
+            }
+
+            if (empty($password)) {
+                $passwordError = 'Password is required';
+            }
+
+            // Check credentials if no errors
+            if (empty($emailError) && empty($passwordError)) {
+                // Check the database for matching email
+                try {
+                    $query = "SELECT * FROM customers WHERE email = :email LIMIT 1";
+                    $stmt = $pdo->prepare($query);
+                    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                    $stmt->execute();
+
+                    // Check if user exists
+                    if ($stmt->rowCount() > 0) {
+                        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                        // Verify the password against the hash stored in the database
+                        if (password_verify($password, $user['password'])) {
+                            // Password is correct, set session and redirect
+                            $_SESSION['user_id'] = $user['customer_id'];
+                            $_SESSION['user_email'] = $user['email'];
+
+                            // Redirect to homepage after successful login
+                            header("Location: " . BASE_URL . "/index.php");
+                            exit; // Stop the script after redirect
+                        } else {
+                            $loginError = 'Incorrect email or password. Please try again.';
+                        }
+                    } else {
+                        $loginError = 'No user found with that email address. Please try again.';
+                    }
+                } catch (PDOException $e) {
+                    $loginError = 'Database error: ' . $e->getMessage();
+                }
+            }
+        }
     ?>
 
     <!-- CSS -->
     <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />
-
 </head>
 <body>
 
     <!-- Header -->
-        <?php include '../includes/header.php'; ?>
+    <?php include '../includes/header.php'; ?>
 
     <section class="vh-100" style="background-color: #eee;">
         <div class="container h-100">
@@ -43,33 +97,39 @@
                                         Login successful! Redirecting...
                                     </div>
 
-                                    <form class="mx-1 mx-md-4" action="<?php echo BASE_URL; ?>/index.html" method="POST" id="login-form">
+                                    <!-- Login Form -->
+                                    <form class="mx-1 mx-md-4" action="customer-login.php" method="POST" id="login-form">
                                         <div class="d-flex flex-row align-items-center mb-4">
                                             <i class="fa-solid fa-user fa-lg me-3"></i>
-                                            <input type="text" id="email" class="form-control" placeholder="Email" />
-                                            <small><span class="error" id="emailError"></span><br></small>
-                                            <!-- <div class="form-outline flex-fill mb-0">
-                                                <input type="text" id="email" class="form-control" placeholder="Email" />
-                                                <small><span class="error" id="emailError"></span><br></small>
-                                            </div> -->
+                                            <input type="text" id="email" name="email" class="form-control" placeholder="Email" value="<?php echo htmlspecialchars($email); ?>" />
+                                            <small><span id="emailError" class="error"><?php echo $emailError; ?></span><br></small>
                                         </div>
                                         <div class="d-flex flex-row align-items-center mb-0">
                                             <i class="fa-solid fa-lock fa-lg me-3"></i>
-                                            <input type="password" id="password" class="form-control" placeholder="Password" />
-                                            <small><span class="error" id="passwordError"></span><br></small>
+                                            <input type="password" id="password" name="password" class="form-control" placeholder="Password" />
+                                            <small><span id="passwordError" class="error"><?php echo $passwordError; ?></span><br></small>
                                         </div>
+
+                                        <!-- Login Error -->
+                                        <?php if ($loginError): ?>
+                                            <div class="alert alert-danger mt-3 text-center" role="alert">
+                                                <?php echo $loginError; ?>
+                                            </div>
+                                        <?php endif; ?>
+
                                         <div class="d-flex flex-row justify-content-end mb-4">
                                             <small>
                                                 <a href="#" class="text-muted text-decoration-none">
-                                                    <i class="fa fa-question-circle me-2"></i>Forgot assword?
+                                                    <i class="fa fa-question-circle me-2"></i>Forgot password?
                                                 </a>
                                             </small>
                                         </div>
-                                        
+
                                         <div class="d-grid gap-2 mb-4">
-                                            <button type="button" class="btn btn-dark btn-lg" id="loginButton">Login</button>
+                                            <button type="submit" class="btn btn-dark btn-lg" id="loginButton">Login</button>
                                         </div>
                                     </form>
+
                                     <div class="d-flex justify-content-center mx-4 mb-1">
                                         <p class="text-muted">Don't have an account? <a href="<?php echo BASE_URL; ?>/pages/customer-register.php" class="text-decoration-none">Sign up</a></p>
                                     </div>
@@ -95,54 +155,62 @@
     
 
     <!-- Footer -->
-        <?php include '../includes/footer.php'; ?>
+    <?php include '../includes/footer.php'; ?>
 
     <!-- Bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <!-- Validation -->
     <script>
-        async function validateLoginForm() {
-            const isValid = validateFields(); // Check if fields are valid
+        document.addEventListener('DOMContentLoaded', function () {
+            // Validation function to check if the fields are valid
+            async function validateLoginForm(event) {
+                event.preventDefault();  // Prevent form submission (page reload)
 
-            if (isValid) {
-                // Show success message
-                const successMessage = document.getElementById("successMessage");
-                successMessage.classList.remove("d-none"); // Show the success message
+                const isValid = validateFields(); // Check if fields are valid
 
-                // Redirect after 2 seconds
-                setTimeout(() => {
-                    window.location.href = "../index.php"; // Change this to your actual dashboard page
-                }, 2000);
+                if (isValid) {
+                    // Show success message
+                    const successMessage = document.getElementById("successMessage");
+                    successMessage.classList.remove("d-none"); // Show the success message
+
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = "<?php echo BASE_URL; ?>/index.php"; // Redirect to homepage or dashboard
+                    }, 2000);
+                }
             }
-        }
 
-        function validateFields() {
-            const email = document.getElementById("email").value.trim();
-            const password = document.getElementById("password").value;
+            // Field validation function to check email and password format
+            function validateFields() {
+                const email = document.getElementById("email").value.trim();
+                const password = document.getElementById("password").value;
 
-            // Validation pattern
-            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                // Email validation pattern
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            // Clear previous errors
-            document.getElementById("emailError").textContent = email 
-                ? (emailPattern.test(email) ? "" : "Invalid email format")
-                : "Required";
-            document.getElementById("passwordError").textContent = password ? "" : "Required";
+                // Clear previous error messages
+                document.getElementById("emailError").textContent = email 
+                    ? (emailPattern.test(email) ? "" : "Invalid email format")
+                    : "Required";
+                document.getElementById("passwordError").textContent = password ? "" : "Required";
 
-            // Check if all fields are valid
-            return emailPattern.test(email) && password;
-        }
+                // Return true if both fields are valid
+                return emailPattern.test(email) && password;
+            }
 
-        // Add input event listeners for dynamic validation
-        document.getElementById("email").addEventListener("input", validateFields);
-        document.getElementById("password").addEventListener("input", validateFields);
+            // Add input event listeners for dynamic validation
+            document.getElementById("email").addEventListener("input", validateFields);
+            document.getElementById("password").addEventListener("input", validateFields);
 
-        // Login button click event
-        document.getElementById("loginButton").addEventListener("click", validateLoginForm);
+            // Attach form submit event to validate and prevent default form submission
+            const form = document.getElementById("login-form");
+            if (form) {
+                form.addEventListener("submit", validateLoginForm);
+            } else {
+                console.error("Login form not found!");
+            }
+        });
     </script>
-
-
-
 </body>
 </html>
