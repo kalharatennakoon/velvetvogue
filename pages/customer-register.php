@@ -85,7 +85,7 @@
                                     setTimeout(function() {
                                         const BASE_URL = '" . BASE_URL . "';
                                         window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
-                                    }, 5000);  // Delay redirect by 2 seconds to show success message
+                                    }, 2000);  // Delay redirect by 2 seconds to show success message
                                 </script>";
 
                             } else {
@@ -240,7 +240,7 @@
                 setTimeout(function() {
                     const BASE_URL = "<?php echo BASE_URL; ?>";  // Pass BASE_URL from PHP to JS
                     window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
-                }, 5000); // 3000ms = 3 seconds
+                }, 2000); // 2000ms = 2 seconds
 
             }
         }
