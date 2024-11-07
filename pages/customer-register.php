@@ -22,7 +22,7 @@
         // Check if the form is submitted
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Log POST data for debugging
-            echo "<script>console.log('POST Data: ', " . json_encode($_POST) . ");</script>";
+            // echo "<script>console.log('POST Data: ', " . json_encode($_POST) . ");</script>";
 
             // Check if form inputs are set and not empty
             if (isset($_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['password'])) {
@@ -53,7 +53,7 @@
                         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
                         // Log password hash for debugging
-                        echo "<script>console.log('Password Hash: ', '" . $passwordHash . "');</script>";
+                        // echo "<script>console.log('Password Hash: ', '" . $passwordHash . "');</script>";
 
                         // Prepare SQL to insert data into the database
                         $sql = "INSERT INTO customers (first_name, last_name, email, password, status, newsletter_subscription) 
@@ -62,6 +62,16 @@
                         if ($stmt = $conn->prepare($sql)) {
                             // Bind parameters
                             $stmt->bind_param("sssssi", $firstName, $lastName, $email, $passwordHash, $status, $subscribeNewsletter);
+
+                            // TEST: Log the input values to the console
+                            echo "<script>
+                                console.log('First Name: " . $firstName . "');
+                                console.log('Last Name: " . $lastName . "');
+                                console.log('Email: " . $email . "');
+                                console.log('Password Hash: " . $passwordHash . "');
+                                console.log('Status: " . $status . "');
+                                console.log('Newsletter Subscription: " . $subscribeNewsletter . "');
+                            </script>";
 
                             // Execute the query and check for success
                             if ($stmt->execute()) {
@@ -75,7 +85,7 @@
                                     setTimeout(function() {
                                         const BASE_URL = '" . BASE_URL . "';
                                         window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
-                                    }, 2000);  // Delay redirect by 2 seconds to show success message
+                                    }, 5000);  // Delay redirect by 2 seconds to show success message
                                 </script>";
 
                             } else {
@@ -226,14 +236,11 @@
                 // Manually submit the form if valid - TEST
                 document.getElementById("registration-form").submit();  // Submit the form
 
-                // TEST
-                console.log("5 sec from JS");
-
                 // Redirect after a short delay (2 seconds)
                 setTimeout(function() {
                     const BASE_URL = "<?php echo BASE_URL; ?>";  // Pass BASE_URL from PHP to JS
                     window.location.href = BASE_URL + '/pages/customer-login.php'; // Redirect using BASE_URL
-                }, 2000); // 3000ms = 3 seconds
+                }, 5000); // 3000ms = 3 seconds
 
             }
         }
