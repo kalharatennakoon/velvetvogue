@@ -34,34 +34,35 @@
             // Check credentials if no errors
             if (empty($emailError) && empty($passwordError)) {
                 // Check the database for matching email
-                try {
-                    $query = "SELECT * FROM customers WHERE email = :email LIMIT 1";
-                    $stmt = $pdo->prepare($query);
-                    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                    $stmt->execute();
+                $query = "SELECT * FROM customers WHERE email = ? LIMIT 1";
+                $stmt = $conn->prepare($query);
+                $stmt->bind_param("s", $email);
+                $stmt->execute();
+                $result = $stmt->get_result();
 
-                    // Check if user exists
-                    if ($stmt->rowCount() > 0) {
-                        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                // Check if user exists
+                if ($result->num_rows > 0) {
+                    $user = $result->fetch_assoc();
 
-                        // Verify the password against the hash stored in the database
-                        if (password_verify($password, $user['password'])) {
-                            // Password is correct, set session and redirect
-                            $_SESSION['user_id'] = $user['customer_id'];
-                            $_SESSION['user_email'] = $user['email'];
+                    // Verify the password against the hash stored in the database
+                    if (password_verify($password, $user['password'])) {
+                        // Password is correct, set session and redirect
+                        $_SESSION['user_id'] = $user['customer_id'];
+                        $_SESSION['user_email'] = $user['email'];
+                        $_SESSION['logged_in'] = true;
+                        
+                        echo "<script>console.log('Session started for user ID: " . $user['customer_id'] . "');</script>";
 
-                            // Redirect to homepage after successful login
-                            header("Location: " . BASE_URL . "/index.php");
-                            exit; // Stop the script after redirect
-                        } else {
-                            $loginError = 'Incorrect email or password. Please try again.';
-                        }
+                        // Redirect to homepage after successful login
+                        header("Location: " . BASE_URL . "/index.php");
+                        exit; // Stop the script after redirect
                     } else {
-                        $loginError = 'No user found with that email address. Please try again.';
+                        $loginError = 'Incorrect email or password. Please try again.';
                     }
-                } catch (PDOException $e) {
-                    $loginError = 'Database error: ' . $e->getMessage();
+                } else {
+                    $loginError = 'No user found with that email address. Please try again.';
                 }
+                $stmt->close();
             }
         }
     ?>
@@ -152,7 +153,6 @@
             </div>
         </div>
     </section>
-    
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
@@ -160,55 +160,16 @@
     <!-- Bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <!-- Validation -->
+    <!-- Session Timeout Script -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Validation function to check if the fields are valid
-            async function validateLoginForm(event) {
-                event.preventDefault();  // Prevent form submission (page reload)
-
-                const isValid = validateFields(); // Check if fields are valid
-
-                if (isValid) {
-                    // Show success message
-                    const successMessage = document.getElementById("successMessage");
-                    successMessage.classList.remove("d-none"); // Show the success message
-
-                    // Redirect after 2 seconds
-                    setTimeout(() => {
-                        window.location.href = "<?php echo BASE_URL; ?>/index.php"; // Redirect to homepage or dashboard
-                    }, 2000);
-                }
-            }
-
-            // Field validation function to check email and password format
-            function validateFields() {
-                const email = document.getElementById("email").value.trim();
-                const password = document.getElementById("password").value;
-
-                // Email validation pattern
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                // Clear previous error messages
-                document.getElementById("emailError").textContent = email 
-                    ? (emailPattern.test(email) ? "" : "Invalid email format")
-                    : "Required";
-                document.getElementById("passwordError").textContent = password ? "" : "Required";
-
-                // Return true if both fields are valid
-                return emailPattern.test(email) && password;
-            }
-
-            // Add input event listeners for dynamic validation
-            document.getElementById("email").addEventListener("input", validateFields);
-            document.getElementById("password").addEventListener("input", validateFields);
-
-            // Attach form submit event to validate and prevent default form submission
-            const form = document.getElementById("login-form");
-            if (form) {
-                form.addEventListener("submit", validateLoginForm);
-            } else {
-                console.error("Login form not found!");
+            // 5-second logout timer after successful login
+            if (<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'true' : 'false'; ?>) {
+                setTimeout(() => {
+                    <?php session_unset(); session_destroy(); ?>
+                    console.log('User logged out. Session has ended.');
+                    window.location.href = "<?php echo BASE_URL; ?>/pages/customer-login.php";
+                }, 5000);
             }
         });
     </script>
