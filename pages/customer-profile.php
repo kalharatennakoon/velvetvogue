@@ -1,260 +1,199 @@
 <?php
-    include_once('../config/config.php');
-    session_start();
+// Include database connection and other necessary files
+include_once('../config/config.php');
 
-    // Enable error reporting for debugging
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
+// Start session to check user login status
+session_start();
+if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
+    // Redirect to login if user is not logged in
+    header('Location: ' . BASE_URL . '/pages/customer-login.php');
+    exit;
+}
 
-    // Check if user is logged in
-    if (!isset($_SESSION['user_id'])) {
-        echo json_encode(['status' => 'error', 'message' => 'User not logged in.']);
-        exit;
-    }
+// Get the logged-in user's ID
+$user_id = $_SESSION['user_id'];
 
-    $user_id = $_SESSION['user_id'];
+// Fetch the current user details from the database
+$query = "SELECT * FROM customers WHERE customer_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$user = $result->fetch_assoc();
+$stmt->close();
 
-    // Fetch existing user data
-    $query = "SELECT * FROM customers WHERE customer_id = ?";
-    $stmt = $conn->prepare($query);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $customer = $result->fetch_assoc();
-    $stmt->close();
+// Initialize error and success message variables
+$error = '';
+$updateSuccess = '';
+$updateError = '';
 
-    // Initialize success and error messages
-    $success = $error = '';
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $first_name = trim($_POST['first_name']);
+    $last_name = trim($_POST['last_name']);
+    $email = trim($_POST['email']);
+    $phone_number = trim($_POST['phone_number']);
+    $address_line_1 = trim($_POST['address_line_1']);
+    $address_line_2 = trim($_POST['address_line_2']);
+    $city = trim($_POST['city']);
+    $province = trim($_POST['province']);
+    $zip_code = trim($_POST['zip_code']);
 
-    // Check if the form is submitted
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        // Handle form data
-        $first_name = $_POST['first_name'];
-        $last_name = $_POST['last_name'];
-        $email = $_POST['email'];
-        $phone_number = $_POST['phone_number'];
-        $address_line_1 = $_POST['address_line_1'];
-        $address_line_2 = $_POST['address_line_2'];
-        $city = $_POST['city'];
-        $province = $_POST['province'];
-        $zip_code = $_POST['zip_code'];
-        $newsletter_subscription = isset($_POST['newsletter']) ? 1 : 0;
+    // Handle image upload if a new image is selected
+    $image_uploaded = false;
+    if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
+        // Debug: Print file details to the console
+        echo "<script>console.log('File details: ', " . json_encode($_FILES['profile_image']) . ");</script>";
 
-        // Profile picture upload handling
-        $customer_image_path = $customer['customer_image']; // Keep existing image if no new image is uploaded
-        if (!empty($_FILES['profile_picture']['name'])) {
-            $target_dir = "../assets/images/customer-images/";
-            $image_file = $target_dir . basename($_FILES['profile_picture']['name']);
-            $image_file_type = strtolower(pathinfo($image_file, PATHINFO_EXTENSION));
-
-            // Check if the file is an image
-            $check = getimagesize($_FILES['profile_picture']['tmp_name']);
-            if ($check === false) {
-                $error = "File is not an image.";
-                error_log("File is not an image: " . $_FILES['profile_picture']['name']);
-            }
-
-            // Check file size (e.g., 5MB limit)
-            if ($_FILES["profile_picture"]["size"] > 5000000) {
-                $error = "Sorry, your file is too large.";
-                error_log("File is too large: " . $_FILES['profile_picture']['size']);
-            }
-
-            // Allow certain file formats
-            if ($image_file_type != "jpg" && $image_file_type != "png" && $image_file_type != "jpeg" && $image_file_type != "gif") {
-                $error = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-                error_log("Invalid file format: " . $_FILES['profile_picture']['name']);
-            }
-
-            if ($error == '') {
-                // Try to upload file
-                if (move_uploaded_file($_FILES['profile_picture']['tmp_name'], $image_file)) {
-                    $customer_image_path = "assets/images/customer-images/" . basename($_FILES['profile_picture']['name']);
-                } else {
-                    $error = "Sorry, there was an error uploading your file.";
-                    error_log("Error uploading file: " . $_FILES['profile_picture']['error']);
-                }
-            }
+        // Validate image type (allow jpg, png, gif)
+        $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!in_array($_FILES['profile_image']['type'], $allowed_types)) {
+            echo "<script>console.error('Invalid file type. Only JPG, PNG, GIF allowed.');</script>";
+            exit;
         }
 
-        // Update query
-        if ($error == '') {
-            $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, newsletter_subscription = ?, customer_image = ? WHERE customer_id = ?";
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("sssssssssssi", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $newsletter_subscription, $customer_image_path, $user_id);
-
-            if ($stmt->execute()) {
-                // Return the updated data in JSON format
-                echo json_encode([
-                    'status' => 'success',
-                    'message' => 'Profile updated successfully.',
-                    'data' => [
-                        'first_name' => $first_name,
-                        'last_name' => $last_name,
-                        'email' => $email,
-                        'phone_number' => $phone_number,
-                        'address_line_1' => $address_line_1,
-                        'address_line_2' => $address_line_2,
-                        'city' => $city,
-                        'province' => $province,
-                        'zip_code' => $zip_code,
-                        'newsletter_subscription' => $newsletter_subscription,
-                        'customer_image' => $customer_image_path
-                    ]
-                ]);
-            } else {
-                // Log the error and return error message
-                error_log("Error executing query: " . $stmt->error);
-                echo json_encode(['status' => 'error', 'message' => 'Error updating profile.']);
-            }
-            $stmt->close();
+        // Define upload directory and ensure it's correct
+        $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/velvetvogue/assets/images/customer-images/";
+        $target_file = $target_dir . basename($_FILES['profile_image']['name']);
+        
+        // Generate a new filename to avoid overwriting
+        $new_file_name = uniqid('profile_', true) . '.' . strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        $target_file = $target_dir . $new_file_name;
+        
+        // Move uploaded file to the directory
+        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
+            echo "<script>console.log('Image uploaded successfully to: " . $target_file . "');</script>";
+            $image_uploaded = true;
         } else {
-            // Return the error message
-            echo json_encode(['status' => 'error', 'message' => $error]);
+            echo "<script>console.error('Image upload failed. Ensure permissions are set for " . $target_dir . ".');</script>";
+            $error = 'Image upload failed. Please try again later.';
         }
-
-        exit;
     }
+
+    // If no image was uploaded, use the current one
+    $profile_image = $image_uploaded ? $new_file_name : $user['customer_image'];
+
+    // Update user details in the database
+    if (empty($error)) {
+        $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, customer_image = ? WHERE customer_id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ssssssssssi", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $profile_image, $user_id);
+        $stmt->execute();
+        $stmt->close();
+
+        // If successful, update the session with new data
+        $_SESSION['user_email'] = $email;
+
+        // Success message
+        $updateSuccess = 'Profile updated successfully.';
+
+        // Refresh the page to reflect changes
+        header("Location: " . BASE_URL . "/pages/customer-profile.php");
+        exit;
+    } else {
+        // Error message if something went wrong with image upload or any other issue
+        $updateError = $error;
+    }
+}
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <?php include_once('../includes/head-links.php'); ?>
+    <?php
+        $page_title = 'Customer Profile';
+        include_once('../includes/head-links.php');
+    ?>
     <script>
-        let isEditMode = false;
-
         function enableEdit() {
-            // Enable form fields for editing
-            document.querySelectorAll('.editable').forEach(input => input.disabled = false);
-            document.getElementById('submit-btn').disabled = false;
-            isEditMode = true;
-
-            // Enable "Subscribe to Newsletter" checkbox only after Edit button click
-            document.getElementById('newsletter').disabled = false;
+            let elements = document.querySelectorAll(".profile-input");
+            elements.forEach(el => el.disabled = false);
+            document.getElementById("updateButton").disabled = false;
+            document.getElementById("editButton").disabled = true;
         }
 
-        function updateProfile(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            const formData = new FormData(document.getElementById('profile-form'));
-
-            // Send form data via AJAX to update profile
-            fetch('customer-profile.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("Server responded:", data);
-
-                if (data.status === 'success') {
-                    // Display success message
-                    document.getElementById('response-message').innerHTML = `<div class="alert alert-success">${data.message}</div>`;
-
-                    // Update the displayed values with the new data from the response
-                    document.getElementById('first_name').value = data.data.first_name;
-                    document.getElementById('last_name').value = data.data.last_name;
-                    document.getElementById('email').value = data.data.email;
-                    document.getElementById('phone_number').value = data.data.phone_number;
-                    document.getElementById('address_line_1').value = data.data.address_line_1;
-                    document.getElementById('address_line_2').value = data.data.address_line_2;
-                    document.getElementById('city').value = data.data.city;
-                    document.getElementById('province').value = data.data.province;
-                    document.getElementById('zip_code').value = data.data.zip_code;
-                    document.getElementById('newsletter').checked = data.data.newsletter_subscription == 1;
-                    document.getElementById('profile_image').src = data.data.customer_image;
-                } else {
-                    // Display error message
-                    document.getElementById('response-message').innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
-                }
-            })
-            .catch(error => {
-                console.error("Error:", error);
-                document.getElementById('response-message').innerHTML = `<div class="alert alert-danger">An error occurred. Please try again.</div>`;
-            });
+        function checkChanges() {
+            document.getElementById("updateButton").disabled = false;
         }
     </script>
 </head>
 <body>
+    <!-- Header -->
     <?php include '../includes/header.php'; ?>
 
-    <div class="container">
-        <form action="customer-profile.php" method="post" enctype="multipart/form-data" id="profile-form">
-            <h2>Edit Profile</h2>
+    <section class="profile-section">
+        <div class="container">
+            <h2>Customer Profile</h2>
+            
+            <!-- Success/Error Messages -->
+            <?php if ($updateSuccess): ?>
+                <div class="alert alert-success"><?php echo $updateSuccess; ?></div>
+            <?php elseif ($updateError): ?>
+                <div class="alert alert-danger"><?php echo $updateError; ?></div>
+            <?php endif; ?>
 
-            <!-- Success/Error messages -->
-            <div id="response-message"></div>
+            <form action="customer-profile.php" method="POST" enctype="multipart/form-data">
+                <div class="profile-container">
+                    <div class="profile-image">
+                    <img src="<?php echo BASE_URL; ?>/assets/images/customer-images/<?php echo htmlspecialchars($user['customer_image'] ?: 'default.jpg'); ?>" alt="Profile Picture">
+                    <label>Profile Picture</label>
+                        <input type="file" name="profile_image" class="profile-input" disabled>
+                    </div>
+                    
+                    <!-- Profile Details -->
+                    <label>First Name</label>
+                    <input type="text" name="first_name" class="profile-input" value="<?php echo htmlspecialchars($user['first_name']); ?>" disabled required oninput="checkChanges()">
+                    
+                    <label>Last Name</label>
+                    <input type="text" name="last_name" class="profile-input" value="<?php echo htmlspecialchars($user['last_name']); ?>" disabled required oninput="checkChanges()">
+                    
+                    <label>Email</label>
+                    <input type="email" name="email" class="profile-input" value="<?php echo htmlspecialchars($user['email']); ?>" disabled required oninput="checkChanges()">
+                    
+                    <label>Phone Number</label>
+                    <input type="text" name="phone_number" class="profile-input" value="<?php echo htmlspecialchars($user['phone_number']); ?>" disabled oninput="checkChanges()">
+                    
+                    <label>Address Line 1</label>
+                    <input type="text" name="address_line_1" class="profile-input" value="<?php echo htmlspecialchars($user['address_line_1']); ?>" disabled oninput="checkChanges()">
+                    
+                    <label>Address Line 2</label>
+                    <input type="text" name="address_line_2" class="profile-input" value="<?php echo htmlspecialchars($user['address_line_2']); ?>" disabled oninput="checkChanges()">
+                    
+                    <label>City</label>
+                    <input type="text" name="city" class="profile-input" value="<?php echo htmlspecialchars($user['city']); ?>" disabled oninput="checkChanges()">
+                    
+                    <label>Province</label>
+                    <select name="province" class="profile-input" disabled oninput="checkChanges()">
+                        <option value="">Select Province</option>
+                        <?php
+                            $provinces = ['Central', 'Eastern', 'North Central', 'Northern', 'North Western', 'Sabaragamuwa', 'Southern', 'Uva', 'Western'];
+                            foreach ($provinces as $province) {
+                                echo "<option value=\"$province\"";
+                                echo $user['province'] == $province ? " selected" : "";
+                                echo ">$province</option>";
+                            }
+                        ?>
+                    </select>
+                    
+                    <label>Zip Code</label>
+                    <input type="text" name="zip_code" class="profile-input" value="<?php echo htmlspecialchars($user['zip_code']); ?>" disabled oninput="checkChanges()">
+                    
+                    <label>
+                        <input type="checkbox" name="newsletter_subscription" class="profile-input" <?php echo $user['newsletter_subscription'] ? "checked" : ""; ?> disabled>
+                        Subscribe to Newsletter
+                    </label>
+                    
+                    <!-- Buttons -->
+                    <button type="button" id="editButton" onclick="enableEdit()">Edit Profile</button>
+                    <button type="submit" id="updateButton" class="btn btn-dark" disabled>Update Profile</button>
+                    <a href="logout.php" class="btn btn-danger">Log Out</a>
+                </div>
+            </form>
+        </div>
+    </section>
 
-            <!-- Form Fields -->
-            <div class="mb-3">
-                <label for="first_name" class="form-label">First Name</label>
-                <input type="text" name="first_name" id="first_name" class="form-control editable" value="<?php echo htmlspecialchars($customer['first_name'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="last_name" class="form-label">Last Name</label>
-                <input type="text" name="last_name" id="last_name" class="form-control editable" value="<?php echo htmlspecialchars($customer['last_name'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" name="email" id="email" class="form-control editable" value="<?php echo htmlspecialchars($customer['email'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="phone_number" class="form-label">Phone Number</label>
-                <input type="text" name="phone_number" id="phone_number" class="form-control editable" value="<?php echo htmlspecialchars($customer['phone_number'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="address_line_1" class="form-label">Address Line 1</label>
-                <input type="text" name="address_line_1" id="address_line_1" class="form-control editable" value="<?php echo htmlspecialchars($customer['address_line_1'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="address_line_2" class="form-label">Address Line 2</label>
-                <input type="text" name="address_line_2" id="address_line_2" class="form-control editable" value="<?php echo htmlspecialchars($customer['address_line_2'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="city" class="form-label">City</label>
-                <input type="text" name="city" id="city" class="form-control editable" value="<?php echo htmlspecialchars($customer['city'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="province" class="form-label">Province</label>
-                <select name="province" id="province" class="form-control editable" disabled>
-                    <option value="">Select Province</option>
-                    <?php
-                    $provinces = ['Central', 'Eastern', 'North Central', 'Northern', 'North Western', 'Sabaragamuwa', 'Southern', 'Uva', 'Western'];
-                    foreach ($provinces as $province) {
-                        $selected = ($customer['province'] == $province) ? 'selected' : '';
-                        echo "<option value=\"$province\" $selected>$province</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="zip_code" class="form-label">Zip Code</label>
-                <input type="text" name="zip_code" id="zip_code" class="form-control editable" value="<?php echo htmlspecialchars($customer['zip_code'] ?? ''); ?>" disabled>
-            </div>
-            <div class="mb-3">
-                <label for="newsletter" class="form-label">Subscribe to Newsletter</label>
-                <input type="checkbox" name="newsletter" id="newsletter" class="form-check-input" <?php echo ($customer['newsletter_subscription'] == 1) ? 'checked' : ''; ?> disabled>
-            </div>
-            <div class="mb-3">
-                <label for="profile_picture" class="form-label">Profile Picture</label>
-                <input type="file" name="profile_picture" id="profile_picture" class="form-control">
-                <img id="profile_image" src="<?php echo $customer['customer_image']; ?>" alt="Profile Picture" width="100" height="100">
-            </div>
-
-            <!-- Submit Button -->
-            <button type="button" id="submit-btn" class="btn btn-primary" disabled onclick="updateProfile(event)">Update Profile</button>
-
-            <!-- Edit Button -->
-            <button type="button" class="btn btn-warning" onclick="enableEdit()">Edit</button>
-        </form>
-    </div>
-
-    <?php include_once('../includes/footer.php'); ?>
+    <!-- Footer -->
+    <?php include '../includes/footer.php'; ?>
 </body>
 </html>
