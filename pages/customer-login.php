@@ -54,7 +54,11 @@
                         echo "<script>console.log('Session started for user ID: " . $user['customer_id'] . "');</script>";
 
                         // Redirect to homepage after successful login
-                        header("Location: " . BASE_URL . "/index.php");
+                       // header("Location: " . BASE_URL . "/index.php");
+                       
+                        // TEST: redirect to customer profile page
+                        header("Location: " . BASE_URL . "/pages/customer-profile.php");
+
                         exit; // Stop the script after redirect
                     } else {
                         $loginError = 'Incorrect email or password. Please try again.';
@@ -160,18 +164,7 @@
     <!-- Bootstrap js -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-    <!-- Session Timeout Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // 5-second logout timer after successful login
-            if (<?php echo isset($_SESSION['logged_in']) && $_SESSION['logged_in'] ? 'true' : 'false'; ?>) {
-                setTimeout(() => {
-                    <?php session_unset(); session_destroy(); ?>
-                    console.log('User logged out. Session has ended.');
-                    window.location.href = "<?php echo BASE_URL; ?>/pages/customer-login.php";
-                }, 5000);
-            }
-        });
-    </script>
+    <!-- Session Timeout Script: user automatically signed out after 5 seconds -->
+    
 </body>
 </html>
