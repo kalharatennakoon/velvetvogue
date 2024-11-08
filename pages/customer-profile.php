@@ -118,6 +118,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             document.getElementById("updateButton").disabled = false;
         }
     </script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />
 </head>
 <body>
     <!-- Header -->
