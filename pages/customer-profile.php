@@ -54,12 +54,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Define upload directory and ensure it's correct
         $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/velvetvogue/assets/images/customer-images/";
-        $target_file = $target_dir . basename($_FILES['profile_image']['name']);
         
-        // Generate a new filename to avoid overwriting
-        $new_file_name = uniqid('profile_', true) . '.' . strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+        // Generate a new filename using the customer_id and email
+        $file_extension = strtolower(pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION));
+        $new_file_name = 'profile_pic_' . $user_id . '_' . strtolower(str_replace('@', '_', $user['email'])) . '.' . $file_extension;
         $target_file = $target_dir . $new_file_name;
-        
+
         // Move uploaded file to the directory
         if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
             echo "<script>console.log('Image uploaded successfully to: " . $target_file . "');</script>";
@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $error = 'Image upload failed. Please try again later.';
         }
     }
+
 
     // If no image was uploaded, use the current one
     $profile_image = $image_uploaded ? $new_file_name : $user['customer_image'];
