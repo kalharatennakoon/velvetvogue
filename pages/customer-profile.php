@@ -38,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $city = trim($_POST['city']);
     $province = trim($_POST['province']);
     $zip_code = trim($_POST['zip_code']);
+    $newsletter_subscription = isset($_POST['newsletter_subscription']) ? 1 : 0;
+
 
     // Handle image upload if a new image is selected
     $image_uploaded = false;
@@ -76,9 +78,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Update user details in the database
     if (empty($error)) {
-        $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, customer_image = ? WHERE customer_id = ?";
+        // $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, customer_image = ? WHERE customer_id = ?";
+        // $stmt = $conn->prepare($query);
+        // $stmt->bind_param("ssssssssssi", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $profile_image, $user_id);
+
+        $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, customer_image = ?, newsletter_subscription = ? WHERE customer_id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssssssssssi", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $profile_image, $user_id);
+        $stmt->bind_param("ssssssssssii", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $profile_image, $newsletter_subscription, $user_id);
+
+        
         $stmt->execute();
         $stmt->close();
 
@@ -119,6 +127,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </script>
 
+    <!-- CSS -->
+    
 
 </head>
 <body>
@@ -127,72 +137,109 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <section class="profile-section">
         <div class="container">
-            <h2>Customer Profile</h2>
-            
-            <!-- Success/Error Messages -->
-            <?php if ($updateSuccess): ?>
-                <div class="alert alert-success"><?php echo $updateSuccess; ?></div>
-            <?php elseif ($updateError): ?>
-                <div class="alert alert-danger"><?php echo $updateError; ?></div>
-            <?php endif; ?>
+            <!-- <h2>Customer Profile</h2> -->
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-lg-12 col-xl-11">
+                    <div class="card text-black" style="border-radius: 25px;">
+                        <div class="card-body p-md-5">
+                            <div class="row justify-content-center">
+                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                                    <p class="text-start h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">My Profile</p>
+                                    
+                                    <!-- Success/Error Messages -->
+                                    <?php if ($updateSuccess): ?>
+                                        <div class="alert alert-success"><?php echo $updateSuccess; ?></div>
+                                    <?php elseif ($updateError): ?>
+                                        <div class="alert alert-danger"><?php echo $updateError; ?></div>
+                                    <?php endif; ?>
 
-            <form action="customer-profile.php" method="POST" enctype="multipart/form-data">
-                <div class="profile-container">
-                    <div class="profile-image">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/customer-images/<?php echo htmlspecialchars($user['customer_image'] ?: 'default.jpg'); ?>" alt="Profile Picture">
-                    <label>Profile Picture</label>
-                        <input type="file" name="profile_image" class="profile-input" disabled>
+                                    <form action="customer-profile.php" method="POST" enctype="multipart/form-data">
+                                        <div class="profile-container" class="container mt-5">
+                                            <div class="mb-3 d-flex flex-column align-items-center">
+                                                <img src="<?php echo BASE_URL; ?>/assets/images/customer-images/<?php echo htmlspecialchars($user['customer_image'] ?: 'default.jpg'); ?>" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3" style="width: 150px; height: 150px;">
+
+                                                <div class="w-100">
+                                                    <label class="form-label mt-2">Profile Picture</label>
+                                                    <input type="file" name="profile_image" class="form-control profile-input" disabled>
+                                                </div>
+                                            </div>
+                                                
+                                            
+                                            <!-- Profile Details -->
+                                            <div class="mb-3">
+                                                <label class="form-label">First Name</label>
+                                                <input type="text" name="first_name" class="form-control profile-input" value="<?php echo htmlspecialchars($user['first_name']); ?>" disabled required oninput="checkChanges()">
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Last Name</label>
+                                                <input type="text" name="last_name" class="form-control profile-input" value="<?php echo htmlspecialchars($user['last_name']); ?>" disabled required oninput="checkChanges()">
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" name="email" class="form-control profile-input" value="<?php echo htmlspecialchars($user['email']); ?>" disabled required oninput="checkChanges()">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Phone Number</label>
+                                                <input type="text" name="phone_number" class="form-control profile-input" value="<?php echo htmlspecialchars($user['phone_number']); ?>" disabled oninput="checkChanges()">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Address Line 1</label>
+                                                <input type="text" name="address_line_1" class="form-control profile-input" value="<?php echo htmlspecialchars($user['address_line_1']); ?>" disabled oninput="checkChanges()">
+                                            </div>
+                                            
+                                            <div class="mb-3">
+                                                <label class="form-label">Address Line 2</label>
+                                                <input type="text" name="address_line_2" class="form-control profile-input" value="<?php echo htmlspecialchars($user['address_line_2']); ?>" disabled oninput="checkChanges()">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">City</label>
+                                                <input type="text" name="city" class="form-control profile-input" value="<?php echo htmlspecialchars($user['city']); ?>" disabled oninput="checkChanges()">
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Province</label>
+                                                <select name="province" class="form-select profile-input" disabled oninput="checkChanges()">
+                                                    <option value="">Select Province</option>
+                                                    <?php
+                                                        $provinces = ['Central', 'Eastern', 'North Central', 'Northern', 'North Western', 'Sabaragamuwa', 'Southern', 'Uva', 'Western'];
+                                                        foreach ($provinces as $province) {
+                                                            echo "<option value=\"$province\"";
+                                                            echo $user['province'] == $province ? " selected" : "";
+                                                            echo ">$province</option>";
+                                                        }
+                                                    ?>
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label class="form-label">Zip Code</label>
+                                                <input type="text" name="zip_code" class="form-control profile-input" value="<?php echo htmlspecialchars($user['zip_code']); ?>" disabled oninput="checkChanges()">
+                                            </div>
+                                            
+                                            <div class="mb-3 form-check">
+                                                <input type="checkbox" name="newsletter_subscription" class="form-check-input profile-input" <?php echo $user['newsletter_subscription'] ? "checked" : ""; ?> disabled>
+                                                <label class="form-check-label">Subscribe to Newsletter</label>
+                                            </div>
+
+                                            <!-- Buttons -->
+                                            <div class="d-grid gap-2 mb-4">
+                                                <button type="button" class="btn btn-dark btn-lg" id="editButton" onclick="enableEdit()">Edit Profile</button>
+                                                <button type="submit" class="btn btn-success btn-lg" id="updateButton" disabled>Update Profile</button>
+                                                <a href="logout.php" class="btn btn-danger btn-lg">Log Out</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <!-- Profile Details -->
-                    <label>First Name</label>
-                    <input type="text" name="first_name" class="profile-input" value="<?php echo htmlspecialchars($user['first_name']); ?>" disabled required oninput="checkChanges()">
-                    
-                    <label>Last Name</label>
-                    <input type="text" name="last_name" class="profile-input" value="<?php echo htmlspecialchars($user['last_name']); ?>" disabled required oninput="checkChanges()">
-                    
-                    <label>Email</label>
-                    <input type="email" name="email" class="profile-input" value="<?php echo htmlspecialchars($user['email']); ?>" disabled required oninput="checkChanges()">
-                    
-                    <label>Phone Number</label>
-                    <input type="text" name="phone_number" class="profile-input" value="<?php echo htmlspecialchars($user['phone_number']); ?>" disabled oninput="checkChanges()">
-                    
-                    <label>Address Line 1</label>
-                    <input type="text" name="address_line_1" class="profile-input" value="<?php echo htmlspecialchars($user['address_line_1']); ?>" disabled oninput="checkChanges()">
-                    
-                    <label>Address Line 2</label>
-                    <input type="text" name="address_line_2" class="profile-input" value="<?php echo htmlspecialchars($user['address_line_2']); ?>" disabled oninput="checkChanges()">
-                    
-                    <label>City</label>
-                    <input type="text" name="city" class="profile-input" value="<?php echo htmlspecialchars($user['city']); ?>" disabled oninput="checkChanges()">
-                    
-                    <label>Province</label>
-                    <select name="province" class="profile-input" disabled oninput="checkChanges()">
-                        <option value="">Select Province</option>
-                        <?php
-                            $provinces = ['Central', 'Eastern', 'North Central', 'Northern', 'North Western', 'Sabaragamuwa', 'Southern', 'Uva', 'Western'];
-                            foreach ($provinces as $province) {
-                                echo "<option value=\"$province\"";
-                                echo $user['province'] == $province ? " selected" : "";
-                                echo ">$province</option>";
-                            }
-                        ?>
-                    </select>
-                    
-                    <label>Zip Code</label>
-                    <input type="text" name="zip_code" class="profile-input" value="<?php echo htmlspecialchars($user['zip_code']); ?>" disabled oninput="checkChanges()">
-                    
-                    <label>
-                        <input type="checkbox" name="newsletter_subscription" class="profile-input" <?php echo $user['newsletter_subscription'] ? "checked" : ""; ?> disabled>
-                        Subscribe to Newsletter
-                    </label>
-                    
-                    <!-- Buttons -->
-                    <button type="button" id="editButton" onclick="enableEdit()">Edit Profile</button>
-                    <button type="submit" id="updateButton" class="btn btn-dark" disabled>Update Profile</button>
-                    <a href="logout.php" class="btn btn-danger">Log Out</a>
                 </div>
-            </form>
+            </div>    
         </div>
     </section>
 

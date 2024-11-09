@@ -118,7 +118,7 @@
     <!-- Header -->
     <?php include '../includes/header.php'; ?>
 
-    <section class="h-100 p-4" style="background-color: #eee;">
+    <section class="h-100 p-4">
         <div class="container h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-lg-12 col-xl-11">
