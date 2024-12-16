@@ -1,24 +1,38 @@
+<?php 
+    include_once('../../config/config.php'); 
+    $page_title = 'Customer Support';
+    include_once('../../includes/head-links.php');
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customer Support - VELVET VOGUE</title>
 
-    <?php 
-        include_once('../config/config.php'); 
-        $page_title = 'Customer Support';
-        include_once('../includes/head-links.php'); 
-    ?>
-
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/home-styles.css">
-
+    <!-- css -->
+    <style>
+        body {
+            background-color: #eee;
+        }
+        .top-banner-sale{
+            height: 40px;
+        }
+        .navbar-secondary {
+            border-bottom: 1px solid #ddd; /* Light gray border at the bottom */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+        .carousel {
+            max-width: 800px; 
+            margin: auto; 
+        }
+    </style>
 </head>
 <body>
 
     <!-- Header -->
-        <?php include '../includes/header.php'; ?>
+        <?php include '../../includes/header.php'; ?>
 
 
     <!-- Customer Support Section -->
@@ -86,7 +100,7 @@
 
 
     <!-- Footer -->
-        <?php include '../includes/footer.php'; ?>
+        <?php include '../../includes/footer.php'; ?>
 
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

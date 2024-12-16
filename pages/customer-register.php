@@ -4,7 +4,6 @@
 
     // Include config file for database connection
     include_once('../config/config.php'); 
-
     $page_title = 'Register';
     include_once('../includes/head-links.php');
 
@@ -107,19 +106,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <?php include_once('../includes/head-links.php'); ?>
 
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />
     
 </head>
 <body>
 
+    <!-- CSS -->
+    <style>
+        body {
+            background-color: #eee;
+        }
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+    </style>
+
     <!-- Header -->
     <?php include '../includes/header.php'; ?>
 
-    <section class="h-100 p-4">
-        <div class="container h-100">
+    <section class="min-vh-100 d-flex flex-column">
+        <div class="container flex-grow-1">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-lg-12 col-xl-11">
                     <div class="card text-black" style="border-radius: 25px;">

@@ -1,4 +1,6 @@
 <!-- Purpose: Footer for the website -->
+<html>
+<body>
 
 <footer class="text-white bg-dark text-center text-lg-start p-4">
     <section>
@@ -13,17 +15,17 @@
                 <!-- About Us Links -->
                 <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
                     <h6 class="text-uppercase fw-bold">about Us</h6>
-                    <p><a href="<?php echo BASE_URL; ?>/pages/privacy-policy.php" class="text-white">Privacy Policy</a></p>
-                    <p><a href="<?php echo BASE_URL; ?>/pages/terms-and-conditions.php" class="text-white">Terms and Conditions</a></p>
+                    <p><a href="<?php echo BASE_URL; ?>/pages/links/privacy-policy.php" class="text-white">Privacy Policy</a></p>
+                    <p><a href="<?php echo BASE_URL; ?>/pages/links/terms-and-conditions.php" class="text-white">Terms and Conditions</a></p>
                     <p><a href="#" class="text-white" data-bs-toggle="modal" data-bs-target="#subscribeModal">Subscribe to Newsletter</a></p>
                 </div>
 
                 <!-- Useful Links -->
                 <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
                     <h6 class="text-uppercase fw-bold">useful links</h6>
-                    <p><a href="<?php echo BASE_URL; ?>/pages/faq.php" class="text-white text-uppercase ">faq</a></p>
-                    <p><a href="<?php echo BASE_URL; ?>/pages/customer-support.php" class="text-white">Customer Support</a></p>
-                    <p><a href="<?php echo BASE_URL; ?>/pages/product-inquiry.php" class="text-white">Product Inquiry</a></p>
+                    <p><a href="<?php echo BASE_URL; ?>/pages/links/faq.php" class="text-white text-uppercase ">faq</a></p>
+                    <p><a href="<?php echo BASE_URL; ?>/pages/links/customer-support.php" class="text-white">Customer Support</a></p>
+                    <p><a href="<?php echo BASE_URL; ?>/pages/links/product-inquiry.php" class="text-white">Product Inquiry</a></p>
                 </div>
 
                 <!-- Contact Info -->
@@ -36,16 +38,16 @@
                         </a>
                     </p>
                     <p>
-                        <a href="tel:+94111234567" class="text-white">
+                        <a href="tel:+94111234567" class="text-white" style="text-decoration: none;">
                             <i class="fa-solid fa-phone me-2"></i> +94 (011) 123 4567
                         </a>
                     </p>
                     <!-- Social Media Icons -->
                     <div class="mt-2">
-                        <a href="#" class="text-white me-3"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white me-3"><i class="fab fa-tiktok"></i></a>
+                        <a href="https://www.facebook.com" class="text-white me-3" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://twitter.com" class="text-white me-3" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com" class="text-white me-3" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://tiktok.com" class="text-white me-3" target="_blank"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
             </div>
@@ -54,7 +56,7 @@
 
     <!-- Copyright -->
     <div class="text-center text-white mt-3 p-3 bg-dark">
-        <small>© 2024 <span class="text-uppercase">velvet vogue</span> All rights reserved. Powered by KT</small>
+        <small>© 2024 <span class="text-uppercase">velvet vogue</span> All rights reserved.</small>
     </div>
 
     <!-- Subscribe Modal -->

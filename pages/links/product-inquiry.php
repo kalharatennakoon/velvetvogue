@@ -1,24 +1,38 @@
+<?php 
+    include_once('../../config/config.php'); 
+    $page_title = 'Product Inquiry';
+    include_once('../../includes/head-links.php');
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Inquiry - VELVET VOGUE</title>
 
-    <?php 
-        include_once('../config/config.php'); 
-        $page_title = 'Product Inquiry';
-        include_once('../includes/head-links.php'); 
-    ?>
-
-    <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="./assets/css/home-styles.css">
-
+    <!-- css -->
+    <style>
+        body {
+            background-color: #eee;
+        }
+        .top-banner-sale{
+            height: 40px;
+        }
+        .navbar-secondary {
+            border-bottom: 1px solid #ddd; /* Light gray border at the bottom */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+        .carousel {
+            max-width: 800px; 
+            margin: auto; 
+        }
+    </style>
 </head>
 <body>
 
     <!-- Header -->
-        <?php include '../includes/header.php'; ?>
+        <?php include '../../includes/header.php'; ?>
 
     <!-- Main Content -->
     <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
@@ -54,7 +68,7 @@
     </div>
 
     <!-- Footer -->
-        <?php include '../includes/footer.php'; ?>
+        <?php include '../../includes/footer.php'; ?>
     
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

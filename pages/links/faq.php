@@ -1,17 +1,18 @@
+<?php 
+    include_once('../../config/config.php'); 
+    $page_title = 'FAQ';
+    include_once('../../includes/head-links.php');
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FAQ - VELVET VOGUE</title>
 
-    <?php 
-        include_once('../config/config.php'); 
-        $page_title = 'FAQ';
-        include_once('../includes/head-links.php'); 
-    ?>
-    
-    <!-- Custom CSS -->
+    <!-- CSS -->
     <style>
         .faq-section {
             padding: 50px;
@@ -31,7 +32,7 @@
 <body>
 
     <!-- Header -->
-        <?php include '../includes/header.php'; ?>
+        <?php include '../../includes/header.php'; ?>
 
     <!-- FAQ Section -->
     <section class="faq-section">
@@ -116,7 +117,7 @@
 
 
     <!-- Footer -->
-        <?php include '../includes/footer.php'; ?>
+        <?php include '../../includes/footer.php'; ?>
 
 
 

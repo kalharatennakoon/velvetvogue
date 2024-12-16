@@ -1,86 +1,97 @@
+<?php
+    include_once('../config/config.php');
+    $page_title = 'Login';
+    include_once('../includes/head-links.php');
+
+    // Start the session
+    session_start();
+
+    // Initialize variables for error messages
+    $emailError = $passwordError = $loginError = '';
+
+    // Handle login form submission
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
+
+        // Validate email and password
+        if (empty($email)) {
+            $emailError = 'Email is required';
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailError = 'Invalid email format';
+        }
+
+        if (empty($password)) {
+            $passwordError = 'Password is required';
+        }
+
+        // Check credentials if no errors
+        if (empty($emailError) && empty($passwordError)) {
+            // Check the database for matching email
+            $query = "SELECT * FROM customers WHERE email = ? LIMIT 1";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // Check if user exists
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+
+                // Verify the password against the hash stored in the database
+                if (password_verify($password, $user['password'])) {
+                    // Password is correct, set session and redirect
+                    $_SESSION['user_id'] = $user['customer_id'];
+                    $_SESSION['user_email'] = $user['email'];
+                    $_SESSION['logged_in'] = true;
+                    
+                    echo "<script>console.log('Session started for user ID: " . $user['customer_id'] . "');</script>";
+
+                    // Redirect to homepage after successful login
+                    // header("Location: " . BASE_URL . "/index.php");
+                    
+                    // TEST: redirect to customer profile page
+                    header("Location: " . BASE_URL . "/pages/customer-profile.php");
+
+                    exit; // Stop the script after redirect
+                } else {
+                    $loginError = 'Incorrect email or password. Please try again.';
+                }
+            } else {
+                $loginError = 'No user found with that email address. Please try again.';
+            }
+            $stmt->close();
+        }
+    }
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <?php
-        include_once('../config/config.php');
-        $page_title = 'Login';
-        include_once('../includes/head-links.php');
-
-        // Start the session
-        session_start();
-
-        // Initialize variables for error messages
-        $emailError = $passwordError = $loginError = '';
-
-        // Handle login form submission
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
-
-            // Validate email and password
-            if (empty($email)) {
-                $emailError = 'Email is required';
-            } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailError = 'Invalid email format';
-            }
-
-            if (empty($password)) {
-                $passwordError = 'Password is required';
-            }
-
-            // Check credentials if no errors
-            if (empty($emailError) && empty($passwordError)) {
-                // Check the database for matching email
-                $query = "SELECT * FROM customers WHERE email = ? LIMIT 1";
-                $stmt = $conn->prepare($query);
-                $stmt->bind_param("s", $email);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                // Check if user exists
-                if ($result->num_rows > 0) {
-                    $user = $result->fetch_assoc();
-
-                    // Verify the password against the hash stored in the database
-                    if (password_verify($password, $user['password'])) {
-                        // Password is correct, set session and redirect
-                        $_SESSION['user_id'] = $user['customer_id'];
-                        $_SESSION['user_email'] = $user['email'];
-                        $_SESSION['logged_in'] = true;
-                        
-                        echo "<script>console.log('Session started for user ID: " . $user['customer_id'] . "');</script>";
-
-                        // Redirect to homepage after successful login
-                       // header("Location: " . BASE_URL . "/index.php");
-                       
-                        // TEST: redirect to customer profile page
-                        header("Location: " . BASE_URL . "/pages/customer-profile.php");
-
-                        exit; // Stop the script after redirect
-                    } else {
-                        $loginError = 'Incorrect email or password. Please try again.';
-                    }
-                } else {
-                    $loginError = 'No user found with that email address. Please try again.';
-                }
-                $stmt->close();
-            }
-        }
-    ?>
-
     <!-- CSS -->
-    <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" />
+    <!-- <link rel="stylesheet" type="text/css" href="../assets/css/customer-styles.css" /> -->
 </head>
 <body>
+
+    <!-- CSS -->
+    <style>
+        body {
+            background-color: #eee;
+        }
+        .error {
+            color: red;
+            font-size: 0.9rem;
+        }
+    </style>
 
     <!-- Header -->
     <?php include '../includes/header.php'; ?>
 
-    <section class="vh-100">
-        <div class="container h-100">
+    <section class="min-vh-100 d-flex flex-column">
+        <div class="container flex-grow-1">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col-lg-12 col-xl-11">
                     <div class="card text-black" style="border-radius: 25px;">
@@ -156,7 +167,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section>                                    
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
