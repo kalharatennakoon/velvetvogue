@@ -32,7 +32,7 @@
 <body>
 
     <!-- Header -->
-        <?php include '../../includes/header.php'; ?>
+    <?php include '../../includes/header.php'; ?>
 
 
     <!-- Customer Support Section -->
