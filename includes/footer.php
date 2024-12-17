@@ -1,5 +1,16 @@
 <!-- Purpose: Footer for the website -->
+
 <html>
+<head>
+    <style>
+        footer{
+            font-size: small
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
 <body>
 
 <footer class="text-white bg-dark text-center text-lg-start p-4">
@@ -38,7 +49,7 @@
                         </a>
                     </p>
                     <p>
-                        <a href="tel:+94111234567" class="text-white" style="text-decoration: none;">
+                        <a href="tel:+94111234567" class="text-white">
                             <i class="fa-solid fa-phone me-2"></i> +94 (011) 123 4567
                         </a>
                     </p>

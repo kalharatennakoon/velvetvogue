@@ -4,7 +4,7 @@
 <!-- Set the page-specific title dynamically -->
 <title><?php echo (isset($page_title)) ? $page_title . ' - ' . $site_title : $site_title; ?></title>
 
-<!-- Add icon link -->
+<!-- Page Icon -->
 <link rel="icon" href="<?php echo BASE_URL; ?>/assets/images/logo.png" type="image/x-icon" />
 
 <!-- Bootstrap CSS -->

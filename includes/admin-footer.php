@@ -1,3 +1,14 @@
+<head>
+    <style>
+        footer{
+            font-size: small
+        }
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
 <footer class="text-white p-4 bg-dark mt-5">
     <div class="container">
         <div class="row">
