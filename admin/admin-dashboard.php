@@ -1,58 +1,59 @@
 <?php
-// Include required files
-include_once('../config/config.php');
-include_once('../includes/head-links.php');
+    // Include required files
+    include_once('../config/config.php');
+    $page_title = "Admin Dashboard";
+    include_once('../includes/head-links.php');
 
-// Function to handle insertions, deletions, and updates
-function handlePostRequest($conn) {
-    // Add product
-    if (isset($_POST['add_product'])) {
-        $name = mysqli_real_escape_string($conn, $_POST['name']);
-        $description = mysqli_real_escape_string($conn, $_POST['description']);
-        $price = $_POST['price'];
-        $stock = $_POST['stock'];
-        $brand = mysqli_real_escape_string($conn, $_POST['brand']);
-        $category = $_POST['category'];
-        $sub_category = mysqli_real_escape_string($conn, $_POST['sub_category']);
-        $created_at = date('Y-m-d H:i:s');
-        $updated_at = date('Y-m-d H:i:s');
-        $is_active = isset($_POST['is_active']) ? 1 : 0;
+    // Function to handle insertions, deletions, and updates
+    function handlePostRequest($conn) {
+        // Add product
+        if (isset($_POST['add_product'])) {
+            $name = mysqli_real_escape_string($conn, $_POST['name']);
+            $description = mysqli_real_escape_string($conn, $_POST['description']);
+            $price = $_POST['price'];
+            $stock = $_POST['stock'];
+            $brand = mysqli_real_escape_string($conn, $_POST['brand']);
+            $category = $_POST['category'];
+            $sub_category = mysqli_real_escape_string($conn, $_POST['sub_category']);
+            $created_at = date('Y-m-d H:i:s');
+            $updated_at = date('Y-m-d H:i:s');
+            $is_active = isset($_POST['is_active']) ? 1 : 0;
 
-        $query = "INSERT INTO products (name, description, price, stock, brand, category, sub_category, created_at, updated_at, is_active) 
-                  VALUES ('$name', '$description', '$price', '$stock', '$brand', '$category', '$sub_category', '$created_at', '$updated_at', '$is_active')";
-        mysqli_query($conn, $query);
+            $query = "INSERT INTO products (name, description, price, stock, brand, category, sub_category, created_at, updated_at, is_active) 
+                    VALUES ('$name', '$description', '$price', '$stock', '$brand', '$category', '$sub_category', '$created_at', '$updated_at', '$is_active')";
+            mysqli_query($conn, $query);
+        }
+
+        // Delete product (and related data)
+        if (isset($_POST['delete_product'])) {
+            $product_id = $_POST['product_id'];
+            mysqli_query($conn, "DELETE FROM product_images WHERE product_id = '$product_id'");
+            mysqli_query($conn, "DELETE FROM product_sizes WHERE product_id = '$product_id'");
+            mysqli_query($conn, "DELETE FROM product_colors WHERE product_id = '$product_id'");
+            mysqli_query($conn, "DELETE FROM product_materials WHERE product_id = '$product_id'");
+            mysqli_query($conn, "DELETE FROM products WHERE product_id = '$product_id'");
+        }
+
+        // Update product (dummy logic for now)
+        if (isset($_POST['update_product'])) {
+            $product_id = $_POST['product_id'];
+            $name = mysqli_real_escape_string($conn, $_POST['name']);
+            $description = mysqli_real_escape_string($conn, $_POST['description']);
+            $price = $_POST['price'];
+            $stock = $_POST['stock'];
+
+            $query = "UPDATE products 
+                    SET name = '$name', description = '$description', price = '$price', stock = '$stock', updated_at = NOW() 
+                    WHERE product_id = '$product_id'";
+            mysqli_query($conn, $query);
+        }
     }
 
-    // Delete product (and related data)
-    if (isset($_POST['delete_product'])) {
-        $product_id = $_POST['product_id'];
-        mysqli_query($conn, "DELETE FROM product_images WHERE product_id = '$product_id'");
-        mysqli_query($conn, "DELETE FROM product_sizes WHERE product_id = '$product_id'");
-        mysqli_query($conn, "DELETE FROM product_colors WHERE product_id = '$product_id'");
-        mysqli_query($conn, "DELETE FROM product_materials WHERE product_id = '$product_id'");
-        mysqli_query($conn, "DELETE FROM products WHERE product_id = '$product_id'");
-    }
+    // Handle POST requests
+    handlePostRequest($conn);
 
-    // Update product (dummy logic for now)
-    if (isset($_POST['update_product'])) {
-        $product_id = $_POST['product_id'];
-        $name = mysqli_real_escape_string($conn, $_POST['name']);
-        $description = mysqli_real_escape_string($conn, $_POST['description']);
-        $price = $_POST['price'];
-        $stock = $_POST['stock'];
-
-        $query = "UPDATE products 
-                  SET name = '$name', description = '$description', price = '$price', stock = '$stock', updated_at = NOW() 
-                  WHERE product_id = '$product_id'";
-        mysqli_query($conn, $query);
-    }
-}
-
-// Handle POST requests
-handlePostRequest($conn);
-
-// Fetch all products
-$products_result = mysqli_query($conn, "SELECT * FROM products");
+    // Fetch all products
+    $products_result = mysqli_query($conn, "SELECT * FROM products");
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +61,6 @@ $products_result = mysqli_query($conn, "SELECT * FROM products");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
