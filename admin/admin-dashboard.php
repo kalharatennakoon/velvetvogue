@@ -12,31 +12,6 @@ if ($product_id === 0) {
     $no_product_message = "Please enter a valid Product ID to view details.";
 }
 
-// Handle product deletion
-if (isset($_POST['delete'])) {
-    // Delete related data first (colors, sizes, materials, images)
-    $queries = [
-        "DELETE FROM product_colors WHERE product_id = $product_id",
-        "DELETE FROM product_sizes WHERE product_id = $product_id",
-        "DELETE FROM product_materials WHERE product_id = $product_id",
-        "DELETE FROM product_images WHERE product_id = $product_id"
-    ];
-
-    // Execute all delete queries
-    foreach ($queries as $query) {
-        mysqli_query($conn, $query);
-    }
-
-    // Now delete the product from the products table
-    $query_product = "DELETE FROM products WHERE product_id = $product_id";
-    if (mysqli_query($conn, $query_product)) {
-        $no_product_message = "Product with ID $product_id has been successfully deleted.";
-        $product = null; // Set product to null since it's deleted
-    } else {
-        $no_product_message = "Error deleting product with ID $product_id.";
-    }
-}
-
 // Fetch product data for the given product ID
 $query_product = "
     SELECT * 
@@ -81,145 +56,151 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?></title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJv3r1z04nqugAq0fGRyTgf5eP8pgo+v3DvqzPahh3ySo3uT4YzQhG3Iip0n" crossorigin="anonymous">
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            background-color: #f4f4f9;
-        }
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
 
-        form {
-            margin: 20px auto;
+        }
+        .header, .footer {
+            background-color: #343a40;
+            color: white;
+            padding: 10px 0;
             text-align: center;
         }
-
-        input[type="text"], input[type="submit"] {
-            padding: 10px;
-            font-size: 16px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ccc;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-
-        img {
-            width: 100px;
-            height: auto;
-        }
-
         .message {
             text-align: center;
             color: red;
             font-size: 18px;
-            margin: 20px;
+            margin-top: 20px;
         }
-
-        .delete-button {
-            background-color: red;
+        .product-details {
+            margin-top: 30px;
+        }
+        .btn-delete {
+            background-color: #dc3545;
             color: white;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
             border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+        img.product-image {
+            width: 120px;
+            height: auto;
+            margin: 5px;
         }
     </style>
-    <script>
-        function confirmDelete() {
-            return confirm("Are you sure you want to delete this product? This action cannot be undone.");
-        }
-    </script>
 </head>
 <body>
 
-<!-- Header -->
-<?php include '../includes/admin-header.php'; ?>
+ <!-- Header -->
+ <?php include '../includes/admin-header.php'; ?>
 
-<div style="text-align: center;">
-    <h1>Search Product Details</h1>
-</div>
+
 
 <!-- Search Form -->
-<form method="POST" action="admin-dashboard.php">
-    <label for="product-id">Enter Product ID:</label>
-    <input type="text" id="product-id" name="product-id" placeholder="e.g., 1" value="<?php echo htmlspecialchars($product_id); ?>">
-    <input type="submit" value="Search">
-</form>
+<div class="container text-center mb-4">
+    <h2>Search Product by ID</h2>
+    <form method="POST" action="admin-dashboard.php" class="d-flex justify-content-center">
+        <input type="text" id="product-id" name="product-id" placeholder="Enter Product ID" class="form-control w-25" value="<?php echo htmlspecialchars($product_id); ?>">
+        <button type="submit" class="btn btn-primary ms-2">Search</button>
+    </form>
+</div>
 
-<main>
+<main class="container">
     <!-- Display Message if no product is found -->
     <?php if (isset($no_product_message)): ?>
         <div class="message"><?php echo $no_product_message; ?></div>
-    <?php endif; ?>
-
-    <!-- Product Details Table -->
-    <?php if ($product): ?>
-        <section>
-            <h2>Product Details and Attributes</h2>
-            <table>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Price</th>
-                    <th>Stock</th>
-                    <th>Brand</th>
-                    <th>Category</th>
-                    <th>Sub Category</th>
-                    <th>Colors</th>
-                    <th>Sizes</th>
-                    <th>Materials</th>
-                    <th>Images</th>
-                    <th>Created At</th>
-                    <th>Updated At</th>
-                    <th>Active</th>
-                </tr>
-                <tr>
-                    <td><?php echo $product['product_id']; ?></td>
-                    <td><?php echo $product['name']; ?></td>
-                    <td><?php echo $product['description']; ?></td>
-                    <td><?php echo $product['price']; ?></td>
-                    <td><?php echo $product['stock']; ?></td>
-                    <td><?php echo $product['brand']; ?></td>
-                    <td><?php echo $product['category']; ?></td>
-                    <td><?php echo $product['sub_category']; ?></td>
-                    <td><?php echo implode('<br>', $colors); ?></td>
-                    <td><?php echo implode('<br>', $sizes); ?></td>
-                    <td><?php echo implode('<br>', $materials); ?></td>
-                    <td>
-                        <?php foreach ($image_urls as $image_url): ?>
-                            <img src="<?php echo BASE_URL . '/' . $image_url; ?>" alt="Product Image"><br>
-                        <?php endforeach; ?>
-                    </td>
-                    <td><?php echo $product['created_at']; ?></td>
-                    <td><?php echo $product['updated_at']; ?></td>
-                    <td><?php echo $product['is_active'] ? 'Yes' : 'No'; ?></td>
-                </tr>
+    <?php else: ?>
+        <!-- Product Table -->
+        <section class="product-details">
+            <h3>Product Details and Attributes</h3>
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Product ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Sub Category</th>
+                        <th>Colors</th>
+                        <th>Sizes</th>
+                        <th>Materials</th>
+                        <th>Images</th>
+                        <th>Created At</th>
+                        <th>Updated At</th>
+                        <th>Active</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?php echo $product['product_id']; ?></td>
+                        <td><?php echo $product['name']; ?></td>
+                        <td><?php echo $product['description']; ?></td>
+                        <td><?php echo $product['price']; ?></td>
+                        <td><?php echo $product['stock']; ?></td>
+                        <td><?php echo $product['brand']; ?></td>
+                        <td><?php echo $product['category']; ?></td>
+                        <td><?php echo $product['sub_category']; ?></td>
+                        <td><?php echo implode('<br>', $colors); ?></td>
+                        <td><?php echo implode('<br>', $sizes); ?></td>
+                        <td><?php echo implode('<br>', $materials); ?></td>
+                        <td>
+                            <?php foreach ($image_urls as $image_url): ?>
+                                <img src="<?php echo BASE_URL . '/' . $image_url; ?>" alt="Product Image" class="product-image">
+                            <?php endforeach; ?>
+                        </td>
+                        <td><?php echo $product['created_at']; ?></td>
+                        <td><?php echo $product['updated_at']; ?></td>
+                        <td><?php echo $product['is_active'] ? 'Yes' : 'No'; ?></td>
+                        <td>
+                            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
             </table>
-
-            <!-- Delete Button with Confirmation -->
-            <form method="POST" action="admin-dashboard.php" onsubmit="return confirmDelete()">
-                <input type="hidden" name="product-id" value="<?php echo $product['product_id']; ?>">
-                <input type="submit" name="delete" class="delete-button" value="Delete Product">
-            </form>
         </section>
     <?php endif; ?>
 </main>
 
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this product? This action cannot be undone.
+            </div>
+            <div class="modal-footer">
+                <form method="POST" action="admin-dashboard.php">
+                    <input type="hidden" name="product-id" value="<?php echo $product_id; ?>">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" name="delete-product" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Footer -->
 <?php include '../includes/admin-footer.php'; ?>
+    
 
+
+<!-- Bootstrap JS and Popper -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBf8k3fGHwB36A2dS8w4wFO9YSh76RerhbfQY5wI1k9FJ36a" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0kS0CoBv6ksoBzH13eWI5zcsZjl6K1rI5hD5O2kw6dxsrrmP" crossorigin="anonymous"></script>
 </body>
 </html>
