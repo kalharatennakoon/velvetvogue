@@ -48,6 +48,46 @@ $colors = $attributes['colors'] ? explode(',', $attributes['colors']) : [];
 $sizes = $attributes['sizes'] ? explode(',', $attributes['sizes']) : [];
 $materials = $attributes['materials'] ? explode(',', $attributes['materials']) : [];
 $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']) : [];
+
+// Handle the delete request
+if (isset($_POST['delete-product'])) {
+    $product_id_to_delete = intval($_POST['product-id']);
+    
+    // Start a transaction to ensure that all deletions are handled safely
+    mysqli_begin_transaction($conn);
+    try {
+        // Delete product images first (if any)
+        $delete_images_query = "DELETE FROM product_images WHERE product_id = $product_id_to_delete";
+        mysqli_query($conn, $delete_images_query);
+
+        // Delete product colors
+        $delete_colors_query = "DELETE FROM product_colors WHERE product_id = $product_id_to_delete";
+        mysqli_query($conn, $delete_colors_query);
+
+        // Delete product sizes
+        $delete_sizes_query = "DELETE FROM product_sizes WHERE product_id = $product_id_to_delete";
+        mysqli_query($conn, $delete_sizes_query);
+
+        // Delete product materials
+        $delete_materials_query = "DELETE FROM product_materials WHERE product_id = $product_id_to_delete";
+        mysqli_query($conn, $delete_materials_query);
+
+        // Finally, delete the product itself
+        $delete_product_query = "DELETE FROM products WHERE product_id = $product_id_to_delete";
+        mysqli_query($conn, $delete_product_query);
+
+        // Commit the transaction
+        mysqli_commit($conn);
+
+        // Redirect to the same page with a success message
+        header('Location: admin-dashboard.php?delete=success');
+        exit();
+    } catch (Exception $e) {
+        // Rollback the transaction in case of any error
+        mysqli_rollback($conn);
+        echo "Error: " . $e->getMessage();
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -60,7 +100,6 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f8f9fa;
-
         }
         .header, .footer {
             background-color: #343a40;
@@ -98,8 +137,6 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
 
  <!-- Header -->
  <?php include '../includes/admin-header.php'; ?>
-
-
 
 <!-- Search Form -->
 <div class="container text-center mb-4">
@@ -161,7 +198,8 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
                         <td><?php echo $product['updated_at']; ?></td>
                         <td><?php echo $product['is_active'] ? 'Yes' : 'No'; ?></td>
                         <td>
-                            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">Delete</button>
+                            <button class="btn-delete" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" 
+                                onclick="setDeleteProductId(<?php echo $product['product_id']; ?>)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -183,7 +221,7 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
             </div>
             <div class="modal-footer">
                 <form method="POST" action="admin-dashboard.php">
-                    <input type="hidden" name="product-id" value="<?php echo $product_id; ?>">
+                    <input type="hidden" name="product-id" id="deleteProductId" value="">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" name="delete-product" class="btn btn-danger">Delete</button>
                 </form>
@@ -194,11 +232,16 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
 
 <!-- Footer -->
 <?php include '../includes/admin-footer.php'; ?>
-    
-
 
 <!-- Bootstrap JS and Popper -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBf8k3fGHwB36A2dS8w4wFO9YSh76RerhbfQY5wI1k9FJ36a" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0kS0CoBv6ksoBzH13eWI5zcsZjl6K1rI5hD5O2kw6dxsrrmP" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script>
+    // Set the product id for deletion when the delete button is clicked
+    function setDeleteProductId(productId) {
+        document.getElementById('deleteProductId').value = productId;
+    }
+</script>
+
 </body>
 </html>
