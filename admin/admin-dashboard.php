@@ -136,6 +136,11 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
             border: none;
         }
     </style>
+    <script>
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this product? This action cannot be undone.");
+        }
+    </script>
 </head>
 <body>
 
@@ -204,8 +209,8 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
                 </tr>
             </table>
 
-            <!-- Delete Button -->
-            <form method="POST" action="admin-dashboard.php">
+            <!-- Delete Button with Confirmation -->
+            <form method="POST" action="admin-dashboard.php" onsubmit="return confirmDelete()">
                 <input type="hidden" name="product-id" value="<?php echo $product['product_id']; ?>">
                 <input type="submit" name="delete" class="delete-button" value="Delete Product">
             </form>
