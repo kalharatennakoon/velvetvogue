@@ -1,7 +1,7 @@
 <?php
 // Include required files
 include_once('../config/config.php');
-$page_title = "Product Details";
+$page_title = "Admin Dashboard";
 include_once('../includes/head-links.php');
 
 // Handle product ID from the form or URL
@@ -55,9 +55,7 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?></title>
-    <!-- Bootstrap 5.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJv3r1z04nqugAq0fGRyTgf5eP8pgo+v3DvqzPahh3ySo3uT4YzQhG3Iip0n" crossorigin="anonymous">
+    
     <style>
         body {
             font-family: 'Arial', sans-serif;
