@@ -12,6 +12,31 @@ if ($product_id === 0) {
     $no_product_message = "Please enter a valid Product ID to view details.";
 }
 
+// Handle product deletion
+if (isset($_POST['delete'])) {
+    // Delete related data first (colors, sizes, materials, images)
+    $queries = [
+        "DELETE FROM product_colors WHERE product_id = $product_id",
+        "DELETE FROM product_sizes WHERE product_id = $product_id",
+        "DELETE FROM product_materials WHERE product_id = $product_id",
+        "DELETE FROM product_images WHERE product_id = $product_id"
+    ];
+
+    // Execute all delete queries
+    foreach ($queries as $query) {
+        mysqli_query($conn, $query);
+    }
+
+    // Now delete the product from the products table
+    $query_product = "DELETE FROM products WHERE product_id = $product_id";
+    if (mysqli_query($conn, $query_product)) {
+        $no_product_message = "Product with ID $product_id has been successfully deleted.";
+        $product = null; // Set product to null since it's deleted
+    } else {
+        $no_product_message = "Error deleting product with ID $product_id.";
+    }
+}
+
 // Fetch product data for the given product ID
 $query_product = "
     SELECT * 
@@ -101,6 +126,15 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
             font-size: 18px;
             margin: 20px;
         }
+
+        .delete-button {
+            background-color: red;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -123,8 +157,10 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
     <!-- Display Message if no product is found -->
     <?php if (isset($no_product_message)): ?>
         <div class="message"><?php echo $no_product_message; ?></div>
-    <?php else: ?>
-        <!-- Combined Table -->
+    <?php endif; ?>
+
+    <!-- Product Details Table -->
+    <?php if ($product): ?>
         <section>
             <h2>Product Details and Attributes</h2>
             <table>
@@ -167,6 +203,12 @@ $image_urls = $attributes['image_urls'] ? explode(',', $attributes['image_urls']
                     <td><?php echo $product['is_active'] ? 'Yes' : 'No'; ?></td>
                 </tr>
             </table>
+
+            <!-- Delete Button -->
+            <form method="POST" action="admin-dashboard.php">
+                <input type="hidden" name="product-id" value="<?php echo $product['product_id']; ?>">
+                <input type="submit" name="delete" class="delete-button" value="Delete Product">
+            </form>
         </section>
     <?php endif; ?>
 </main>
