@@ -40,13 +40,13 @@
             </button>
             <div class="collapse navbar-collapse justify-content-center text-uppercase" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0">
-                    <li class="nav-item"><small><a class="nav-link" href="#">new arrivals</a></small></li>
+                    <li class="nav-item"><small><a class="nav-link" href="<?php echo BASE_URL; ?>/pages/new-arrivals.php">new arrivals</a></small></li>
                     <li class="nav-item"><small><a class="nav-link" href="#">best sellers</a></small></li>
-                    <li class="nav-item"><small><a class="nav-link" href="<?php echo BASE_URL; ?>/categories/women/women.php">women</a></small></li>
-                    <li class="nav-item"><small><a class="nav-link" href="<?php echo BASE_URL; ?>/categories/men/men.php">men</a></small></li>
-                    <li class="nav-item"><small><a class="nav-link" href="#">kids</a></small></li>
-                    <li class="nav-item"><small><a class="nav-link" href="#">gift cards</a></small></li>
-                    <li class="nav-item"><small><a class="nav-link text-danger" href="#">promotions</a></small></li>
+                    <li class="nav-item"><small><a class="nav-link" href="<?php echo BASE_URL; ?>/pages/women.php">women</a></small></li>
+                    <li class="nav-item"><small><a class="nav-link" href="<?php echo BASE_URL; ?>/pages/men.php">men</a></small></li>
+                    <li class="nav-item"><small><a class="nav-link" href="<?php echo BASE_URL; ?>/pages/kids.php">kids</a></small></li>
+                    <li class="nav-item"><small><a class="nav-link" href="">gift cards</a></small></li>
+                    <li class="nav-item"><small><a class="nav-link text-danger" href="<?php echo BASE_URL; ?>/pages/promotions.php">promotions</a></small></li>
                 </ul>
             </div>
         </div>
