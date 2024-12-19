@@ -72,7 +72,18 @@ include_once('../includes/head-links.php');
         <h2 class="mb-4 text-center">Search Results</h2>
         <?php
         if (isset($_GET['search']) && !empty($_GET['search'])) {
-            $searchQuery = htmlspecialchars(trim($_GET['search']));
+            $searchQuery = strtolower(htmlspecialchars(trim($_GET['search'])));
+
+            // Handle specific cases for "shirt" and "t-shirt/tshirt"
+            if ($searchQuery === 'shirt') {
+                $condition = "p.name LIKE '%shirt%' AND p.name NOT LIKE '%t-shirt%' AND p.name NOT LIKE '%tshirt%'";
+            } elseif (in_array($searchQuery, ['t-shirt', 'tshirt'])) {
+                $condition = "p.name LIKE '%t-shirt%' OR p.name LIKE '%tshirt%'";
+            } else {
+                $searchParam = "%" . $searchQuery . "%";
+                $condition = "(p.name LIKE ? OR p.category LIKE ? OR p.sub_category LIKE ?)";
+            }
+
             echo "<p class='text-center'>Showing results for: <strong>$searchQuery</strong></p>";
 
             $sql = "
@@ -80,25 +91,17 @@ include_once('../includes/head-links.php');
                        (SELECT image_url FROM product_images WHERE product_id = p.product_id LIMIT 1) AS image_url, 
                        p.price
                 FROM products p
-                WHERE (p.name LIKE ? OR p.category LIKE ? OR p.sub_category LIKE ?)
+                WHERE $condition
                 GROUP BY p.product_id";
 
-            if (strtolower($searchQuery) === "men") {
-                $sql = "
-                    SELECT p.product_id, p.name, p.category, p.sub_category, 
-                           (SELECT image_url FROM product_images WHERE product_id = p.product_id LIMIT 1) AS image_url, 
-                           p.price
-                    FROM products p
-                    WHERE p.category = 'Men'
-                    GROUP BY p.product_id";
-            }
-
             if ($stmt = $conn->prepare($sql)) {
-                $searchParam = "%" . $searchQuery . "%";
-                if (strtolower($searchQuery) !== "men") {
+                if (!isset($searchParam)) {
+                    $stmt->execute();
+                } else {
                     $stmt->bind_param("sss", $searchParam, $searchParam, $searchParam);
+                    $stmt->execute();
                 }
-                $stmt->execute();
+
                 $result = $stmt->get_result();
 
                 if ($result->num_rows > 0) {
