@@ -3,10 +3,13 @@ function changeQuantity(amount) {
     var quantityInput = document.getElementById('quantity');
     var currentQuantity = parseInt(quantityInput.value);
     var newQuantity = currentQuantity + amount;
-    if (newQuantity >= 1) { // Ensure the quantity is at least 1
+
+    // Ensure the quantity is between 1 and 100
+    if (newQuantity >= 1 && newQuantity <= 100) {
         quantityInput.value = newQuantity;
     }
 }
+
 
 // Modal functionality
 document.addEventListener('DOMContentLoaded', function() {

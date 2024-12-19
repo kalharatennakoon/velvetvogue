@@ -109,7 +109,6 @@
         }
     }
 
-    
     // Fetch "You may also like" products based on the second_sub_category, category, and sub_category
     $similar_products_query = "SELECT p.*, pi.image_url FROM products p 
     LEFT JOIN product_images pi ON pi.product_id = p.product_id 
@@ -207,6 +206,7 @@
                     <!-- Size and Quantity Selection -->
                     <div class="product-options">
                         <form action="cart.php" method="post">
+                            <!-- Size: -->
                             <div class="form-group">
                                 <label for="size">Size:</label>
                                 <select name="size" id="size" class="form-control">
@@ -220,18 +220,21 @@
                                     <option value="3XL">3XL</option>
                                 </select>
                             </div>
+
+                            <!-- Quantity: -->
                             <div class="form-group">
                                 <label for="quantity">Quantity:</label>
                                 <div class="input-group">
                                     <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
-                                    <input type="number" name="quantity" id="quantity" class="form-control text-center" value="1" min="1">
+                                    <input type="number" name="quantity" id="quantity" class="form-control text-center" value="1" min="1" max="100" readonly>
                                     <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
+
 
                             <!-- Size Guide Button -->
                             <button type="button" class="btn btn-info" id="size-guide-btn">Size Guide</button>
@@ -306,7 +309,7 @@
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
-    
+
 
     <!-- JavaScript links -->
     <script src="../assets/js/product-details.js"></script>
