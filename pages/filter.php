@@ -75,9 +75,9 @@ include_once('../includes/head-links.php');
             $searchQuery = strtolower(htmlspecialchars(trim($_GET['search'])));
 
             // Handle specific cases for "shirt" and "t-shirt/tshirt"
-            if ($searchQuery === 'shirt') {
+            if ($searchQuery === 'shirt' || $searchQuery === 'shirts') {
                 $condition = "p.name LIKE '%shirt%' AND p.name NOT LIKE '%t-shirt%' AND p.name NOT LIKE '%tshirt%'";
-            } elseif (in_array($searchQuery, ['t-shirt', 'tshirt'])) {
+            } elseif (in_array($searchQuery, ['t-shirt', 'tshirt', 't-shirts', 'tshirts'])) {
                 $condition = "p.name LIKE '%t-shirt%' OR p.name LIKE '%tshirt%'";
             } else {
                 $searchParam = "%" . $searchQuery . "%";
