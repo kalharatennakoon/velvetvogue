@@ -121,12 +121,10 @@
     $similar_products_result = mysqli_query($conn, $similar_products_query);
     $similar_products = [];
     if ($similar_products_result && mysqli_num_rows($similar_products_result) > 0) {
-    while ($similar_product = mysqli_fetch_assoc($similar_products_result)) {
-        $similar_products[] = $similar_product;
+        while ($similar_product = mysqli_fetch_assoc($similar_products_result)) {
+            $similar_products[] = $similar_product;
+        }
     }
-    }
-
-
 
 ?>
 
@@ -272,6 +270,53 @@
             font-size: 1.1rem;
             font-weight: bold;
         }
+        /* Modal Styles */
+        .size-guide-modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0); /* Black w/ opacity */
+            background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
+            padding-top: 60px;
+        }
+
+        .size-guide-modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .size-guide-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .close-btn {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 25px;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
     
     </style>
 </head>
@@ -369,6 +414,23 @@
                                     </button>
                                 </div>
                             </div>
+
+                            <!-- Size Guide Button -->
+                            <button type="button" class="btn btn-info" id="size-guide-btn">Size Guide</button>
+
+                            <!-- Modal -->
+                            <div class="modal" id="size-guide-modal" tabindex="-1" aria-labelledby="size-guide-modal-label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-body position-relative">
+                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" id="close-size-guide" aria-label="Close"></button>
+                                        <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/size-guide.png'; ?>" alt="Size Guide" class="img-fluid">
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add to Cart and Buy Now buttons -->
                             <div class="form-group d-flex">
                                 <button type="submit" class="btn btn-primary mr-2">Add to Cart</button>
                                 <button type="submit" name="buy_now" class="btn btn-success">Buy Now</button>
@@ -424,6 +486,7 @@
 
     </div>
 
+
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
 
@@ -439,6 +502,34 @@
             }
         }
     </script>
+
+    <script>
+        // Get the modal and button elements
+        var modal = new bootstrap.Modal(document.getElementById("size-guide-modal"), {
+            keyboard: true
+        });
+        var btn = document.getElementById("size-guide-btn");
+        var span = document.getElementById("close-size-guide");
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function() {
+            modal.show();  // Using Bootstrap's method to show the modal
+        }
+
+        // When the user clicks the "x" button (close icon), close the modal
+        span.onclick = function() {
+            modal.hide();  // Using Bootstrap's method to hide the modal
+        }
+
+        // When the user clicks anywhere outside the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal._element) {
+                modal.hide();  // Using Bootstrap's method to hide the modal
+            }
+        }
+    </script>
+
+
 
     <!-- Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
