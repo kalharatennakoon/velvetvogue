@@ -44,6 +44,43 @@
     $half_star = ($star_rating - $full_stars) >= 0.5 ? true : false;
     $empty_stars = 5 - $full_stars - ($half_star ? 1 : 0);
 
+    // Handle Add to Cart or Buy Now logic
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get the size and quantity selected by the user
+        $size = isset($_POST['size']) ? $_POST['size'] : 'M';  // Default to 'M' if not selected
+        $quantity = isset($_POST['quantity']) ? intval($_POST['quantity']) : 1;
+
+        // Add the product to the cart (session-based cart, assuming session is started)
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Ensure the cart is an array
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+
+        // Add product to cart (with size and quantity)
+        $_SESSION['cart'][] = [
+            'product_id' => $product_id,
+            'name' => $product['name'],
+            'size' => $size,
+            'quantity' => $quantity,
+            'price' => $product['price'], // Assuming 'price' exists in the product data
+        ];
+
+        // Redirect based on button clicked
+        if (isset($_POST['buy_now'])) {
+            // Redirect to checkout if "Buy Now" is clicked
+            header('Location: checkout.php');
+            exit;
+        } else {
+            // Redirect to cart if "Add to Cart" is clicked
+            header('Location: cart.php');
+            exit;
+        }
+    }
+
     // Set page title
     $page_title = htmlspecialchars($product['name']);
     include_once('../includes/head-links.php');
@@ -62,16 +99,37 @@
         }
     }
 
-    // Fetch "You may also like" products based on the second_sub_category
-    $similar_products_query = "SELECT * FROM products WHERE second_sub_category = '" . $product['second_sub_category'] . "' AND product_id != $product_id";
+    // Fetch materials for the product
+    $materials_query = "SELECT material FROM product_materials WHERE product_id = $product_id";
+    $materials_result = mysqli_query($conn, $materials_query);
+    $materials = [];
+    if ($materials_result && mysqli_num_rows($materials_result) > 0) {
+        while ($material = mysqli_fetch_assoc($materials_result)) {
+            $materials[] = $material['material'];
+        }
+    }
+
+    
+    // Fetch "You may also like" products based on the second_sub_category, category, and sub_category
+    $similar_products_query = "SELECT p.*, pi.image_url FROM products p 
+    LEFT JOIN product_images pi ON pi.product_id = p.product_id 
+    WHERE p.second_sub_category = '" . $product['second_sub_category'] . "' 
+    AND p.category = '" . $product['category'] . "' 
+    AND p.sub_category = '" . $product['sub_category'] . "' 
+    AND p.product_id != $product_id 
+    GROUP BY p.product_id";
     $similar_products_result = mysqli_query($conn, $similar_products_query);
     $similar_products = [];
     if ($similar_products_result && mysqli_num_rows($similar_products_result) > 0) {
-        while ($similar_product = mysqli_fetch_assoc($similar_products_result)) {
-            $similar_products[] = $similar_product;
-        }
+    while ($similar_product = mysqli_fetch_assoc($similar_products_result)) {
+        $similar_products[] = $similar_product;
     }
+    }
+
+
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +138,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title; ?></title>
     <style>
-        /* Style for the collage images */
+        .similar-products {
+            margin-top: 30px;
+            padding-bottom: 30px;  /* Add some padding at the bottom */
+            overflow: hidden;
+        }
+
+        .container.product-details {
+            padding-bottom: 50px; /* Add some bottom padding to ensure space */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;  /* Ensure the container takes up full height */
+        }
+
+        footer {
+            clear: both;  /* Ensures the footer does not overlap content */
+        }
+
         .collage-images {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -131,14 +206,53 @@
             margin: 0;
         }
 
-        .similar-products {
-            margin-top: 30px;
+        /* Updated similar-products styling */
+        .similar-products .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
+        .product-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 200px; /* Adjust width as needed */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .product-card .product-image img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            color: #f39c12;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Removing redundant styling */
         .similar-products .product {
             display: inline-block;
-            width: 22%;
-            margin: 0 2%;
+            width: auto;
+            margin: 0;
             text-align: center;
         }
 
@@ -158,6 +272,7 @@
             font-size: 1.1rem;
             font-weight: bold;
         }
+    
     </style>
 </head>
 <body>
@@ -176,7 +291,7 @@
                         for ($i = 0; $i < $max_images; $i++): ?>
                             <div class="image-container">
                                 <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($images[$i]); ?>" 
-                                     alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                    alt="<?php echo htmlspecialchars($product['name']); ?>">
                             </div>
                         <?php endfor; ?>
                     </div>
@@ -185,10 +300,13 @@
                 <?php endif; ?>
             </div>
 
+            <!-- Main product details -->
             <div class="col-md-6">
+                <!-- Product Info Section -->
                 <div class="product-info mb-4">
                     <h2 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h2>
 
+                    <!-- Product Rating -->
                     <div class="product-rating">
                         <?php 
                             for ($i = 0; $i < $full_stars; $i++) {
@@ -201,15 +319,66 @@
                                 echo '<span>&#9734;</span>';
                             }
                         ?>
-                        <span>(<?php echo number_format($average_rating, 1); ?>)</span>
+                        <span>
+                            (<?php echo intval($average_rating ?? 0); ?>)
+                        </span>
                     </div>
 
+                    <!-- Product Price -->
                     <p class="product-price">LKR <?php echo htmlspecialchars($product['price']); ?></p>
 
+                    <!-- Product Description -->
                     <p><?php echo htmlspecialchars($product['description']); ?></p>
+
+                    <!-- Display Product Materials -->
+                    <?php if (!empty($materials)): ?>
+                        <div class="product-materials">
+                            <ul>
+                                <?php foreach ($materials as $material): ?>
+                                    <li><?php echo htmlspecialchars($material); ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
+
+                    <!-- Size and Quantity Selection -->
+                    <div class="product-options">
+                        <form action="cart.php" method="post">
+                            <div class="form-group">
+                                <label for="size">Size:</label>
+                                <select name="size" id="size" class="form-control">
+                                    <option value="XXS">XXS</option>
+                                    <option value="XS">XS</option>
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="2XL">2XL</option>
+                                    <option value="3XL">3XL</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity">Quantity:</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                    <input type="number" name="quantity" id="quantity" class="form-control text-center" value="1" min="1">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-group d-flex">
+                                <button type="submit" class="btn btn-primary mr-2">Add to Cart</button>
+                                <button type="submit" name="buy_now" class="btn btn-success">Buy Now</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Customer Reviews Section -->
         <div class="review-section">
@@ -233,11 +402,18 @@
             <div class="row">
                 <?php if (!empty($similar_products)): ?>
                     <?php foreach ($similar_products as $similar_product): ?>
-                        <div class="product">
-                            <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($similar_product['image_url']); ?>" 
-                                 alt="<?php echo htmlspecialchars($similar_product['name']); ?>">
-                            <p class="product-title"><?php echo htmlspecialchars($similar_product['name']); ?></p>
-                            <p class="product-price">LKR <?php echo htmlspecialchars($similar_product['price']); ?></p>
+                        <div class="col-3">
+                            <!-- Product Image -->
+                            <div class="product-image">
+                                <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($similar_product['image_url'] ?: 'placeholder.jpg'); ?>" 
+                                    alt="<?php echo htmlspecialchars($similar_product['name']); ?>">
+                            </div>
+                            <!-- Product Name -->
+                            <div class="product-info">
+                                <p class="product-title"><?php echo htmlspecialchars($similar_product['name']); ?></p>
+                                <!-- Product Price -->
+                                <p class="product-price">LKR <?php echo number_format($similar_product['price'], 2); ?></p>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -250,6 +426,19 @@
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
+
+    <!-- Script to change quantity -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> <!-- Font Awesome CDN -->
+    <script>
+        function changeQuantity(amount) {
+            var quantityInput = document.getElementById('quantity');
+            var currentQuantity = parseInt(quantityInput.value);
+            var newQuantity = currentQuantity + amount;
+            if (newQuantity >= 1) { // Ensure the quantity is at least 1
+                quantityInput.value = newQuantity;
+            }
+        }
+    </script>
 
     <!-- Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
