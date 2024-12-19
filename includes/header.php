@@ -1,5 +1,4 @@
 <!-- Purpose: Header for the website -->
-
 <div class="sticky-top top-0 left-0 w-full z-40 shadow-md">
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container-fluid">
@@ -8,9 +7,9 @@
                     <a class="navbar-brand" href="<?php echo BASE_URL; ?>/index.php"><span class="text-uppercase">velvet vogue</span></a>
                 </li>
             </ul>
-            <form class="d-flex" role="search">
+            <form class="d-flex" role="search" action="<?php echo BASE_URL; ?>/pages/filter.php" method="get">
                 <div class="input-group">
-                    <input class="form-control border-end-0 border" type="search" placeholder="Search" id="search-input">
+                    <input class="form-control border-end-0 border" type="search" placeholder="Search" name="search" id="search-input">
                     <button class="btn bg-white border-start-0 border-bottom border ms-n5" type="submit">
                         <i class="fa-solid fa-magnifying-glass fa-lg"></i>
                     </button>
@@ -54,11 +53,8 @@
     </nav>
 </div>
 
-
-<!-- Bootstrap JavaScript (with Popper.js included in Bootstrap Bundle) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Tooltip Initialization Script -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -67,4 +63,3 @@
         });
     });
 </script>
-

@@ -9,8 +9,8 @@
     // Get product ID from URL and sanitize
     $product_id = isset($_GET['id']) ? intval($_GET['id']) : die("Invalid Product ID");
 
-    // Fetch product details
-    $query = "SELECT * FROM products WHERE product_id = $product_id";
+    // Fetch product details using the correct column name 'product_id'
+    $query = "SELECT * FROM products WHERE product_id = $product_id";  // Adjust column name here
     $result = mysqli_query($conn, $query);
 
     if ($result && mysqli_num_rows($result) > 0) {
@@ -20,7 +20,7 @@
     }
 
     // Fetch images for the product
-    $images_query = "SELECT image_url FROM product_images WHERE product_id = $product_id";
+    $images_query = "SELECT image_url FROM product_images WHERE product_id = $product_id";  // Use 'product_id' for image association
     $images_result = mysqli_query($conn, $images_query);
     $images = [];
     if ($images_result && mysqli_num_rows($images_result) > 0) {
@@ -33,6 +33,8 @@
     $page_title = htmlspecialchars($product['name']);
     include_once('../includes/head-links.php');
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -129,8 +131,8 @@
                         $max_images = min(count($images), 4); // Limit to 4 images max
                         for ($i = 0; $i < $max_images; $i++): ?>
                             <div class="image-container">
-                                <img src="<?php echo BASE_URL . '/assets/images/products/' . htmlspecialchars($images[$i]); ?>" 
-                                     alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($images[$i]); ?>" 
+     alt="<?php echo htmlspecialchars($product['name']); ?>">
                             </div>
                         <?php endfor; ?>
                     </div>
