@@ -7,10 +7,10 @@
     include_once('../config/config.php');
     
     // Get product ID from URL and sanitize
-    $product_id = isset($_GET['id']) ? intval($_GET['id']) : die("Invalid Product ID");
+    $product_id = isset($_GET['product-id']) ? intval($_GET['product-id']) : die("Invalid Product ID");
 
     // Fetch product details using the correct column name 'product_id'
-    $query = "SELECT * FROM products WHERE product_id = $product_id";  // Adjust column name here
+    $query = "SELECT * FROM products WHERE product_id = $product_id";
     $result = mysqli_query($conn, $query);
 
     if ($result && mysqli_num_rows($result) > 0) {
@@ -20,7 +20,7 @@
     }
 
     // Fetch images for the product
-    $images_query = "SELECT image_url FROM product_images WHERE product_id = $product_id";  // Use 'product_id' for image association
+    $images_query = "SELECT image_url FROM product_images WHERE product_id = $product_id";
     $images_result = mysqli_query($conn, $images_query);
     $images = [];
     if ($images_result && mysqli_num_rows($images_result) > 0) {
@@ -29,12 +29,49 @@
         }
     }
 
+    // Fetch the average rating for the product
+    $rating_query = "SELECT AVG(rating) AS average_rating FROM product_ratings WHERE product_id = $product_id";
+    $rating_result = mysqli_query($conn, $rating_query);
+    $average_rating = 0;
+    if ($rating_result && mysqli_num_rows($rating_result) > 0) {
+        $rating_data = mysqli_fetch_assoc($rating_result);
+        $average_rating = $rating_data['average_rating'];
+    }
+
+    // Calculate the star representation (rounded to nearest half-star)
+    $star_rating = round($average_rating * 2) / 2; // Round to nearest half
+    $full_stars = floor($star_rating);
+    $half_star = ($star_rating - $full_stars) >= 0.5 ? true : false;
+    $empty_stars = 5 - $full_stars - ($half_star ? 1 : 0);
+
     // Set page title
     $page_title = htmlspecialchars($product['name']);
     include_once('../includes/head-links.php');
+
+    // Fetch customer reviews for the product
+    $reviews_query = "SELECT r.review, r.rating, r.rating_date, c.first_name, c.last_name 
+                      FROM product_ratings r 
+                      JOIN customers c ON r.customer_id = c.customer_id 
+                      WHERE r.product_id = $product_id 
+                      ORDER BY r.rating_date DESC";
+    $reviews_result = mysqli_query($conn, $reviews_query);
+    $reviews = [];
+    if ($reviews_result && mysqli_num_rows($reviews_result) > 0) {
+        while ($review = mysqli_fetch_assoc($reviews_result)) {
+            $reviews[] = $review;
+        }
+    }
+
+    // Fetch "You may also like" products based on the second_sub_category
+    $similar_products_query = "SELECT * FROM products WHERE second_sub_category = '" . $product['second_sub_category'] . "' AND product_id != $product_id";
+    $similar_products_result = mysqli_query($conn, $similar_products_query);
+    $similar_products = [];
+    if ($similar_products_result && mysqli_num_rows($similar_products_result) > 0) {
+        while ($similar_product = mysqli_fetch_assoc($similar_products_result)) {
+            $similar_products[] = $similar_product;
+        }
+    }
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -47,7 +84,7 @@
         .collage-images {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            grid-gap: 10px; /* Small gap between images */
+            grid-gap: 10px;
             margin: 0;
             padding: 0;
         }
@@ -55,63 +92,71 @@
         .collage-images .image-container {
             width: 100%;
             height: 100%;
-            border: 1px solid #ddd; /* Light border around each image */
-            border-radius: 5px; /* Slight rounding of corners */
-            padding: 5px; /* Small padding inside each image container */
-            background-color: #f8f8f8; /* Light background color */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #f8f8f8;
         }
 
         .collage-images img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ensures images cover the space without stretching */
-            border-radius: 5px; /* Match image corners with container */
-        }
-
-        /* Styling for size and quantity selectors */
-        .size-options, .quantity-control {
-            margin-bottom: 1rem;
-        }
-
-        .size-options select, .quantity-control .quantity-buttons {
-            width: 100%;
-            padding: 0.5rem;
-            font-size: 1rem;
-            border: 1px solid #ddd;
+            object-fit: cover;
             border-radius: 5px;
         }
 
-        .quantity-control .quantity-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .quantity-control .quantity-buttons button {
-            width: 40px;
-            height: 40px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .product-rating {
+            margin-top: 10px;
             font-size: 1.2rem;
-            color: #333;
-            cursor: pointer;
         }
 
-        .quantity-control .quantity-buttons button:hover {
-            background-color: #e0e0e0;
+        .star {
+            color: #FFD700;
         }
 
-        .quantity-control .quantity-display {
-            width: 50px;
+        .review-section {
+            margin-top: 30px;
+        }
+
+        .review-section h3 {
+            font-size: 1.5rem;
+        }
+
+        .review-section .review {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .review-section .review p {
+            margin: 0;
+        }
+
+        .similar-products {
+            margin-top: 30px;
+        }
+
+        .similar-products .product {
+            display: inline-block;
+            width: 22%;
+            margin: 0 2%;
             text-align: center;
-            font-size: 1.2rem;
-            margin: 0 10px;
         }
 
-        .size-options select {
-            font-size: 1rem;
+        .similar-products img {
+            width: 100%;
+            height: auto;
             border-radius: 5px;
+        }
+
+        .similar-products .product-title {
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .similar-products .product-price {
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -123,16 +168,15 @@
     <!-- Product Section -->
     <div class="container product-details">
         <div class="row">
-            <!-- Left Side: Product Image(s) -->
             <div class="col-md-6 product-image-container">
                 <?php if (!empty($images)): ?>
                     <div class="collage-images">
                         <?php 
-                        $max_images = min(count($images), 4); // Limit to 4 images max
+                        $max_images = min(count($images), 4);
                         for ($i = 0; $i < $max_images; $i++): ?>
                             <div class="image-container">
                                 <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($images[$i]); ?>" 
-     alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                     alt="<?php echo htmlspecialchars($product['name']); ?>">
                             </div>
                         <?php endfor; ?>
                     </div>
@@ -141,121 +185,74 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Right Side: Product Information -->
             <div class="col-md-6">
                 <div class="product-info mb-4">
-                    <!-- Product Title and Price -->
                     <h2 class="product-title"><?php echo htmlspecialchars($product['name']); ?></h2>
+
+                    <div class="product-rating">
+                        <?php 
+                            for ($i = 0; $i < $full_stars; $i++) {
+                                echo '<span class="star">&#9733;</span>';
+                            }
+                            if ($half_star) {
+                                echo '<span class="star">&#9733;</span>';
+                            }
+                            for ($i = 0; $i < $empty_stars; $i++) {
+                                echo '<span>&#9734;</span>';
+                            }
+                        ?>
+                        <span>(<?php echo number_format($average_rating, 1); ?>)</span>
+                    </div>
+
                     <p class="product-price">LKR <?php echo htmlspecialchars($product['price']); ?></p>
 
-                    <!-- Product Description -->
                     <p><?php echo htmlspecialchars($product['description']); ?></p>
-
-                    <!-- Product Materials -->
-                    <?php if (!empty($materials)): ?>
-                        <h5>Materials</h5>
-                        <ul>
-                            <?php foreach ($materials as $material): ?>
-                                <li><?php echo htmlspecialchars($material); ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    <?php endif; ?>
-
-                    <form action="cart.php" method="POST" class="mb-4">
-                        <!-- Size Selection -->
-                        <div class="size-options">
-                            <label for="size" class="form-label mt-3">Size:</label>
-                            <select name="size" id="size" class="form-control" required>
-                                <option value="" selected disabled>Select Size</option>
-                                <option value="xxs">XXS</option>
-                                <option value="xs">XS</option>
-                                <option value="s">S</option>
-                                <option value="m">M</option>
-                                <option value="l">L</option>
-                                <option value="xl">XL</option>
-                                <option value="2xl">2XL</option>
-                                <option value="3xl">3XL</option>
-                            </select>
-                        </div>
-
-
-                        <!-- Quantity Selection -->
-                        <div class="quantity-control">
-                            <label for="quantity" class="form-label mt-3 mb-0">Quantity:</label>
-                            <div class="quantity-buttons">
-                                <button type="button" class="btn btn-outline-dark" id="decreaseBtn">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                                <span class="quantity-display" id="quantity">1</span>
-                                <button type="button" class="btn btn-outline-dark" id="increaseBtn">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-dark">Add to Cart</button>
-                        <button type="submit" class="btn btn-secondary">Buy Now</button>
-                    </form>
-
-                    <!-- Size Guide Button -->
-                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#sizeGuideModal">
-                        Size Guide
-                    </button>
-
-                    <h5>Delivery Information</h5>
-                    <p>Free delivery on orders over $50. Expect delivery within 3-5 business days.</p>
                 </div>
             </div>
         </div>
+
+        <!-- Customer Reviews Section -->
+        <div class="review-section">
+            <h3>Customer Reviews</h3>
+            <?php if (!empty($reviews)): ?>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="review">
+                        <p><strong><?php echo htmlspecialchars($review['first_name']) . ' ' . htmlspecialchars($review['last_name']); ?></strong> - <?php echo date('F j, Y', strtotime($review['rating_date'])); ?></p>
+                        <p>Rating: <?php for ($i = 0; $i < $review['rating']; $i++) { echo '★'; } ?></p>
+                        <p><?php echo nl2br(htmlspecialchars($review['review'])); ?></p>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No reviews yet.</p>
+            <?php endif; ?>
+        </div>
+
+        <!-- You May Also Like Section -->
+        <div class="similar-products">
+            <h3>You May Also Like</h3>
+            <div class="row">
+                <?php if (!empty($similar_products)): ?>
+                    <?php foreach ($similar_products as $similar_product): ?>
+                        <div class="product">
+                            <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($similar_product['image_url']); ?>" 
+                                 alt="<?php echo htmlspecialchars($similar_product['name']); ?>">
+                            <p class="product-title"><?php echo htmlspecialchars($similar_product['name']); ?></p>
+                            <p class="product-price">LKR <?php echo htmlspecialchars($similar_product['price']); ?></p>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No similar products found.</p>
+                <?php endif; ?>
+            </div>
+        </div>
+
     </div>
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
 
-    <!-- Modal for Size Guide -->
-    <div class="modal fade" id="sizeGuideModal" tabindex="-1" aria-labelledby="sizeGuideModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-body position-relative">
-                    <!-- Close button positioned at the top right -->
-                    <button type="button" class="btn-close position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
-                    <!-- Larger size guide image -->
-                    <img src="../assets/images/products/size-guide.png" alt="Size Guide" class="img-fluid w-100" style="max-height: 80vh; object-fit: contain;">
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Bootstrap JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Custom JS -->
-    <script>
-        // Size Selection
-        document.querySelectorAll('.size-options select').forEach(select => {
-            select.addEventListener('change', function() {
-                // Can be extended with any action you want when size changes
-                console.log("Selected size: " + this.value);
-            });
-        });
-
-        // Quantity control
-        let quantity = 1;
-        const quantityDisplay = document.getElementById('quantity');
-        
-        document.getElementById('decreaseBtn').addEventListener('click', function() {
-            if (quantity > 1) {
-                quantity--;
-                quantityDisplay.textContent = quantity;
-            }
-        });
-
-        document.getElementById('increaseBtn').addEventListener('click', function() {
-            if (quantity < 10) {
-                quantity++;
-                quantityDisplay.textContent = quantity;
-            }
-        });
-    </script>
 </body>
 </html>

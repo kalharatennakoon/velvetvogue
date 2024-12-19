@@ -124,7 +124,7 @@ include_once('../includes/head-links.php');
                                     <p><strong>Subcategory:</strong> ' . htmlspecialchars($row['sub_category']) . '</p>
                                     <p><strong>Product ID:</strong> ' . htmlspecialchars($row['product_id']) . '</p>
                                     <p class="price">$' . number_format($row['price'], 2) . '</p>
-                                    <a href="' . BASE_URL . '/pages/product-details.php?id=' . $row['product_id'] . '" class="btn btn-primary">View Details</a>
+                                    <a href="' . BASE_URL . '/pages/product-details.php?product-id=' . $row['product_id'] . '" class="btn btn-primary">View Details</a>
                                 </div>
                             </div>
                         </div>

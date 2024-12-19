@@ -88,6 +88,77 @@
             echo "Error: " . $e->getMessage();
         }
     }
+
+    if (isset($_POST['submit-product'])) {
+        // Get product details from the form
+        $name = mysqli_real_escape_string($conn, $_POST['name']);
+        $description = mysqli_real_escape_string($conn, $_POST['description']);
+        $price = floatval($_POST['price']);
+        $stock = intval($_POST['stock']);
+        $brand = mysqli_real_escape_string($conn, $_POST['brand']);
+        $category = mysqli_real_escape_string($conn, $_POST['category']);
+        $sub_category = mysqli_real_escape_string($conn, $_POST['sub_category']);
+        $colors = mysqli_real_escape_string($conn, $_POST['colors']);
+        $sizes = mysqli_real_escape_string($conn, $_POST['sizes']);
+        $materials = mysqli_real_escape_string($conn, $_POST['materials']);
+        $images = mysqli_real_escape_string($conn, $_POST['images']);
+        
+        // Begin the transaction
+        mysqli_begin_transaction($conn);
+        try {
+            // Insert the new product into the products table
+            $query = "INSERT INTO products (name, description, price, stock, brand, category, sub_category)
+                      VALUES ('$name', '$description', $price, $stock, '$brand', '$category', '$sub_category')";
+            mysqli_query($conn, $query);
+            $product_id = mysqli_insert_id($conn);  // Get the ID of the newly inserted product
+
+            // Insert colors, sizes, materials, and images into their respective tables
+            if (!empty($colors)) {
+                foreach (explode(',', $colors) as $color) {
+                    $color = trim($color);
+                    $query = "INSERT INTO product_colors (product_id, color) VALUES ($product_id, '$color')";
+                    mysqli_query($conn, $query);
+                }
+            }
+
+            if (!empty($sizes)) {
+                foreach (explode(',', $sizes) as $size) {
+                    $size = trim($size);
+                    $query = "INSERT INTO product_sizes (product_id, size) VALUES ($product_id, '$size')";
+                    mysqli_query($conn, $query);
+                }
+            }
+
+            if (!empty($materials)) {
+                foreach (explode(',', $materials) as $material) {
+                    $material = trim($material);
+                    $query = "INSERT INTO product_materials (product_id, material) VALUES ($product_id, '$material')";
+                    mysqli_query($conn, $query);
+                }
+            }
+
+            if (!empty($images)) {
+                foreach (explode(',', $images) as $image) {
+                    $image = trim($image);
+                    $query = "INSERT INTO product_images (product_id, image_url) VALUES ($product_id, '$image')";
+                    mysqli_query($conn, $query);
+                }
+            }
+
+            // Commit the transaction
+            mysqli_commit($conn);
+
+            // Redirect or show success message
+            header("Location: admin-dashboard.php?add=success");
+            exit();
+        } catch (Exception $e) {
+            // Rollback the transaction in case of error
+            mysqli_rollback($conn);
+            echo "Error: " . $e->getMessage();
+        }
+    }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -137,6 +208,64 @@
 
     <!-- Header -->
     <?php include '../includes/admin-header.php'; ?>
+
+    <!-- Add New Product Button -->
+    <div class="text-center my-4">
+        <button class="btn btn-success" id="addNewProductBtn">Add New Product</button>
+    </div>
+
+    <!-- Add Product Form (Initially Hidden) -->
+    <div id="addProductForm" style="display: none;">
+        <h3>Add New Product</h3>
+        <form id="productForm" method="POST" action="admin-dashboard.php">
+            <div class="mb-3">
+                <label for="name" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" name="price" required>
+            </div>
+            <div class="mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" name="stock" required>
+            </div>
+            <div class="mb-3">
+                <label for="brand" class="form-label">Brand</label>
+                <input type="text" class="form-control" id="brand" name="brand" required>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <input type="text" class="form-control" id="category" name="category" required>
+            </div>
+            <div class="mb-3">
+                <label for="sub_category" class="form-label">Sub Category</label>
+                <input type="text" class="form-control" id="sub_category" name="sub_category" required>
+            </div>
+            <div class="mb-3">
+                <label for="colors" class="form-label">Colors (comma-separated)</label>
+                <input type="text" class="form-control" id="colors" name="colors">
+            </div>
+            <div class="mb-3">
+                <label for="sizes" class="form-label">Sizes (comma-separated)</label>
+                <input type="text" class="form-control" id="sizes" name="sizes">
+            </div>
+            <div class="mb-3">
+                <label for="materials" class="form-label">Materials (comma-separated)</label>
+                <input type="text" class="form-control" id="materials" name="materials">
+            </div>
+            <div class="mb-3">
+                <label for="images" class="form-label">Images (comma-separated URLs)</label>
+                <input type="text" class="form-control" id="images" name="images">
+            </div>
+            <button type="submit" name="submit-product" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+
 
     <!-- Search Form -->
     <div class="container text-center mb-4">
@@ -191,7 +320,7 @@
                             <td><?php echo implode('<br>', $materials); ?></td>
                             <td>
                                 <?php foreach ($image_urls as $image_url): ?>
-                                    <img src="<?php echo BASE_URL . '/' . $image_url; ?>" alt="Product Image" class="product-image">
+                                    <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . $image_url; ?>" alt="Product Image" class="product-image">
                                 <?php endforeach; ?>
                             </td>
                             <td><?php echo $product['created_at']; ?></td>
@@ -242,6 +371,19 @@
             document.getElementById('deleteProductId').value = productId;
         }
     </script>
+
+    <script>
+        // Show the form when "Add New Product" button is clicked
+        document.getElementById('addNewProductBtn').addEventListener('click', function() {
+            var form = document.getElementById('addProductForm');
+            if (form.style.display === "none") {
+                form.style.display = "block";
+            } else {
+                form.style.display = "none";
+            }
+        });
+    </script>
+
 
 </body>
 </html>
