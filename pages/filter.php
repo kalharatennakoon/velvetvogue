@@ -87,12 +87,13 @@ include_once('../includes/head-links.php');
             echo "<p class='text-center'>Showing results for: <strong>$searchQuery</strong></p>";
 
             $sql = "
-                SELECT p.product_id, p.name, p.category, p.sub_category, 
+                SELECT p.product_id, p.name, p.category, p.sub_category, p.second_sub_category, 
                        (SELECT image_url FROM product_images WHERE product_id = p.product_id LIMIT 1) AS image_url, 
                        p.price
                 FROM products p
                 WHERE $condition
                 GROUP BY p.product_id";
+            
 
             if ($stmt = $conn->prepare($sql)) {
                 if (!isset($searchParam)) {
@@ -117,6 +118,7 @@ include_once('../includes/head-links.php');
                                         <h5>' . htmlspecialchars($row['name']) . '</h5>
                                         <p><strong>Category:</strong> ' . htmlspecialchars($row['category']) . '</p>
                                         <p><strong>Subcategory:</strong> ' . htmlspecialchars($row['sub_category']) . '</p>
+                                        <p><strong>Second Subcategory:</strong> ' . htmlspecialchars($row['second_sub_category']) . '</p>
                                         <p><strong>Product ID:</strong> ' . htmlspecialchars($row['product_id']) . '</p>
                                         <p class="price">LKR ' . number_format($row['price'], 2) . '</p>
                                         <a href="' . BASE_URL . '/pages/product-details.php?product-id=' . $row['product_id'] . '" class="btn btn-primary">View Details</a>
