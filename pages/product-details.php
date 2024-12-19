@@ -134,191 +134,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $page_title; ?></title>
-    <style>
-        .similar-products {
-            margin-top: 30px;
-            padding-bottom: 30px;  /* Add some padding at the bottom */
-            overflow: hidden;
-        }
 
-        .container.product-details {
-            padding-bottom: 50px; /* Add some bottom padding to ensure space */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 100vh;  /* Ensure the container takes up full height */
-        }
-
-        footer {
-            clear: both;  /* Ensures the footer does not overlap content */
-        }
-
-        .collage-images {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 10px;
-            margin: 0;
-            padding: 0;
-        }
-
-        .collage-images .image-container {
-            width: 100%;
-            height: 100%;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 5px;
-            background-color: #f8f8f8;
-        }
-
-        .collage-images img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-
-        .product-rating {
-            margin-top: 10px;
-            font-size: 1.2rem;
-        }
-
-        .star {
-            color: #FFD700;
-        }
-
-        .review-section {
-            margin-top: 30px;
-        }
-
-        .review-section h3 {
-            font-size: 1.5rem;
-        }
-
-        .review-section .review {
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-
-        .review-section .review p {
-            margin: 0;
-        }
-
-        /* Updated similar-products styling */
-        .similar-products .row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .product-card {
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            overflow: hidden;
-            width: 200px; /* Adjust width as needed */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            text-align: center;
-        }
-
-        .product-card .product-image img {
-            width: 100%;
-            height: auto;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .product-info {
-            padding: 15px;
-        }
-
-        .product-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 14px;
-            color: #f39c12;
-        }
-
-        .product-card:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Removing redundant styling */
-        .similar-products .product {
-            display: inline-block;
-            width: auto;
-            margin: 0;
-            text-align: center;
-        }
-
-        .similar-products img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-
-        .similar-products .product-title {
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        .similar-products .product-price {
-            color: #000;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-        /* Modal Styles */
-        .size-guide-modal {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgb(0,0,0); /* Black w/ opacity */
-            background-color: rgba(0, 0, 0, 0.7); /* Black w/ opacity */
-            padding-top: 60px;
-        }
-
-        .size-guide-modal-content {
-            background-color: #fff;
-            margin: 5% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 600px;
-        }
-
-        .size-guide-image {
-            width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .close-btn {
-            color: #aaa;
-            font-size: 28px;
-            font-weight: bold;
-            position: absolute;
-            top: 10px;
-            right: 25px;
-        }
-
-        .close-btn:hover,
-        .close-btn:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-    
-    </style>
+    <!-- CSS links -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/product-details.css">
 </head>
 <body>
 
@@ -483,56 +301,16 @@
                 <?php endif; ?>
             </div>
         </div>
-
     </div>
 
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
+    
 
-    <!-- Script to change quantity -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script> <!-- Font Awesome CDN -->
-    <script>
-        function changeQuantity(amount) {
-            var quantityInput = document.getElementById('quantity');
-            var currentQuantity = parseInt(quantityInput.value);
-            var newQuantity = currentQuantity + amount;
-            if (newQuantity >= 1) { // Ensure the quantity is at least 1
-                quantityInput.value = newQuantity;
-            }
-        }
-    </script>
+    <!-- JavaScript links -->
+    <script src="../assets/js/product-details.js"></script>
 
-    <script>
-        // Get the modal and button elements
-        var modal = new bootstrap.Modal(document.getElementById("size-guide-modal"), {
-            keyboard: true
-        });
-        var btn = document.getElementById("size-guide-btn");
-        var span = document.getElementById("close-size-guide");
-
-        // When the user clicks the button, open the modal
-        btn.onclick = function() {
-            modal.show();  // Using Bootstrap's method to show the modal
-        }
-
-        // When the user clicks the "x" button (close icon), close the modal
-        span.onclick = function() {
-            modal.hide();  // Using Bootstrap's method to hide the modal
-        }
-
-        // When the user clicks anywhere outside the modal, close it
-        window.onclick = function(event) {
-            if (event.target == modal._element) {
-                modal.hide();  // Using Bootstrap's method to hide the modal
-            }
-        }
-    </script>
-
-
-
-    <!-- Bootstrap JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
