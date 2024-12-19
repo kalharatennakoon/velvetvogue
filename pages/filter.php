@@ -76,17 +76,19 @@ include_once('../includes/head-links.php');
             echo "<p class='text-center'>Showing results for: <strong>$searchQuery</strong></p>";
 
             $sql = "
-                SELECT p.product_id, p.name, p.category, p.sub_category, pi.image_url, p.price
+                SELECT p.product_id, p.name, p.category, p.sub_category, 
+                       (SELECT image_url FROM product_images WHERE product_id = p.product_id LIMIT 1) AS image_url, 
+                       p.price
                 FROM products p
-                LEFT JOIN product_images pi ON p.product_id = pi.product_id
                 WHERE (p.name LIKE ? OR p.category LIKE ? OR p.sub_category LIKE ?)
                 GROUP BY p.product_id";
 
             if (strtolower($searchQuery) === "men") {
                 $sql = "
-                    SELECT p.product_id, p.name, p.category, p.sub_category, pi.image_url, p.price
+                    SELECT p.product_id, p.name, p.category, p.sub_category, 
+                           (SELECT image_url FROM product_images WHERE product_id = p.product_id LIMIT 1) AS image_url, 
+                           p.price
                     FROM products p
-                    LEFT JOIN product_images pi ON p.product_id = pi.product_id
                     WHERE p.category = 'Men'
                     GROUP BY p.product_id";
             }
@@ -102,7 +104,7 @@ include_once('../includes/head-links.php');
                 if ($result->num_rows > 0) {
                     echo '<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">';
                     while ($row = $result->fetch_assoc()) {
-                        $image_url = !empty($row['image_url']) ? BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($row['image_url']) : BASE_URL . '/assets/images/placeholder.jpg';
+                        $image_url = BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . ($row['image_url'] ? htmlspecialchars($row['image_url']) : 'placeholder.jpg');
 
                         echo '
                             <div class="col">
@@ -115,7 +117,6 @@ include_once('../includes/head-links.php');
                                         <p><strong>Product ID:</strong> ' . htmlspecialchars($row['product_id']) . '</p>
                                         <p class="price">LKR ' . number_format($row['price'], 2) . '</p>
                                         <a href="' . BASE_URL . '/pages/product-details.php?product-id=' . $row['product_id'] . '" class="btn btn-primary">View Details</a>
-
                                     </div>
                                 </div>
                             </div>
