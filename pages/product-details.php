@@ -179,8 +179,8 @@
                 <?php if (!empty($images)): ?>
                     <div class="collage-images">
                         <?php 
-                        // Show a maximum of 4 images
-                        $max_images = min(count($images), 4); 
+                        // Show a maximum of 6 images
+                        $max_images = min(count($images), 6); 
                         for ($i = 0; $i < $max_images; $i++): ?>
                             <div class="image-container">
                                 <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($images[$i]); ?>" 
@@ -331,6 +331,22 @@
                                 </button>
                             </div>
                         </form>
+
+                        <!-- Delivery Details -->
+                        <div class="delivery-details mt-3 text-muted">
+                            <p><i class="fas fa-truck"></i> Free delivery within Colombo</p>
+                            <p><i class="fas fa-shipping-fast"></i> Express delivery available</p>
+                            <p class="small">
+                                We work with trusted and exceptional courier services to make sure your order is received safely on time. 
+                                Delivery times will be from Monday to Saturday and will not occur on Sundays & Mercantile Holidays. 
+                                There is an additional cost for delivery. Any orders placed on weekends will be dispatched on Monday. 
+                                We will try our best to accommodate any special delivery instructions; however, this may cause an extra delay from our normal delivery timings. <br> <br>
+                                * We will try our best to deliver orders within the allocated delivery time. However, there may be unforeseen circumstances that may cause a delivery to be delayed. 
+                                If this occurs, we apologize in advance and will aim to get the order to you as soon as we can.
+                            </p>
+                        </div>
+
+
                     </div>
 
 
