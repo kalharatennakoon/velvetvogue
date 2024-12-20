@@ -171,20 +171,28 @@
                     <!-- Product Rating -->
                     <div class="product-rating">
                         <?php 
+                            // Round the average rating based on the first decimal place
+                            $average_rating = $average_rating ?? 0; // Ensure $average_rating has a value
+                            $rounded_rating = (intval($average_rating) + ($average_rating - intval($average_rating) >= 0.5 ? 1 : 0));
+                            
+                            // Calculate full stars and empty stars based on the rounded rating
+                            $full_stars = $rounded_rating; // All stars up to $rounded_rating are full
+                            $empty_stars = 5 - $full_stars; // Remaining stars are empty
+
+                            // Render the stars
                             for ($i = 0; $i < $full_stars; $i++) {
-                                echo '<span class="star">&#9733;</span>';
-                            }
-                            if ($half_star) {
-                                echo '<span class="star">&#9733;</span>';
+                                echo '<span class="star" style="color: gold;">&#9733;</span>'; // Colored full star
                             }
                             for ($i = 0; $i < $empty_stars; $i++) {
-                                echo '<span>&#9734;</span>';
+                                echo '<span>&#9734;</span>'; // Empty star
                             }
                         ?>
+                        <!-- Display the rounded rating inside parentheses -->
                         <span>
-                            (<?php echo intval($average_rating ?? 0); ?>)
+                            (<?php echo $rounded_rating; ?>)
                         </span>
                     </div>
+
 
                     <!-- Product Price -->
                     <p class="product-price">LKR <?php echo htmlspecialchars($product['price']); ?></p>
@@ -270,7 +278,24 @@
                 <?php foreach ($reviews as $review): ?>
                     <div class="review">
                         <p><strong><?php echo htmlspecialchars($review['first_name']) . ' ' . htmlspecialchars($review['last_name']); ?></strong> - <?php echo date('F j, Y', strtotime($review['rating_date'])); ?></p>
-                        <p>Rating: <?php for ($i = 0; $i < $review['rating']; $i++) { echo '★'; } ?></p>
+                        <p>Rating: 
+                            <?php
+                                $customer_star_rating = round($review['rating'] * 2) / 2; // Round to nearest half
+                                $customer_full_stars = floor($customer_star_rating);
+                                $customer_half_star = ($customer_star_rating - $customer_full_stars) >= 0.5 ? true : false;
+                                $customer_empty_stars = 5 - $customer_full_stars - ($customer_half_star ? 1 : 0);
+
+                                for ($i = 0; $i < $customer_full_stars; $i++) {
+                                    echo '<span class="star">&#9733;</span>';
+                                }
+                                if ($customer_half_star) {
+                                    echo '<span class="star">&#9733;</span>';
+                                }
+                                for ($i = 0; $i < $customer_empty_stars; $i++) {
+                                    echo '<span>&#9734;</span>';
+                                }
+                            ?>
+                        </p>
                         <p><?php echo nl2br(htmlspecialchars($review['review'])); ?></p>
                     </div>
                 <?php endforeach; ?>
