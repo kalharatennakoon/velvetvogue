@@ -75,7 +75,7 @@ include_once('../includes/head-links.php');
                 $searchQuery = strtolower(htmlspecialchars(trim($_GET['search'])));
             
                 // Debug: check the search query
-                echo "<p>Debug: Searching for '$searchQuery'</p>";
+                //echo "<p>Debug: Searching for '$searchQuery'</p>";
             
                 // Initialize condition variable
                 $condition = '';
@@ -86,7 +86,7 @@ include_once('../includes/head-links.php');
                 // Handle specific cases for T-shirt related search terms
                 if (in_array($normalizedSearchQuery, ['tshirt', 'tshirts', 't-shirt', 't-shirts'])) {
                     // Debug: show which condition is being applied
-                    echo "<p>Debug: Searching for T-shirt terms in second_sub_category</p>";
+                    //echo "<p>Debug: Searching for T-shirt terms in second_sub_category</p>";
             
                     // Search specifically in the second_sub_category for T-shirt-related terms (handle hyphen variations)
                     $searchTerm = '%' . $normalizedSearchQuery . '%'; // Add wildcards
@@ -103,7 +103,7 @@ include_once('../includes/head-links.php');
                 }
             
                 // Debug: show the condition being used
-                echo "<p>Debug: Condition being used: $condition</p>";
+                //echo "<p>Debug: Condition being used: $condition</p>";
             
                 echo "<p class='text-center'>Showing results for: <strong>$searchQuery</strong></p>";
             
