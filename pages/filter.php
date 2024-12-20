@@ -74,11 +74,23 @@ include_once('../includes/head-links.php');
             if (isset($_GET['search']) && !empty($_GET['search'])) {
                 $searchQuery = strtolower(htmlspecialchars(trim($_GET['search'])));
             
-                // Handle specific cases for "shirt" and "t-shirt/tshirt"
-                if ($searchQuery === 'shirt' || $searchQuery === 'shirts') {
-                    $condition = "LOWER(p.name) LIKE '%shirt%' AND LOWER(p.name) NOT LIKE '%t-shirt%' AND LOWER(p.name) NOT LIKE '%tshirt%'";
-                } elseif (in_array($searchQuery, ['t-shirt', 'tshirt', 't-shirts', 'tshirts'])) {
-                    $condition = "LOWER(p.name) LIKE '%t-shirt%' OR LOWER(p.name) LIKE '%tshirt%'";
+                // Debug: check the search query
+                echo "<p>Debug: Searching for '$searchQuery'</p>";
+            
+                // Initialize condition variable
+                $condition = '';
+            
+                // Normalize the search term by removing hyphens for T-shirt related search
+                $normalizedSearchQuery = str_replace('-', '', $searchQuery);
+            
+                // Handle specific cases for T-shirt related search terms
+                if (in_array($normalizedSearchQuery, ['tshirt', 'tshirts', 't-shirt', 't-shirts'])) {
+                    // Debug: show which condition is being applied
+                    echo "<p>Debug: Searching for T-shirt terms in second_sub_category</p>";
+            
+                    // Search specifically in the second_sub_category for T-shirt-related terms (handle hyphen variations)
+                    $searchTerm = '%' . $normalizedSearchQuery . '%'; // Add wildcards
+                    $condition = "LOWER(REPLACE(p.second_sub_category, '-', '')) LIKE LOWER(REPLACE(?, '-', ''))";
                 } else {
                     // Check if search term is 'men' or 'women' and ensure exact match
                     if ($searchQuery === 'men' || $searchQuery === 'women') {
@@ -90,8 +102,12 @@ include_once('../includes/head-links.php');
                     }
                 }
             
+                // Debug: show the condition being used
+                echo "<p>Debug: Condition being used: $condition</p>";
+            
                 echo "<p class='text-center'>Showing results for: <strong>$searchQuery</strong></p>";
             
+                // Prepare the SQL query with dynamic condition
                 $sql = "
                     SELECT p.product_id, p.name, p.category, p.sub_category, p.second_sub_category, 
                            (SELECT image_url FROM product_images WHERE product_id = p.product_id LIMIT 1) AS image_url, 
@@ -101,15 +117,19 @@ include_once('../includes/head-links.php');
                     GROUP BY p.product_id";
             
                 if ($stmt = $conn->prepare($sql)) {
-                    // Bind the parameters based on the condition
-                    if ($searchQuery === 'men' || $searchQuery === 'women') {
+                    // Bind parameters based on the condition
+                    if (in_array($normalizedSearchQuery, ['tshirt', 'tshirts', 't-shirt', 't-shirts'])) {
+                        // Bind for T-shirt related search terms (handle hyphen variations)
+                        $stmt->bind_param("s", $searchTerm);
+                    } elseif ($searchQuery === 'men' || $searchQuery === 'women') {
+                        // Bind for 'men' or 'women' categories (ensure case-insensitive comparison)
                         $stmt->bind_param("s", $searchQuery);  // Bind for 'men' or 'women'
                     } else {
-                        // Bind for general search query
+                        // Bind for general search query (name, category, sub-category, second sub-category)
                         $stmt->bind_param("ssss", $searchParam, $searchParam, $searchParam, $searchParam);
                     }
-                    $stmt->execute();
             
+                    $stmt->execute();
                     $result = $stmt->get_result();
             
                     if ($result->num_rows > 0) {
@@ -144,7 +164,8 @@ include_once('../includes/head-links.php');
                 }
             } else {
                 echo '<p class="text-center">Please enter a search term.</p>';
-            }                                              
+            }
+                                                                                                                                           
         ?>
     </div>
 
