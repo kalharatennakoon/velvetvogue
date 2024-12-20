@@ -18,9 +18,6 @@ colorButtons.forEach(button => {
     });
 });
 
-
-
-
 // Size dropdown functionality
 document.querySelectorAll('.dropdown-item').forEach(function(item) {
     item.addEventListener('click', function(e) {

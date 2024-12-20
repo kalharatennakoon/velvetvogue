@@ -320,7 +320,7 @@
                                 </div>
                             </div>
 
-
+                        
                             <!-- Buttons -->
                             <div class="form-group text-left">
                                 <button type="submit" class="btn btn-primary btn-sm mr-2 px-4">
@@ -331,6 +331,30 @@
                                 </button>
                             </div>
                         </form>
+
+
+                        <!-- Size Guide Button -->
+                        <div class="size-guide-btn-section">
+                            <button id="size-guide-btn" class="btn btn-info">Size Guide</button>
+                        </div>
+
+                        <!-- Size Guide Modal -->
+                        <div class="modal fade" id="size-guide-modal" tabindex="-1" aria-labelledby="size-guide-modal-label" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-body">
+                                        <!-- Modal close button -->
+                                        <button type="button" class="close" id="close-size-guide" data-bs-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <!-- Size guide image -->
+                                        <img src="../assets/images/products/size-guide.png" alt="Size Guide" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
 
                         <!-- Delivery Details -->
                         <div class="delivery-details mt-3 text-muted">

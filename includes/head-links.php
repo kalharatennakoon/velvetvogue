@@ -5,7 +5,7 @@
 <title><?php echo (isset($page_title)) ? $page_title . ' - ' . $site_title : $site_title; ?></title>
 
 <!-- Page Icon -->
-<link rel="icon" href="<?php echo BASE_URL; ?>/assets/images/logo.png" type="image/x-icon" />
+<link rel="icon" href="<?php echo BASE_URL; ?>/assets/images/velvetvogue-logo.png" type="image/x-icon" />
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
