@@ -189,7 +189,7 @@ include_once('../includes/head-links.php');
                                     <p><strong>Second Subcategory:</strong> ' . htmlspecialchars($row['second_sub_category']) . '</p>
                                     <p><strong>Colors:</strong> ' . $colorsString . '</p>
                                     <p><strong>Product ID:</strong> ' . htmlspecialchars($row['product_id']) . '</p>
-                                    <p class="price">$' . number_format($row['price'], 2) . '</p>
+                                    <p class="price">LKR ' . number_format($row['price'], 2) . '</p>
                                     <p class="rating">Rating: ' . $stars . '</p>
                                     <a href="' . BASE_URL . '/pages/product-details.php?product-id=' . $row['product_id'] . '" class="btn btn-primary">View Details</a>
                                 </div>
