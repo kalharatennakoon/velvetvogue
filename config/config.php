@@ -2,7 +2,7 @@
 // config.php - Central configuration for the project
 
 define('BASE_URL', 'http://localhost/velvetvogue'); // Replace with your actual project URL
-define('IMAGE_UPLOAD_DIR', $_SERVER['DOCUMENT_ROOT'] . "/velvetvogue/assets/images/customer-images/");
+define('CUSTOMER_IMAGE_PATH', 'assets/images/customer-images');
 define('PRODUCT_IMAGE_PATH', 'assets/images/products'); // Only the relative path
 
 $site_title = 'VELVET VOGUE';
@@ -23,4 +23,3 @@ if ($conn->connect_error) {
     echo "<script>console.log('Successfully connected to the database.');</script>";
 }
 ?>
-<?php

@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Define upload directory and ensure it's correct
-        $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/velvetvogue/assets/images/customer-images/";
+        $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/" . CUSTOMER_IMAGE_PATH . "/";
         
         // Generate a new filename using the customer_id and email
         $file_extension = strtolower(pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION));
@@ -174,7 +174,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <form action="customer-profile.php" method="POST" enctype="multipart/form-data">
                                 <div class="profile-container">
                                     <div class="text-center mb-4">
-                                        <img src="<?php echo BASE_URL; ?>/assets/images/customer-images/<?php echo htmlspecialchars($user['customer_image'] ?: 'default.jpg'); ?>" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3">
+                                        <img src="<?php echo BASE_URL . '/' . CUSTOMER_IMAGE_PATH . '/' . htmlspecialchars($user['customer_image'] ?: 'default.jpg'); ?>" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3">
                                         <label class="form-label d-block fw-semibold">Profile Picture</label>
                                         <input type="file" name="profile_image" class="form-control profile-input" disabled>
                                     </div>
