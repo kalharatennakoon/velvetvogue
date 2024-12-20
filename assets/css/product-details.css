@@ -1,3 +1,18 @@
+/* Styling for color buttons */
+#colorButtons .color-btn {
+    margin-right: 10px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+#colorButtons .color-btn.selected {
+    background-color: #007bff;
+    color: white;
+    border-color: #0056b3;
+}
+
+
+
 /* Ensure the entire quantity section is compact and aligned */
 .form-group .input-group {
     width: 100%;

@@ -1,3 +1,27 @@
+// Handle color selection
+const colorButtons = document.querySelectorAll('.color-btn');
+colorButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        // Remove 'selected' class from all buttons
+        colorButtons.forEach(btn => btn.classList.remove('selected'));
+        
+        // Add 'selected' class to the clicked button
+        this.classList.add('selected');
+        
+        // Set the selected color in the hidden input field
+        const selectedColor = this.getAttribute('data-color');
+        document.getElementById('selectedColor').value = selectedColor;
+        
+        // Display the selected color text
+        document.getElementById('selectedColorText').textContent = 'Selected Color: ' + selectedColor;
+        document.getElementById('selectedColorText').style.display = 'block';
+    });
+});
+
+
+
+
+// Size dropdown functionality
 document.querySelectorAll('.dropdown-item').forEach(function(item) {
     item.addEventListener('click', function(e) {
         e.preventDefault();

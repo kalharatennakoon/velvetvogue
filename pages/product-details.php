@@ -31,6 +31,17 @@
         }
     }
 
+    // Fetch colors for the product
+    $colors_query = "SELECT DISTINCT color FROM product_colors WHERE product_id = $product_id";
+    $colors_result = mysqli_query($conn, $colors_query);
+    $colors = [];
+    if ($colors_result && mysqli_num_rows($colors_result) > 0) {
+        while ($color = mysqli_fetch_assoc($colors_result)) {
+            $colors[] = $color['color'];
+        }
+    }
+
+
     // Fetch images for the product
     $images_query = "SELECT image_url FROM product_images WHERE product_id = $product_id";
     $images_result = mysqli_query($conn, $images_query);
@@ -237,31 +248,63 @@
                             <!-- Size Selection -->
                             <div class="form-group mb-3">
                                 <label for="size" class="font-weight-bold small mb-1">Size:</label>
-                                <div class="dropdown">
-                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Select Size
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="sizeDropdown">
-                                        <?php 
-                                        if (count($sizes) > 0): 
-                                            // Output available sizes
-                                            foreach ($sizes as $size): ?>
+                                <?php if (count($sizes) > 0): ?>
+                                    <!-- Dropdown for size selection -->
+                                    <div class="dropdown">
+                                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            Select Size
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="sizeDropdown">
+                                            <?php foreach ($sizes as $size): ?>
                                                 <li><a class="dropdown-item" href="#" data-size="<?php echo htmlspecialchars($size); ?>"><?php echo htmlspecialchars($size); ?></a></li>
-                                            <?php endforeach; 
-                                        else: 
-                                            // Show message when no sizes are available
-                                            echo '<li><a class="dropdown-item" href="#">No sizes available</a></li>';
-                                        endif;
-                                        ?>
-                                    </ul>
-                                </div>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                <?php else: ?>
+                                    <!-- Message when no sizes are available -->
+                                    <p>No sizes available</p>
+                                <?php endif; ?>
                             </div>
+
                                 <!-- Hidden input for the selected size -->
                                 <input type="hidden" name="size" id="selectedSize" value="">
 
                                 <!-- Text to display the selected size -->
                                 <p id="selectedSizeText" style="display: none; margin-top: 10px; font-size: 14px; color: #555;"></p>
+
+                            <!-- Color Selection -->
+                            <div class="form-group mb-3">
+                                <label for="color" class="font-weight-bold small mb-1">Color:</label>
+                                <div id="colorButtons">
+                                    <?php 
+                                    if (count($colors) > 0): 
+                                        // Output available color buttons
+                                        foreach ($colors as $color): ?>
+                                            <button type="button" class="btn btn-outline-secondary color-btn" data-color="<?php echo htmlspecialchars($color); ?>">
+                                                <?php echo htmlspecialchars($color); ?>
+                                            </button>
+                                        <?php endforeach; 
+                                    else: 
+                                        // Show message when no colors are available
+                                        echo '<p>No colors available</p>';
+                                    endif;
+                                    ?>
+                                </div>
                             </div>
+
+                            <!-- Hidden input for the selected color -->
+                            <input type="hidden" name="color" id="selectedColor" value="">
+
+                            <!-- Text to display the selected color -->
+                            <p id="selectedColorText" style="display: none; margin-top: 10px; font-size: 14px; color: #555;"></p>
+
+
+
+                            <!-- Hidden input for the selected color -->
+                            <input type="hidden" name="color" id="selectedColor" value="">
+
+                            <!-- Text to display the selected color -->
+                            <p id="selectedColorText" style="display: none; margin-top: 10px; font-size: 14px; color: #555;"></p>
 
                             <!-- Quantity Selection -->
                             <div class="form-group mb-3">
@@ -276,6 +319,7 @@
                                     </button>
                                 </div>
                             </div>
+
 
                             <!-- Buttons -->
                             <div class="form-group text-left">
@@ -347,6 +391,8 @@
                                 <p class="product-title"><?php echo htmlspecialchars($similar_product['name']); ?></p>
                                 <!-- Product Price -->
                                 <p class="product-price">LKR <?php echo number_format($similar_product['price'], 2); ?></p>
+                                <!-- View Product Button -->
+                                <a href="product-details.php?product-id=<?php echo $similar_product['product_id']; ?>" class="btn btn-primary">View Product</a>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -355,6 +401,8 @@
                 <?php endif; ?>
             </div>
         </div>
+
+
     </div>
 
 
