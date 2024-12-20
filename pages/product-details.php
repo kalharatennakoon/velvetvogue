@@ -212,60 +212,79 @@
                     <?php endif; ?>
 
                     <!-- Size and Quantity Selection -->
-                    <div class="product-options">
+                    <div class="product-options p-3 d-flex flex-column align-items-start">
                         <form action="cart.php" method="post">
-                            <!-- Size: -->
-                            <div class="form-group">
-                                <label for="size">Size:</label>
-                                <select name="size" id="size" class="form-control">
-                                    <option value="XXS">XXS</option>
-                                    <option value="XS">XS</option>
-                                    <option value="S">S</option>
-                                    <option value="M">M</option>
-                                    <option value="L">L</option>
-                                    <option value="XL">XL</option>
-                                    <option value="2XL">2XL</option>
-                                    <option value="3XL">3XL</option>
-                                </select>
-                            </div>
+                            <!-- Size Selection -->
+                            <div class="form-group mb-3">
+                                <label for="size" class="font-weight-bold small mb-1">Size:</label>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="sizeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Select Size
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="sizeDropdown">
+                                        <li><a class="dropdown-item" href="#" data-size="XXS">XXS</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="XS">XS</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="S">S</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="M">M</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="L">L</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="XL">XL</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="2XL">2XL</a></li>
+                                        <li><a class="dropdown-item" href="#" data-size="3XL">3XL</a></li>
+                                    </ul>
+                                </div>
+                                <!-- Hidden input for the selected size -->
+                                <input type="hidden" name="size" id="selectedSize" value="">
 
-                            <!-- Quantity: -->
-                            <div class="form-group">
-                                <label for="quantity">Quantity:</label>
-                                <div class="input-group">
-                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(-1)">
-                                        <i class="fa-solid fa-minus"></i>
+                                <!-- Text to display the selected size -->
+                                <p id="selectedSizeText" style="display: none; margin-top: 10px; font-size: 14px; color: #555;"></p>
+                            </div>
+                            <!-- Quantity Selection -->
+                            <div class="form-group mb-3">
+                                <label for="quantity" class="font-weight-bold small mb-1">Quantity:</label>
+                                <div class="input-group input-group-sm">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(-1)">
+                                        <i class="fas fa-minus"></i>
                                     </button>
                                     <input type="number" name="quantity" id="quantity" class="form-control text-center" value="1" min="1" max="100" readonly>
-                                    <button type="button" class="btn btn-outline-secondary" onclick="changeQuantity(1)">
-                                        <i class="fa-solid fa-plus"></i>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" onclick="changeQuantity(1)">
+                                        <i class="fas fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
 
-
                             <!-- Size Guide Button -->
-                            <button type="button" class="btn btn-info" id="size-guide-btn">Size Guide</button>
+                            <div class="form-group text-left mb-3">
+                                <button type="button" class="btn btn-info btn-sm px-3" id="size-guide-btn">
+                                    <i class="fas fa-ruler-combined"></i> Size Guide
+                                </button>
+                            </div>
 
-                            <!-- Modal -->
-                            <div class="modal" id="size-guide-modal" tabindex="-1" aria-labelledby="size-guide-modal-label" aria-hidden="true">
-                                <div class="modal-dialog">
+                            <!-- Size Guide Modal -->
+                            <div class="modal fade" id="size-guide-modal" tabindex="-1" aria-labelledby="size-guide-modal-label" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
-                                    <div class="modal-body position-relative">
-                                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" id="close-size-guide" aria-label="Close"></button>
-                                        <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/size-guide.png'; ?>" alt="Size Guide" class="img-fluid">
-                                    </div>
+                                        <div class="modal-body position-relative">
+                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" id="close-size-guide" aria-label="Close"></button>
+                                            <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/size-guide.png'; ?>" alt="Size Guide" class="img-fluid rounded">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Add to Cart and Buy Now buttons -->
-                            <div class="form-group d-flex">
-                                <button type="submit" class="btn btn-primary mr-2">Add to Cart</button>
-                                <button type="submit" name="buy_now" class="btn btn-success">Buy Now</button>
+                            <!-- Buttons -->
+                            <div class="form-group text-left">
+                                <button type="submit" class="btn btn-primary btn-sm mr-2 px-4">
+                                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                                </button>
+                                <button type="submit" name="buy_now" class="btn btn-success btn-sm px-4">
+                                    <i class="fas fa-bolt"></i> Buy Now
+                                </button>
                             </div>
                         </form>
                     </div>
+
+
+
                 </div>
             </div>
         </div>

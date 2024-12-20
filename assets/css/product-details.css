@@ -1,3 +1,10 @@
+#selectedSizeText {
+    display: block; /* Ensure this is visible */
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
 .similar-products {
     margin-top: 30px;
     padding-bottom: 30px;  /* Add some padding at the bottom */
