@@ -1,8 +1,11 @@
 <?php
+// Start session
 session_start();
-session_unset();  // Remove all session variables
-session_destroy();  // Destroy the session
 
-header("Location: customer-login.php");
+// Destroy the current session
+session_destroy();
+
+// Redirect to the customer login page
+header('Location: customer-login.php');
 exit;
 ?>

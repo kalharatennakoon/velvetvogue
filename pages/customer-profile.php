@@ -2,6 +2,17 @@
 // Include database connection and other necessary files
 include_once('../config/config.php');
 
+// Start output buffering to prevent header issues
+ob_start();
+
+// Define constants for project root and customer image path if not already defined
+if (!defined('PROJECT_ROOT')) {
+    define('PROJECT_ROOT', dirname(__DIR__));
+}
+if (!defined('CUSTOMER_IMAGE_PATH')) {
+    define('CUSTOMER_IMAGE_PATH', 'uploads/customers');
+}
+
 // Start session to check user login status
 session_start();
 if (!isset($_SESSION['logged_in']) || !$_SESSION['logged_in']) {
@@ -40,75 +51,69 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $zip_code = trim($_POST['zip_code']);
     $newsletter_subscription = isset($_POST['newsletter_subscription']) ? 1 : 0;
 
-
     // Handle image upload if a new image is selected
     $image_uploaded = false;
     if (isset($_FILES['profile_image']) && $_FILES['profile_image']['error'] == 0) {
-        // Debug: Print file details to the console
-        echo "<script>console.log('File details: ', " . json_encode($_FILES['profile_image']) . ");</script>";
-
-        // Validate image type (allow jpg, png, gif)
         $allowed_types = ['image/jpeg', 'image/png', 'image/gif'];
         if (!in_array($_FILES['profile_image']['type'], $allowed_types)) {
-            echo "<script>console.error('Invalid file type. Only JPG, PNG, GIF allowed.');</script>";
-            exit;
-        }
-
-        // Define upload directory and ensure it's correct
-        $target_dir = $_SERVER['DOCUMENT_ROOT'] . "/" . CUSTOMER_IMAGE_PATH . "/";
-        
-        // Generate a new filename using the customer_id and email
-        $file_extension = strtolower(pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION));
-        // Generate a random string or use a timestamp
-        $random_string = substr(md5(uniqid(mt_rand(), true)), 0, 6);
-        // Construct the new file name with the random string
-        $new_file_name = 'profile_pic_' . $user_id . '_' . strtolower(str_replace('@', '_', $user['email'])) . '_' . $random_string . '.' . $file_extension;
-        $target_file = $target_dir . $new_file_name;
-
-
-        // Move uploaded file to the directory
-        if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
-            echo "<script>console.log('Image uploaded successfully to: " . $target_file . "');</script>";
-            $image_uploaded = true;
+            $error = 'Invalid file type. Only JPG, PNG, and GIF are allowed.';
         } else {
-            echo "<script>console.error('Image upload failed. Ensure permissions are set for " . $target_dir . ".');</script>";
-            $error = 'Image upload failed. Please try again later.';
+            $target_dir = PROJECT_ROOT . "/" . CUSTOMER_IMAGE_PATH . "/";
+            if (!file_exists($target_dir)) {
+                mkdir($target_dir, 0755, true);
+            }
+            $file_extension = strtolower(pathinfo($_FILES['profile_image']['name'], PATHINFO_EXTENSION));
+            $random_string = substr(md5(uniqid(mt_rand(), true)), 0, 6);
+            $new_file_name = 'profile_pic_' . $user_id . '_' . strtolower(str_replace('@', '_', $user['email'])) . '_' . $random_string . '.' . $file_extension;
+            $target_file = $target_dir . $new_file_name;
+
+            if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
+                // Image is uploaded successfully
+                $image_uploaded = true;
+                echo "Image uploaded successfully to: " . $target_file . "<br>";
+            } else {
+                $error = 'Failed to upload image. Please try again.';
+                echo "Image upload failed.<br>";
+            }
         }
     }
 
-
-    // If no image was uploaded, use the current one
+    // If an image was uploaded, update the image name for the database query
     $profile_image = $image_uploaded ? $new_file_name : $user['customer_image'];
 
-    // Update user details in the database
     if (empty($error)) {
-        // $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, customer_image = ? WHERE customer_id = ?";
-        // $stmt = $conn->prepare($query);
-        // $stmt->bind_param("ssssssssssi", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $profile_image, $user_id);
-
+        // Prepare the SQL query for updating user profile details
         $query = "UPDATE customers SET first_name = ?, last_name = ?, email = ?, phone_number = ?, address_line_1 = ?, address_line_2 = ?, city = ?, province = ?, zip_code = ?, customer_image = ?, newsletter_subscription = ? WHERE customer_id = ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("ssssssssssii", $first_name, $last_name, $email, $phone_number, $address_line_1, $address_line_2, $city, $province, $zip_code, $profile_image, $newsletter_subscription, $user_id);
 
-        
-        $stmt->execute();
+        // Execute the query
+        if ($stmt->execute()) {
+            // Debugging: Ensure the profile image is updated
+            echo "Database update successful.<br>";
+            // Update session and success message
+            $_SESSION['user_email'] = $email;
+            $updateSuccess = 'Profile updated successfully.';
+
+            // Redirect to customer profile page to reflect changes
+            header("Location: " . BASE_URL . "/pages/customer-profile.php");
+            exit;
+        } else {
+            // Set error message if update fails
+            $updateError = 'Failed to update profile. Please try again later.';
+            echo "Database update failed.<br>";
+        }
         $stmt->close();
-
-        // If successful, update the session with new data
-        $_SESSION['user_email'] = $email;
-
-        // Success message
-        $updateSuccess = 'Profile updated successfully.';
-
-        // Refresh the page to reflect changes
-        header("Location: " . BASE_URL . "/pages/customer-profile.php");
-        exit;
     } else {
-        // Error message if something went wrong with image upload or any other issue
+        // Set the error message if there is an issue with the upload or form data
         $updateError = $error;
     }
 }
 ?>
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -176,7 +181,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                     <div class="text-center mb-4">
                                         <img src="<?php echo BASE_URL . '/' . CUSTOMER_IMAGE_PATH . '/' . htmlspecialchars($user['customer_image'] ?: 'default.jpg'); ?>" alt="Profile Picture" class="rounded-circle img-thumbnail mb-3">
                                         <label class="form-label d-block fw-semibold">Profile Picture</label>
-                                        <input type="file" name="profile_image" class="form-control profile-input" disabled>
+                                        <input type="file" name="profile_image" class="form-control profile-input" disabled onchange="checkChanges()">
+
                                     </div>
 
                                     <div class="row g-3">
@@ -256,5 +262,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
+
+    <script>
+        function enableEdit() {
+            const inputs = document.querySelectorAll('.profile-input');
+            inputs.forEach(input => input.disabled = false);
+            document.getElementById('updateButton').disabled = false;
+        }
+
+    </script>
 </body>
 </html>
