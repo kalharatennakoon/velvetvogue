@@ -19,6 +19,18 @@
         die("Product not found.");
     }
 
+    // Fetch sizes for the product
+    $sizes_query = "SELECT ps.size 
+                    FROM product_sizes ps 
+                    WHERE ps.product_id = $product_id";
+    $sizes_result = mysqli_query($conn, $sizes_query);
+    $sizes = [];
+    if ($sizes_result && mysqli_num_rows($sizes_result) > 0) {
+        while ($size = mysqli_fetch_assoc($sizes_result)) {
+            $sizes[] = $size['size'];
+        }
+    }
+
     // Fetch images for the product
     $images_query = "SELECT image_url FROM product_images WHERE product_id = $product_id";
     $images_result = mysqli_query($conn, $images_query);
@@ -125,6 +137,13 @@
         }
     }
 
+    // Add code to display the sizes in the console:
+    if (count($sizes) > 0) {
+        echo '<script>console.log("Available Sizes: ' . implode(", ", $sizes) . '");</script>';
+    } else {
+        echo '<script>console.log("No sizes available.");</script>';
+    }
+
 ?>
 
 
@@ -149,7 +168,8 @@
                 <?php if (!empty($images)): ?>
                     <div class="collage-images">
                         <?php 
-                        $max_images = min(count($images), 4);
+                        // Show a maximum of 4 images
+                        $max_images = min(count($images), 4); 
                         for ($i = 0; $i < $max_images; $i++): ?>
                             <div class="image-container">
                                 <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . htmlspecialchars($images[$i]); ?>" 
@@ -222,22 +242,27 @@
                                         Select Size
                                     </button>
                                     <ul class="dropdown-menu" aria-labelledby="sizeDropdown">
-                                        <li><a class="dropdown-item" href="#" data-size="XXS">XXS</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="XS">XS</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="S">S</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="M">M</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="L">L</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="XL">XL</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="2XL">2XL</a></li>
-                                        <li><a class="dropdown-item" href="#" data-size="3XL">3XL</a></li>
+                                        <?php 
+                                        if (count($sizes) > 0): 
+                                            // Output available sizes
+                                            foreach ($sizes as $size): ?>
+                                                <li><a class="dropdown-item" href="#" data-size="<?php echo htmlspecialchars($size); ?>"><?php echo htmlspecialchars($size); ?></a></li>
+                                            <?php endforeach; 
+                                        else: 
+                                            // Show message when no sizes are available
+                                            echo '<li><a class="dropdown-item" href="#">No sizes available</a></li>';
+                                        endif;
+                                        ?>
                                     </ul>
                                 </div>
+                            </div>
                                 <!-- Hidden input for the selected size -->
                                 <input type="hidden" name="size" id="selectedSize" value="">
 
                                 <!-- Text to display the selected size -->
                                 <p id="selectedSizeText" style="display: none; margin-top: 10px; font-size: 14px; color: #555;"></p>
                             </div>
+
                             <!-- Quantity Selection -->
                             <div class="form-group mb-3">
                                 <label for="quantity" class="font-weight-bold small mb-1">Quantity:</label>
@@ -252,25 +277,6 @@
                                 </div>
                             </div>
 
-                            <!-- Size Guide Button -->
-                            <div class="form-group text-left mb-3">
-                                <button type="button" class="btn btn-info btn-sm px-3" id="size-guide-btn">
-                                    <i class="fas fa-ruler-combined"></i> Size Guide
-                                </button>
-                            </div>
-
-                            <!-- Size Guide Modal -->
-                            <div class="modal fade" id="size-guide-modal" tabindex="-1" aria-labelledby="size-guide-modal-label" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-body position-relative">
-                                            <button type="button" class="btn-close position-absolute top-0 end-0 m-2" id="close-size-guide" aria-label="Close"></button>
-                                            <img src="<?php echo BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/size-guide.png'; ?>" alt="Size Guide" class="img-fluid rounded">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <!-- Buttons -->
                             <div class="form-group text-left">
                                 <button type="submit" class="btn btn-primary btn-sm mr-2 px-4">
@@ -282,6 +288,7 @@
                             </div>
                         </form>
                     </div>
+
 
 
 

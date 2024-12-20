@@ -1,3 +1,39 @@
+/* Ensure the entire quantity section is compact and aligned */
+.form-group .input-group {
+    width: 100%;
+}
+
+.input-group-sm .btn,
+.input-group-sm .form-control {
+    height: 30px; /* Adjust the height of the buttons and input */
+    padding: 5px; /* Adjust padding to make everything smaller */
+}
+
+.input-group-sm .form-control {
+    text-align: center;
+    max-width: 60px; /* Adjust the width of the number input */
+}
+
+.input-group-sm .btn {
+    width: 30px; /* Ensure buttons are compact */
+    font-size: 14px; /* Adjust font size for buttons */
+}
+
+/* Ensure the size dropdown and quantity inputs are aligned */
+.product-options .form-group {
+    width: 100%; /* Ensure the form groups take the full width */
+}
+
+.product-options .dropdown,
+.product-options .input-group {
+    width: 100%; /* Ensure both the dropdown and the input group take up the full width */
+}
+
+.product-options .input-group .form-control {
+    width: 100%; /* Ensure the quantity input has full width */
+}
+
+
 #selectedSizeText {
     display: block; /* Ensure this is visible */
     margin-top: 10px;
