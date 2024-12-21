@@ -91,7 +91,11 @@ include_once('../includes/head-links.php');
                     // Search specifically in the second_sub_category for T-shirt-related terms (handle hyphen variations)
                     $searchTerm = '%' . $normalizedSearchQuery . '%'; // Add wildcards
                     $condition = "LOWER(REPLACE(p.second_sub_category, '-', '')) LIKE LOWER(REPLACE(?, '-', ''))";
-                } else {
+                } elseif (in_array($normalizedSearchQuery, ['shirt', 'shirts'])) {
+                    // Search specifically in the second_sub_category for "Shirts" (case insensitive)
+                    $searchTerm = $normalizedSearchQuery . '%'; // Add wildcards
+                    $condition = "LOWER(REPLACE(p.second_sub_category, '-', '')) LIKE LOWER(REPLACE(?, '-', ''))";
+                }else {
                     // Check if search term is 'men' or 'women' and ensure exact match
                     if ($searchQuery === 'men' || $searchQuery === 'women') {
                         $condition = "LOWER(p.category) = LOWER(?)";
@@ -120,6 +124,9 @@ include_once('../includes/head-links.php');
                     // Bind parameters based on the condition
                     if (in_array($normalizedSearchQuery, ['tshirt', 'tshirts', 't-shirt', 't-shirts'])) {
                         // Bind for T-shirt related search terms (handle hyphen variations)
+                        $stmt->bind_param("s", $searchTerm);
+                    } elseif (in_array($normalizedSearchQuery, ['shirt', 'shirts'])) {
+                        // Bind for Shirts related search terms (handle hyphen variations)
                         $stmt->bind_param("s", $searchTerm);
                     } elseif ($searchQuery === 'men' || $searchQuery === 'women') {
                         // Bind for 'men' or 'women' categories (ensure case-insensitive comparison)
