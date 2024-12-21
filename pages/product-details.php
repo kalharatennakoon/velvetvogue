@@ -226,7 +226,7 @@
 
 
                     <!-- Product Price -->
-                    <p class="product-price">LKR <?php echo htmlspecialchars($product['price']); ?></p>
+                    <p class="product-price">LKR <?php echo number_format($product['price'], 2); ?></p>
 
                     <!-- Product Description -->
                     <p><?php echo htmlspecialchars($product['description']); ?></p>
