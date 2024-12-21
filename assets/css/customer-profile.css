@@ -1,0 +1,22 @@
+.logout-button {
+    margin-left: auto; /* Ensures alignment to the right in a flex container */
+    padding-top: 20px; /* Adds some space above the button */
+    padding-right: 20px; /* Adds some space to the right of the button */
+}
+
+.profile-container {
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+.img-thumbnail {
+    max-width: 150px;
+}
+.card {
+    border: none;
+    border-radius: 25px;
+}
+.btn-lg {
+    font-size: 1rem;
+}
