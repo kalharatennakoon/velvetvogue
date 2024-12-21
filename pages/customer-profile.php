@@ -1,6 +1,8 @@
 <?php
     // Include database connection and other necessary files
     include_once('../config/config.php');
+    $page_title = 'Customer Profile';
+    include_once('../includes/head-links.php');
 
     // Start output buffering to prevent header issues
     ob_start();
@@ -116,21 +118,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <?php
-        $page_title = 'Customer Profile';
-        include_once('../includes/head-links.php');
-    ?>
 
     <!-- CSS links -->
     <link rel="stylesheet" type="text/css" href="../assets/css/customer-profile.css">
 
-    <script>
-        function toggleProfileInputs(disable) {
-            document.querySelectorAll(".profile-input").forEach(el => el.disabled = disable);
-            document.getElementById("updateButton").disabled = disable;
-            document.getElementById("editButton").disabled = !disable;
-        }
-    </script>
+    <!-- JavaScript links -->
+    <script src="../assets/js/customer-profile.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -240,14 +233,6 @@
     <!-- Footer -->
     <?php include '../includes/footer.php'; ?>
 
-    <script>
-        function enableEdit() {
-            const inputs = document.querySelectorAll('.profile-input');
-            inputs.forEach(input => input.disabled = false);
-            document.getElementById('updateButton').disabled = false;
-        }
-
-    </script>
 </body>
 </html>
 
