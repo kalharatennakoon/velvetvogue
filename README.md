@@ -58,4 +58,4 @@ This project is licensed under the MIT License. See the [LICENSE](https://github
 
 ## Contact
 
-For any inquiries or support, please contact us at support@velvetvogue.com.
+For any inquiries or support, please contact us at [Contact]()
