@@ -18,55 +18,41 @@
 
     <?php include './includes/header.php'; ?>
 
-    <!-- Image Carousel Section -->
-    <div class="min-h-screen overflow-x-hidden d-flex justify-content-center align-items-center">
-        <div id="carouselExampleIndicators" class="carousel carousel-dark slide mt-5" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="5" aria-label="Slide 6"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="6" aria-label="Slide 7"></button>
-            </div>
-            <div class="carousel-inner">
-                <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image01.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image02.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image03.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image04.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image05.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image06.png" class="d-block w-100" alt="...">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="<?php echo BASE_URL; ?>/assets/images/carousel-image07.png" class="d-block w-100" alt="...">
-                </div>
-            </div>
-
-            <section>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </section>
-        </div>
+    <!-- Full Width Image Section -->
+    <div class="full-width-image-container">
+        <img src="<?php echo BASE_URL; ?>/assets/images/main-image.png" alt="Full Width Image" class="full-width-image">
     </div>
+
+    <!-- Custom Styles for Full Width Image with Reduced Height -->
+    <style>
+        /* Ensure the full-width image container takes the full width */
+        .full-width-image-container {
+            width: 100%;
+            overflow: hidden; /* Hide any overflow */
+            padding: 10px;
+        }
+
+        /* Style the image to be responsive with a fixed height and full width */
+        .full-width-image {
+            width: 100%; /* Ensure the image spans the entire width of the container */
+            height: 500px; /* Set a fixed height (you can adjust this value) */
+            object-fit: cover; /* This ensures the image covers the full width without stretching */
+        }
+
+        /* Optional: For smaller devices, adjust the image height */
+        @media (max-width: 768px) {
+            .full-width-image {
+                height: 200px; /* Reduce height on smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .full-width-image {
+                height: 150px; /* Further reduce height on very small screens */
+            }
+        }
+    </style>
+
 
 
     <!-- New Arrivals Section -->
