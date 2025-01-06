@@ -87,7 +87,7 @@
         <p class="text-dark mb-4" style="font-size: 1.1rem; font-weight: 300;">Don’t miss out on our limited-time sale! Explore our latest collection of stylish outfits, accessories, and more at unbeatable prices.</p>
         <h3 class="text-primary mb-3" style="font-size: 2rem; font-weight: 600;">50% OFF on Selected Items</h3>
         <p class="text-dark mb-4" style="font-size: 1.1rem;">Shop your favorite clothing and accessories from Velvet Vogue and enjoy 50% off. <br>This offer is valid for a limited time only, so hurry up!</p>
-        <a href="shop.php" class="btn btn-primary px-4 py-2" style="font-size: 1.2rem; font-weight: bold; background-color: #4fa3f7; border: none; color: white; border-radius: 50px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease-in-out;">
+        <a href="<?php echo BASE_URL; ?>/pages/promotions.php" class="btn btn-primary px-4 py-2" style="font-size: 1.2rem; font-weight: bold; background-color: #4fa3f7; border: none; color: white; border-radius: 50px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); transition: background-color 0.3s ease-in-out;">
             Shop Now
         </a>
     </section>
