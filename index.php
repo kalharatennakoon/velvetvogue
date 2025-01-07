@@ -54,32 +54,58 @@
     </style>
 
 
-
-    <!-- New Arrivals Section -->
+    <!-- New Arrivals Section-->
     <section class="container my-5">
-        <h2 class="text-left">New Arrivals!</h2>
-        <div class="row">
+    <h2 class="text-left">New Arrivals!</h2>
+    <div id="newArrivalsCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000"> <!-- Auto rotate every 3 seconds -->
+        <div class="carousel-inner">
             <?php
             // Fetch "New Arrivals" products from the database
-            $query = "SELECT * FROM products WHERE is_active = 1 AND category = 'New Arrivals' LIMIT 4";
+            $query = "SELECT * FROM products WHERE is_active = 1 AND category = 'New Arrivals'";
             $result = mysqli_query($conn, $query);
 
+            $products = [];
             while ($product = mysqli_fetch_assoc($result)) {
-                echo '
-                <div class="col-md-3">
-                    <div class="card text-center">
-                        <img src="' . BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . ($product['image_url'] ? htmlspecialchars($product['image_url']) : 'placeholder.jpg') . '" class="card-img-top" alt="' . htmlspecialchars($product['name']) . '">
-                        <div class="card-body">
-                            <h5 class="card-title">' . htmlspecialchars($product['name']) . '</h5>
-                            <p class="card-text">Rs. ' . number_format($product['price'], 2) . '</p>
-                            <a href="#" class="btn btn-primary">Buy Now</a>
+                $products[] = $product;
+            }
+
+            $chunked_products = array_chunk($products, 4); // Split into chunks of 4 products
+
+            foreach ($chunked_products as $index => $chunk) {
+                echo '<div class="carousel-item ' . ($index === 0 ? 'active' : '') . '">';
+                echo '<div class="row">';
+                foreach ($chunk as $product) {
+                    // Fetch the image URL
+                    $product_id = $product['product_id'];
+                    $image_query = "SELECT image_url FROM product_images WHERE product_id = $product_id LIMIT 1";
+                    $image_result = mysqli_query($conn, $image_query);
+                    $image_row = mysqli_fetch_assoc($image_result);
+                    $image_url = $image_row ? htmlspecialchars($image_row['image_url']) : 'placeholder.png';
+            
+                    echo '
+                    <div class="col-md-3">
+                        <div class="card text-center position-relative">
+                            <!-- New badge -->
+                            <span class="badge bg-primary position-absolute top-0 end-0 m-2">New</span>
+                            <img src="' . BASE_URL . '/' . PRODUCT_IMAGE_PATH . '/' . $image_url . '" 
+                                class="card-img-top" alt="' . htmlspecialchars($product['name']) . '" 
+                                style="max-height: 200px; width: 100%; object-fit: contain;">
+                            <div class="card-body">
+                                <h5 class="card-title">' . htmlspecialchars($product['name']) . '</h5>
+                                <p class="card-text">LKR ' . number_format($product['price'], 2) . '</p>
+                                <a href="' . BASE_URL . '/pages/product-details.php?product-id=' . $product['product_id'] . '" class="btn btn-primary">Buy Now</a>
+                            </div>
                         </div>
-                    </div>
-                </div>';
+                    </div>';
+                }
+                echo '</div></div>';
             }
             ?>
         </div>
-    </section>
+    </div>
+</section>
+
+
 
    <!-- Promo Box -->
     <section class="container my-5 p-5 text-center" style="background: #f0f8ff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
